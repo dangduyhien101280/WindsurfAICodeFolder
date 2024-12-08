@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Vocabulary Flash Cards</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>English Vocabulary Cards</h1>
+            <div class="study-info">
+                <span id="studyDate">Next Review: Not scheduled</span>
+                <span id="progress-info">Progress: <span id="learned">0</span>/<span id="total">0</span></span>
+            </div>
+        </header>
+
+        <main>
+            <div class="flashcard" id="flashcard">
+                <div class="card-inner">
+                    <!-- Front of the card -->
+                    <div class="card-front">
+                        <div class="word-section">
+                            <h2 id="word">Word</h2>
+                            <p id="ipa" class="ipa-text"></p>
+                            <button id="speakBtn" class="icon-btn" title="Listen to pronunciation">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Back of the card -->
+                    <div class="card-back">
+                        <div class="meaning-section">
+                            <h3 id="meaning">Meaning</h3>
+                            <p id="example" class="example-text"></p>
+                        </div>
+                        <div class="card-actions">
+                            <button id="markLearnedBtn" class="icon-btn" title="Mark as learned">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button id="markReviewBtn" class="icon-btn" title="Schedule for review">
+                                <i class="fas fa-clock"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="controls">
+                <button id="prevBtn" class="nav-btn">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <button id="flipBtn" class="nav-btn">
+                    <i class="fas fa-sync-alt"></i> Flip Card
+                </button>
+                <button id="nextBtn" class="nav-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div class="progress">
+                Card <span id="currentCard">1</span> of <span id="totalCards">10</span>
+            </div>
+        </main>
+
+        <!-- YouTube Import Section -->
+        <footer class="youtube-import">
+            <div class="import-container">
+                <input type="text" 
+                       id="youtubeUrl" 
+                       placeholder="Enter YouTube URL to import vocabulary"
+                       aria-label="YouTube URL input">
+                <button id="importBtn" class="import-btn">
+                    <i class="fab fa-youtube"></i> Import Words
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="loading-indicator hidden">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
