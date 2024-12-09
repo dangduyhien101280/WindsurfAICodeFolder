@@ -1,213 +1,283 @@
-// State management
+// Global variables
 let cards = [];
 let currentCardIndex = 0;
+let currentCard = null;
 
-// Fetch cards from the server
-async function fetchCards() {
-    try {
-        const response = await fetch('/api/cards');
-        cards = await response.json();
-        if (cards.length > 0) {
-            updateCard();
-            updateProgress();
-        } else {
-            showEmptyState();
-        }
-    } catch (error) {
-        console.error('Error fetching cards:', error);
-        showError('Failed to load flashcards');
+// Box system functionality
+function updateBoxStats() {
+    fetch('/api/cards/stats')
+        .then(response => response.json())
+        .then(stats => {
+            // Update box counts
+            for (let i = 0; i < 6; i++) {
+                const boxStats = stats[`box_${i}`];
+                if (boxStats) {
+                    const boxElement = document.querySelector(`.box[data-box="${i}"]`);
+                    if (boxElement) {
+                        boxElement.querySelector('.box-count').textContent = boxStats.count;
+                    }
+                }
+            }
+
+            // Update total progress
+            document.getElementById('total').textContent = stats.total;
+            const learnedCount = stats['box_5'] ? stats['box_5'].count : 0;
+            document.getElementById('learned').textContent = learnedCount;
+        })
+        .catch(error => {
+            console.error('Error fetching box stats:', error);
+            showToast('Error loading box statistics');
+        });
+}
+
+// Update the current box indicator
+function updateBoxIndicator(boxNumber) {
+    // Remove active class from all boxes
+    document.querySelectorAll('.box').forEach(box => {
+        box.classList.remove('active');
+    });
+
+    // Add active class to current box
+    const currentBox = document.querySelector(`.box[data-box="${boxNumber}"]`);
+    if (currentBox) {
+        currentBox.classList.add('active');
+    }
+
+    // Update progress arrow position
+    const progressBar = document.querySelector('.progress-bar');
+    const arrow = document.querySelector('.progress-arrow');
+    if (progressBar && arrow) {
+        const boxWidth = progressBar.offsetWidth / 6;
+        const newPosition = (boxWidth * boxNumber) + (boxWidth / 2);
+        arrow.style.left = `${newPosition}px`;
     }
 }
 
-// Update the card content
-function updateCard() {
+// Card management functions
+function loadCards() {
+    showLoading(true);
+    fetch('/api/cards')
+        .then(response => response.json())
+        .then(data => {
+            cards = data;
+            updateCardCount();
+            if (cards.length > 0) {
+                showCard(0);
+            }
+            updateBoxStats();
+        })
+        .catch(error => {
+            console.error('Error loading cards:', error);
+            showToast('Error loading flashcards');
+        })
+        .finally(() => {
+            showLoading(false);
+        });
+}
+
+function showCard(index) {
     if (cards.length === 0) return;
     
-    const card = cards[currentCardIndex];
-    document.getElementById('word').textContent = card.word;
-    document.getElementById('ipa').textContent = card.ipa || '';
-    document.getElementById('meaning').textContent = card.meaning;
-    document.getElementById('example').textContent = card.example;
+    currentCardIndex = index;
+    currentCard = cards[index];
     
-    // Update learned status
-    const flashcard = document.getElementById('flashcard');
-    flashcard.classList.toggle('learned', card.learned);
+    document.getElementById('word').textContent = currentCard.word;
+    document.getElementById('meaning').textContent = currentCard.meaning || '';
+    document.getElementById('example').textContent = currentCard.example || '';
+    document.getElementById('ipa').textContent = currentCard.ipa || '';
+    
+    // Update box indicator
+    updateBoxIndicator(currentCard.box_number);
     
     // Update next review date
-    const studyDate = document.getElementById('studyDate');
-    if (card.next_review) {
-        const reviewDate = new Date(card.next_review);
-        studyDate.textContent = `Next Review: ${reviewDate.toLocaleDateString()}`;
-    } else {
-        studyDate.textContent = 'Next Review: Not scheduled';
-    }
+    const nextReview = currentCard.next_review ? new Date(currentCard.next_review) : null;
+    document.getElementById('studyDate').textContent = nextReview ? 
+        `Next Review: ${nextReview.toLocaleDateString()}` : 
+        'Next Review: Not scheduled';
+        
+    // Update progress
+    document.getElementById('currentCard').textContent = index + 1;
     
-    // Add animation
-    flashcard.classList.add('new-word');
-    setTimeout(() => flashcard.classList.remove('new-word'), 500);
+    // Add new-word animation
+    const wordElement = document.getElementById('word');
+    wordElement.classList.remove('new-word');
+    void wordElement.offsetWidth; // Trigger reflow
+    wordElement.classList.add('new-word');
 }
 
-// Update progress display
-function updateProgress() {
-    document.getElementById('currentCard').textContent = currentCardIndex + 1;
+function updateCardCount() {
     document.getElementById('totalCards').textContent = cards.length;
-    
-    // Update learned count
-    const learnedCount = cards.filter(card => card.learned).length;
-    document.getElementById('learned').textContent = learnedCount;
-    document.getElementById('total').textContent = cards.length;
 }
 
-// Card navigation functions
-function nextCard() {
+// Navigation functions
+function showNextCard() {
     if (currentCardIndex < cards.length - 1) {
-        currentCardIndex++;
-        updateCard();
-        updateProgress();
-        resetCardFlip();
+        showCard(currentCardIndex + 1);
+    } else if (cards.length > 0) {
+        showCard(0);
     }
 }
 
-function previousCard() {
+function showPreviousCard() {
     if (currentCardIndex > 0) {
-        currentCardIndex--;
-        updateCard();
-        updateProgress();
-        resetCardFlip();
+        showCard(currentCardIndex - 1);
+    } else if (cards.length > 0) {
+        showCard(cards.length - 1);
     }
 }
 
-function resetCardFlip() {
-    document.getElementById('flashcard').classList.remove('flipped');
+// Card review functions
+function reviewCard(correct) {
+    if (!currentCard) return;
+
+    const cardId = currentCard.id;
+    fetch(`/api/cards/${cardId}/review`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ correct })
+    })
+    .then(response => response.json())
+    .then(updatedCard => {
+        // Update the card in our local array
+        const index = cards.findIndex(c => c.id === cardId);
+        if (index !== -1) {
+            cards[index] = updatedCard;
+        }
+        
+        // Update box stats and indicator
+        updateBoxStats();
+        updateBoxIndicator(updatedCard.box_number);
+        
+        // Show success message
+        const message = correct ? 
+            `Moved to Box ${updatedCard.box_number} - Next review in ${getIntervalText(updatedCard.box_number)}` :
+            'Moved back to Box 1 - Review again tomorrow';
+        showToast(message);
+        
+        // Move to next card
+        showNextCard();
+    })
+    .catch(error => {
+        console.error('Error reviewing card:', error);
+        showToast('Error updating card progress');
+    });
 }
 
-function toggleCardFlip() {
-    document.getElementById('flashcard').classList.toggle('flipped');
+function getIntervalText(boxNumber) {
+    const intervals = {
+        0: 'now',
+        1: '1 day',
+        2: '3 days',
+        3: '10 days',
+        4: '30 days',
+        5: '90 days'
+    };
+    return intervals[boxNumber] || 'unknown';
 }
 
-// Audio playback
-async function speakWord() {
-    const word = cards[currentCardIndex].word;
-    try {
-        const audio = new Audio(`/api/speak/${encodeURIComponent(word)}`);
-        await audio.play();
-    } catch (error) {
+// Card flipping
+function toggleFlip() {
+    const flashcard = document.getElementById('flashcard');
+    flashcard.classList.toggle('flipped');
+}
+
+// Audio pronunciation
+function speakWord() {
+    if (!currentCard) return;
+    
+    const audio = new Audio(`/api/speak/${currentCard.word}`);
+    audio.play().catch(error => {
         console.error('Error playing audio:', error);
-        showError('Failed to play pronunciation');
-    }
-}
-
-// Card status management
-async function markLearned() {
-    const card = cards[currentCardIndex];
-    try {
-        const response = await fetch(`/api/mark-learned/${card.id}`, { method: 'POST' });
-        if (response.ok) {
-            card.learned = true;
-            updateCard();
-            updateProgress();
-            showSuccess('Card marked as learned');
-        }
-    } catch (error) {
-        console.error('Error marking card as learned:', error);
-        showError('Failed to mark card as learned');
-    }
-}
-
-async function scheduleReview() {
-    const card = cards[currentCardIndex];
-    try {
-        const response = await fetch(`/api/schedule-review/${card.id}`, { method: 'POST' });
-        if (response.ok) {
-            await fetchCards(); // Refresh cards to get updated review date
-            showSuccess('Review scheduled');
-        }
-    } catch (error) {
-        console.error('Error scheduling review:', error);
-        showError('Failed to schedule review');
-    }
+        showToast('Error playing pronunciation');
+    });
 }
 
 // YouTube import functionality
-async function importFromYoutube() {
+function importFromYouTube() {
     const urlInput = document.getElementById('youtubeUrl');
     const url = urlInput.value.trim();
     
     if (!url) {
-        showError('Please enter a YouTube URL');
+        showToast('Please enter a YouTube URL');
         return;
     }
     
-    try {
-        const response = await fetch('/api/import-youtube', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ url })
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-            showSuccess(`Successfully added ${result.words_added} new words!`);
-            urlInput.value = '';
-            await fetchCards();
-        } else {
-            showError(result.error || 'Failed to import words');
-        }
-    } catch (error) {
+    showLoading(true);
+    fetch('/api/youtube/import', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url })
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(`Successfully imported ${data.imported} words`);
+        urlInput.value = '';
+        loadCards();
+    })
+    .catch(error => {
         console.error('Error importing from YouTube:', error);
-        showError('Error importing words from YouTube');
-    }
+        showToast('Error importing words from YouTube');
+    })
+    .finally(() => {
+        showLoading(false);
+    });
 }
 
-// UI feedback functions
-function showSuccess(message) {
-    // You can implement a toast or notification system here
-    console.log('Success:', message);
+// UI helpers
+function showLoading(show) {
+    document.getElementById('loadingIndicator').classList.toggle('hidden', !show);
 }
 
-function showError(message) {
-    // You can implement a toast or notification system here
-    console.error('Error:', message);
-}
-
-function showEmptyState() {
-    document.getElementById('word').textContent = 'No cards available';
-    document.getElementById('ipa').textContent = '';
-    document.getElementById('meaning').textContent = 'Import some words to get started';
-    document.getElementById('example').textContent = '';
+function showToast(message, duration = 3000) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    toastMessage.textContent = message;
+    toast.classList.remove('hidden');
+    
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, duration);
 }
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // Card navigation
-    document.getElementById('prevBtn').addEventListener('click', previousCard);
-    document.getElementById('nextBtn').addEventListener('click', nextCard);
-    document.getElementById('flipBtn').addEventListener('click', toggleCardFlip);
+    // Initialize box system
+    updateBoxStats();
+    setInterval(updateBoxStats, 60000); // Update stats every minute
     
-    // Card actions
-    document.getElementById('speakBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        speakWord();
-    });
+    // Load initial cards
+    loadCards();
     
-    document.getElementById('markLearnedBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        markLearned();
-    });
+    // Navigation buttons
+    document.getElementById('prevBtn').addEventListener('click', showPreviousCard);
+    document.getElementById('nextBtn').addEventListener('click', showNextCard);
+    document.getElementById('flipBtn').addEventListener('click', toggleFlip);
     
-    document.getElementById('markReviewBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        scheduleReview();
-    });
-    
-    // Card flip on click
-    document.getElementById('flashcard').addEventListener('click', toggleCardFlip);
+    // Card action buttons
+    document.getElementById('speakBtn').addEventListener('click', speakWord);
+    document.getElementById('markLearnedBtn').addEventListener('click', () => reviewCard(true));
+    document.getElementById('markReviewBtn').addEventListener('click', () => reviewCard(false));
     
     // YouTube import
-    document.getElementById('importBtn').addEventListener('click', importFromYoutube);
+    document.getElementById('importBtn').addEventListener('click', importFromYouTube);
     
-    // Initialize
-    fetchCards();
+    // Keyboard navigation
+    document.addEventListener('keydown', (event) => {
+        switch(event.key) {
+            case 'ArrowLeft':
+                showPreviousCard();
+                break;
+            case 'ArrowRight':
+                showNextCard();
+                break;
+            case ' ':
+                toggleFlip();
+                break;
+        }
+    });
 });

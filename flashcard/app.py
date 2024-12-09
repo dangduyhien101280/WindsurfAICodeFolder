@@ -42,7 +42,7 @@ AUDIO_DIR = Path('static/audio').absolute()
 AUDIO_DIR.mkdir(parents=True, exist_ok=True)
 
 class Card(Base):
-    """Database model for flashcards"""
+    """Database model for flashcards with spaced repetition"""
     __tablename__ = 'cards'
     
     id = Column(Integer, primary_key=True)
@@ -50,7 +50,8 @@ class Card(Base):
     meaning = Column(Text, nullable=False)
     example = Column(Text)
     ipa = Column(String(100))
-    learned = Column(Boolean, default=False)
+    box_number = Column(Integer, default=0)  # New column
+    last_reviewed = Column(DateTime)         # New column
     next_review = Column(DateTime)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -63,11 +64,22 @@ class Card(Base):
             'meaning': self.meaning,
             'example': self.example,
             'ipa': self.ipa,
-            'learned': self.learned,
+            'box_number': self.box_number,
+            'last_reviewed': self.last_reviewed.isoformat() if self.last_reviewed else None,
             'next_review': self.next_review.isoformat() if self.next_review else None,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat()
         }
+
+# Spaced repetition intervals (in days) for each box
+BOX_INTERVALS = {
+    0: 0,      # New words (review immediately)
+    1: 1,      # First review after 1 day
+    2: 3,      # Second review after 3 days
+    3: 10,     # Third review after 10 days
+    4: 30,     # Fourth review after 30 days
+    5: 90      # Fifth review after 90 days
+}
 
 @contextmanager
 def session_scope():
@@ -218,16 +230,58 @@ def mark_learned(card_id: int):
         return jsonify({'success': True})
 
 @app.route('/api/cards/<int:card_id>/review', methods=['POST'])
-@retry_operation
-def schedule_review(card_id: int):
-    """Schedule a card for review"""
+def review_card(card_id: int):
+    """Review a card and update its box number based on the result"""
+    data = request.get_json()
+    correct = data.get('correct', False)
+    
     with session_scope() as session:
         card = session.query(Card).get(card_id)
         if not card:
-            abort(404)
+            return jsonify({'error': 'Card not found'}), 404
+            
+        now = datetime.utcnow()
+        card.last_reviewed = now
         
-        card.next_review = datetime.utcnow() + timedelta(days=1)
-        return jsonify({'success': True})
+        if correct:
+            # Move to next box if answered correctly
+            if card.box_number < 5:
+                card.box_number += 1
+        else:
+            # Move back to box 1 if answered incorrectly
+            card.box_number = 1
+            
+        # Calculate next review date
+        days = BOX_INTERVALS[card.box_number]
+        card.next_review = now + timedelta(days=days)
+        
+        session.commit()
+        return jsonify(card.to_dict())
+
+@app.route('/api/cards/due')
+def get_due_cards():
+    """Get all cards due for review"""
+    now = datetime.utcnow()
+    with session_scope() as session:
+        cards = session.query(Card).filter(
+            (Card.next_review <= now) | (Card.next_review == None)
+        ).all()
+        return jsonify([card.to_dict() for card in cards])
+
+@app.route('/api/cards/stats')
+def get_box_stats():
+    """Get statistics about cards in each box"""
+    with session_scope() as session:
+        stats = {}
+        total_cards = session.query(Card).count()
+        for box in range(6):
+            count = session.query(Card).filter(Card.box_number == box).count()
+            stats[f'box_{box}'] = {
+                'count': count,
+                'percentage': round((count / total_cards * 100) if total_cards > 0 else 0, 1)
+            }
+        stats['total'] = total_cards
+        return jsonify(stats)
 
 @app.route('/api/import-youtube', methods=['POST'])
 @retry_operation
@@ -327,8 +381,12 @@ def internal_error(error):
     """Handle 500 errors"""
     return jsonify({'error': 'Internal server error'}), 500
 
-# Create database tables
-Base.metadata.create_all(engine)
+def reset_database():
+    """Drop all tables and recreate them"""
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
+    logger.info("Database has been reset successfully")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    reset_database()  # Reset database on startup
+    app.run(debug=True) 
