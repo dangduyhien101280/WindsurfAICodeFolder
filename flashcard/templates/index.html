@@ -18,10 +18,15 @@
                         
             <!-- Settings Section -->
             <div class="settings">
-                <label class="setting-item">
+                <div class="setting-item">
+                    <label for="autoSpeak">Auto-speak words:</label>
                     <input type="checkbox" id="autoSpeak">
-                    Auto-pronounce on flip
-                </label>
+                </div>
+                <div class="setting-item">
+                    <label for="speechRate">Speech rate:</label>
+                    <input type="range" id="speechRate" min="0.5" max="2.0" step="0.1" value="1.0">
+                    <span id="rateValue">1.0x</span>
+                </div>
                 <div class="setting-item">
                     <button class="btn btn-secondary" id="exportBtn">Export Data</button>
                     <button class="btn btn-secondary" id="importBtn">Import Data</button>

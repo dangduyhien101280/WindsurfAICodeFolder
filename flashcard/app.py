@@ -1,3 +1,16 @@
+import nltk
+import ssl
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+nltk.download('punkt', quiet=True)
+nltk.download('averaged_perceptron_tagger', quiet=True)
+
 from flask import Flask, render_template, jsonify, request, send_file, abort
 from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -8,9 +21,9 @@ from gtts import gTTS
 from youtube_transcript_api import YouTubeTranscriptApi
 import re
 import os
-import json
 import logging
 import sqlite3
+import random
 from typing import Optional, Set, List, Tuple
 from pathlib import Path
 import time
@@ -129,6 +142,40 @@ def get_youtube_id(url: str) -> Optional[str]:
             return match.group(1)
     return None
 
+def extract_words_from_transcript(transcript):
+    # Combine all transcript text
+    full_text = ' '.join([entry['text'] for entry in transcript])
+    
+    # Tokenize and tag words
+    words = nltk.word_tokenize(full_text)
+    tagged_words = nltk.pos_tag(words)
+    
+    # Filter unique nouns and verbs
+    unique_words = set()
+    for word, tag in tagged_words:
+        # Clean word: lowercase, remove punctuation
+        clean_word = re.sub(r'[^\w\s]', '', word.lower())
+        
+        # Filter conditions
+        if (len(clean_word) > 2 and  # More than 2 characters
+            clean_word not in unique_words and  # Unique
+            tag in ['NN', 'NNS', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']):  # Nouns and Verbs
+            unique_words.add(clean_word)
+    
+    return list(unique_words)
+
+def get_word_definition(word):
+    # Simple definition generation
+    definitions = {
+        'welcome': 'to greet someone in a polite or friendly way',
+        'journey': 'an act of traveling from one place to another',
+        'challenge': 'a task or situation that tests someone\'s abilities',
+        'inspire': 'to encourage or motivate someone',
+        'adventure': 'an exciting experience or unusual activity'
+    }
+    
+    return definitions.get(word, f'A word commonly used in context.')
+
 def get_word_details(word: str) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     """Get word details from Free Dictionary API"""
     import requests
@@ -180,42 +227,32 @@ def get_cards():
         return jsonify([card.to_dict() for card in cards])
 
 @app.route('/api/speak/<word>')
-def speak_word(word: str):
-    """Generate and serve audio for word pronunciation"""
+def speak_word(word):
     try:
-        # Create filename from word and ensure directory exists
-        filename = f"{word.lower()}.mp3"
-        filepath = AUDIO_DIR / filename
+        # Validate and convert rate parameter
+        rate = float(request.args.get('rate', 1.0))
+        rate = max(0.5, min(rate, 2.0))  # Clamp rate between 0.5 and 2.0
         
-        # Ensure audio directory exists
-        AUDIO_DIR.mkdir(parents=True, exist_ok=True)
+        # Create audio directory if not exists
+        audio_dir = os.path.join(app.static_folder, 'audio')
+        os.makedirs(audio_dir, exist_ok=True)
         
-        # Generate audio if it doesn't exist
-        if not filepath.exists():
-            try:
-                tts = gTTS(text=word, lang='en')
-                tts.save(str(filepath))
-            except Exception as e:
-                logger.error(f"Error generating audio file for '{word}': {str(e)}")
-                return jsonify({'error': f"Failed to generate audio for '{word}'"}), 500
+        # Generate unique filename based on word and rate
+        safe_word = ''.join(c for c in word.lower() if c.isalnum())
+        filename = f"{safe_word}_{rate}.mp3"
+        filepath = os.path.join(audio_dir, filename)
         
-        if not filepath.exists():
-            logger.error(f"Audio file not found after generation attempt: {filepath}")
-            return jsonify({'error': 'Audio file generation failed'}), 500
-            
-        try:
-            return send_file(
-                str(filepath),
-                mimetype='audio/mpeg',
-                as_attachment=False
-            )
-        except Exception as e:
-            logger.error(f"Error serving audio file '{filepath}': {str(e)}")
-            return jsonify({'error': 'Failed to serve audio file'}), 500
-            
+        # Check if audio file already exists
+        if not os.path.exists(filepath):
+            # Generate base audio file with gTTS
+            tts = gTTS(text=word, lang='en', slow=(rate < 1.0))
+            tts.save(filepath)
+        
+        return send_file(filepath, mimetype='audio/mpeg')
+    
     except Exception as e:
-        logger.error(f"Error in speak_word for '{word}': {str(e)}")
-        return jsonify({'error': str(e)}), 400
+        logger.error(f"Error generating speech for word '{word}': {str(e)}")
+        return jsonify({"error": "Failed to generate speech"}), 500
 
 @app.route('/api/cards/<int:card_id>/learned', methods=['POST'])
 @retry_operation
@@ -302,13 +339,7 @@ def import_youtube():
         words: Set[str] = set()
         
         # Extract words from transcript
-        for entry in transcript:
-            text = entry['text'].lower()
-            # Extract words with length > 3 and only letters
-            words.update(
-                word for word in re.findall(r'\b[a-z]+\b', text)
-                if len(word) > 3
-            )
+        words = extract_words_from_transcript(transcript)
         
         words_added = 0
         words_updated = 0
@@ -316,7 +347,7 @@ def import_youtube():
         
         # Process words in smaller transactions
         for i in range(0, len(words), batch_size):
-            word_batch = list(words)[i:i + batch_size]
+            word_batch = words[i:i + batch_size]
             with session_scope() as session:
                 # Disable autoflush to prevent premature constraint checks
                 with session.no_autoflush:
@@ -371,6 +402,53 @@ def import_youtube():
         logger.error(f"Error importing from YouTube: {str(e)}")
         return jsonify({'error': str(e)}), 400
 
+@app.route('/api/youtube/import', methods=['POST'])
+def import_youtube_words():
+    try:
+        data = request.get_json()
+        youtube_url = data.get('url', '')
+        
+        # Extract video ID from URL
+        video_id_match = re.search(r'(?:v=|\/)([0-9A-Za-z_-]{11}).*', youtube_url)
+        if not video_id_match:
+            return jsonify({'error': 'Invalid YouTube URL'}), 400
+        
+        video_id = video_id_match.group(1)
+        
+        # Get transcript
+        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        
+        # Extract unique words
+        words = extract_words_from_transcript(transcript)
+        
+        # Import words to database
+        imported_count = 0
+        with session_scope() as session:
+            for word in words[:20]:  # Limit to 20 words
+                # Check if word already exists
+                existing_card = session.query(Card).filter_by(word=word).first()
+                if not existing_card:
+                    new_card = Card(
+                        word=word,
+                        meaning=get_word_definition(word),
+                        example=f'From YouTube video: {youtube_url}',
+                        box_number=0,
+                        next_review=datetime.utcnow()
+                    )
+                    session.add(new_card)
+                    imported_count += 1
+            
+            session.commit()
+        
+        return jsonify({
+            'imported': imported_count,
+            'total_words_found': len(words)
+        })
+    
+    except Exception as e:
+        logger.error(f"YouTube import error: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
 @app.errorhandler(404)
 def not_found_error(error):
     """Handle 404 errors"""
@@ -381,12 +459,61 @@ def internal_error(error):
     """Handle 500 errors"""
     return jsonify({'error': 'Internal server error'}), 500
 
-def reset_database():
-    """Drop all tables and recreate them"""
-    Base.metadata.drop_all(engine)
+def init_db():
+    """Initialize database with sample words"""
     Base.metadata.create_all(engine)
-    logger.info("Database has been reset successfully")
+    
+    # Check if database is empty
+    with session_scope() as session:
+        if session.query(Card).count() == 0:
+            # Sample vocabulary words
+            sample_words = [
+                {
+                    'word': 'welcome',
+                    'meaning': 'to greet someone in a polite or friendly way',
+                    'example': 'They welcomed us with open arms.',
+                    'ipa': '/ˈwelkəm/'
+                },
+                {
+                    'word': 'journey',
+                    'meaning': 'an act of traveling from one place to another',
+                    'example': 'It was a long journey across the country.',
+                    'ipa': '/ˈdʒɜːrni/'
+                },
+                {
+                    'word': 'challenge',
+                    'meaning': 'a task or situation that tests someone\'s abilities',
+                    'example': 'Climbing the mountain was a real challenge.',
+                    'ipa': '/ˈtʃæləndʒ/'
+                },
+                {
+                    'word': 'inspire',
+                    'meaning': 'to encourage or motivate someone',
+                    'example': 'Her story inspired many young entrepreneurs.',
+                    'ipa': '/ɪnˈspaɪər/'
+                },
+                {
+                    'word': 'adventure',
+                    'meaning': 'an exciting experience or unusual activity',
+                    'example': 'Traveling alone is a great adventure.',
+                    'ipa': '/ədˈventʃər/'
+                }
+            ]
+            
+            for word_data in sample_words:
+                card = Card(
+                    word=word_data['word'],
+                    meaning=word_data['meaning'],
+                    example=word_data['example'],
+                    ipa=word_data['ipa'],
+                    box_number=0,
+                    next_review=datetime.utcnow()
+                )
+                session.add(card)
+            
+            session.commit()
+            logger.info("Database initialized with sample words")
 
 if __name__ == '__main__':
-    reset_database()  # Reset database on startup
-    app.run(debug=True) 
+    init_db()
+    app.run(debug=True)

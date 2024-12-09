@@ -4,6 +4,7 @@ let currentCardIndex = 0;
 let currentCard = null;
 let autoSpeak = false;
 let isInitialLoad = true; // Add flag for initial load
+let speechRate = 1.0; // Default speech rate
 
 // Box system functionality
 function updateBoxStats() {
@@ -204,14 +205,13 @@ function speakWord() {
     // Use TTS API directly
     console.log('Speaking word:', currentCard.word);
     
-    const ttsUrl = `/api/speak/${encodeURIComponent(currentCard.word)}`;
+    const ttsUrl = `/api/speak/${encodeURIComponent(currentCard.word)}?rate=${speechRate}`;
     console.log('Using TTS API:', ttsUrl);
     
     const audio = new Audio(ttsUrl);
     
     audio.onerror = function(error) {
         console.error('Audio error:', error);
-        // Don't show error toast during initial load
         if (!isInitialLoad && document.visibilityState === 'visible') {
             showToast('Error playing pronunciation');
         }
@@ -227,7 +227,6 @@ function speakWord() {
         })
         .catch(error => {
             console.error('Error playing audio:', error);
-            // Don't show error toast during initial load
             if (!isInitialLoad && document.visibilityState === 'visible') {
                 showToast('Error playing pronunciation');
             }
@@ -314,6 +313,23 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('autoSpeak', autoSpeak);
         showToast(autoSpeak ? 'Auto-pronunciation enabled' : 'Auto-pronunciation disabled');
     });
+    
+    // Speech rate control
+    const rateControl = document.getElementById('speechRate');
+    const rateValue = document.getElementById('rateValue');
+    if (rateControl && rateValue) {
+        // Load saved rate or use default
+        speechRate = parseFloat(localStorage.getItem('speechRate')) || 1.0;
+        rateControl.value = speechRate;
+        rateValue.textContent = `${speechRate}x`;
+        
+        rateControl.addEventListener('input', (e) => {
+            speechRate = parseFloat(e.target.value);
+            rateValue.textContent = `${speechRate}x`;
+            localStorage.setItem('speechRate', speechRate);
+            showToast(`Speech rate set to ${speechRate}x`);
+        });
+    }
     
     // YouTube import
     document.getElementById('importBtn').addEventListener('click', importFromYouTube);
