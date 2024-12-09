@@ -2,6 +2,7 @@
 let cards = [];
 let currentCardIndex = 0;
 let currentCard = null;
+let autoSpeak = false;
 
 // Box system functionality
 function updateBoxStats() {
@@ -42,6 +43,15 @@ function updateBoxIndicator(boxNumber) {
     if (currentBox) {
         currentBox.classList.add('active');
     }
+    
+    // Update progress arrow position
+    const progressBar = document.querySelector('.progress-bar');
+    const arrow = document.querySelector('.progress-arrow');
+    if (progressBar && arrow) {
+        const boxWidth = progressBar.offsetWidth / 6;
+        const newPosition = (boxWidth * boxNumber) + (boxWidth / 2);
+        arrow.style.left = `${newPosition}px`;
+    }
 }
 
 // Card management functions
@@ -75,7 +85,6 @@ function showCard(index) {
     // Reset card flip state
     document.getElementById('flashcard').classList.remove('flipped');
     
-    // Update card content
     document.getElementById('word').textContent = currentCard.word;
     document.getElementById('meaning').textContent = currentCard.meaning || '';
     document.getElementById('example').textContent = currentCard.example || '';
@@ -93,11 +102,10 @@ function showCard(index) {
     // Update progress
     document.getElementById('currentCard').textContent = index + 1;
     
-    // Add new-word animation
-    const wordElement = document.getElementById('word');
-    wordElement.classList.remove('new-word');
-    void wordElement.offsetWidth; // Trigger reflow
-    wordElement.classList.add('new-word');
+    // Auto-speak if enabled and card is on front
+    if (autoSpeak && !document.getElementById('flashcard').classList.contains('flipped')) {
+        speakWord();
+    }
 }
 
 function updateCardCount() {
@@ -172,21 +180,46 @@ function getIntervalText(boxNumber) {
     return intervals[boxNumber] || 'unknown';
 }
 
-// Card flipping
+// Card flipping with auto-pronunciation
 function toggleFlip() {
     const flashcard = document.getElementById('flashcard');
     flashcard.classList.toggle('flipped');
+    
+    // Auto-pronounce when flipping to front
+    if (!flashcard.classList.contains('flipped') && autoSpeak) {
+        speakWord();
+    }
 }
 
 // Audio pronunciation
 function speakWord() {
     if (!currentCard) return;
     
-    const audio = new Audio(`/api/speak/${encodeURIComponent(currentCard.word)}`);
-    audio.play().catch(error => {
-        console.error('Error playing audio:', error);
+    // Use TTS API directly
+    console.log('Speaking word:', currentCard.word);
+    
+    const ttsUrl = `/api/speak/${encodeURIComponent(currentCard.word)}`;
+    console.log('Using TTS API:', ttsUrl);
+    
+    const audio = new Audio(ttsUrl);
+    
+    audio.onerror = function(error) {
+        console.error('Audio error:', error);
         showToast('Error playing pronunciation');
-    });
+    };
+    
+    audio.onloadeddata = function() {
+        console.log('Audio loaded successfully');
+    };
+    
+    audio.play()
+        .then(() => {
+            console.log('Playing audio');
+        })
+        .catch(error => {
+            console.error('Error playing audio:', error);
+            showToast('Error playing pronunciation');
+        });
 }
 
 // YouTube import functionality
@@ -258,6 +291,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('speakBtn').addEventListener('click', speakWord);
     document.getElementById('markLearnedBtn').addEventListener('click', () => reviewCard(true));
     document.getElementById('markReviewBtn').addEventListener('click', () => reviewCard(false));
+    
+    // Auto-speak setting
+    const autoSpeakCheckbox = document.getElementById('autoSpeak');
+    autoSpeakCheckbox.checked = localStorage.getItem('autoSpeak') === 'true';
+    autoSpeak = autoSpeakCheckbox.checked;
+    
+    autoSpeakCheckbox.addEventListener('change', (e) => {
+        autoSpeak = e.target.checked;
+        localStorage.setItem('autoSpeak', autoSpeak);
+        showToast(autoSpeak ? 'Auto-pronunciation enabled' : 'Auto-pronunciation disabled');
+    });
     
     // YouTube import
     document.getElementById('importBtn').addEventListener('click', importFromYouTube);

@@ -358,6 +358,36 @@ h1 {
     animation: newWord 0.5s ease forwards;
 }
 
+/* Settings Styles */
+.settings {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.setting-item input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+}
+
+.setting-item label {
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .box-system {

@@ -15,6 +15,19 @@
                 Progress: <span id="learned">0</span> / <span id="total">0</span> words learned
             </p>
             <p class="study-date" id="studyDate">Next Review: Not scheduled</p>
+                        
+            <!-- Settings Section -->
+            <div class="settings">
+                <label class="setting-item">
+                    <input type="checkbox" id="autoSpeak">
+                    Auto-pronounce on flip
+                </label>
+                <div class="setting-item">
+                    <button class="btn btn-secondary" id="exportBtn">Export Data</button>
+                    <button class="btn btn-secondary" id="importBtn">Import Data</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;">
+                </div>
+            </div>
         </header>
 
         <!-- Box System -->
