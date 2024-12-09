@@ -3,6 +3,7 @@ let cards = [];
 let currentCardIndex = 0;
 let currentCard = null;
 let autoSpeak = false;
+let isInitialLoad = true; // Add flag for initial load
 
 // Box system functionality
 function updateBoxStats() {
@@ -63,7 +64,9 @@ function loadCards() {
             cards = data;
             updateCardCount();
             if (cards.length > 0) {
+                isInitialLoad = true; // Set flag before showing first card
                 showCard(0);
+                isInitialLoad = false; // Reset flag after first card is shown
             }
             updateBoxStats();
         })
@@ -85,6 +88,7 @@ function showCard(index) {
     // Reset card flip state
     document.getElementById('flashcard').classList.remove('flipped');
     
+    // Update card content
     document.getElementById('word').textContent = currentCard.word;
     document.getElementById('meaning').textContent = currentCard.meaning || '';
     document.getElementById('example').textContent = currentCard.example || '';
@@ -102,9 +106,11 @@ function showCard(index) {
     // Update progress
     document.getElementById('currentCard').textContent = index + 1;
     
-    // Auto-speak if enabled and card is on front
-    if (autoSpeak && !document.getElementById('flashcard').classList.contains('flipped')) {
-        speakWord();
+    // Only auto-speak if card is loaded, not initial load, and auto-speak is enabled
+    if (!isInitialLoad && autoSpeak && currentCard.word && !document.getElementById('flashcard').classList.contains('flipped')) {
+        setTimeout(() => {
+            speakWord();
+        }, 100);
     }
 }
 
@@ -186,14 +192,14 @@ function toggleFlip() {
     flashcard.classList.toggle('flipped');
     
     // Auto-pronounce when flipping to front
-    if (!flashcard.classList.contains('flipped') && autoSpeak) {
+    if (!flashcard.classList.contains('flipped') && autoSpeak && !isInitialLoad) {
         speakWord();
     }
 }
 
 // Audio pronunciation
 function speakWord() {
-    if (!currentCard) return;
+    if (!currentCard || !currentCard.word || isInitialLoad) return;
     
     // Use TTS API directly
     console.log('Speaking word:', currentCard.word);
@@ -205,7 +211,10 @@ function speakWord() {
     
     audio.onerror = function(error) {
         console.error('Audio error:', error);
-        showToast('Error playing pronunciation');
+        // Don't show error toast during initial load
+        if (!isInitialLoad && document.visibilityState === 'visible') {
+            showToast('Error playing pronunciation');
+        }
     };
     
     audio.onloadeddata = function() {
@@ -218,7 +227,10 @@ function speakWord() {
         })
         .catch(error => {
             console.error('Error playing audio:', error);
-            showToast('Error playing pronunciation');
+            // Don't show error toast during initial load
+            if (!isInitialLoad && document.visibilityState === 'visible') {
+                showToast('Error playing pronunciation');
+            }
         });
 }
 
