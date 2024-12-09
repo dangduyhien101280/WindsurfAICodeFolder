@@ -199,6 +199,14 @@ h1 {
     gap: 1rem;
 }
 
+.card-front .card-actions {
+    right: 1.5rem;
+}
+
+.card-back .card-actions {
+    right: 1.5rem;
+}
+
 /* Button Styles */
 .btn {
     padding: 0.75rem 1.5rem;

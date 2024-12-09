@@ -42,15 +42,6 @@ function updateBoxIndicator(boxNumber) {
     if (currentBox) {
         currentBox.classList.add('active');
     }
-
-    // Update progress arrow position
-    const progressBar = document.querySelector('.progress-bar');
-    const arrow = document.querySelector('.progress-arrow');
-    if (progressBar && arrow) {
-        const boxWidth = progressBar.offsetWidth / 6;
-        const newPosition = (boxWidth * boxNumber) + (boxWidth / 2);
-        arrow.style.left = `${newPosition}px`;
-    }
 }
 
 // Card management functions
@@ -81,6 +72,10 @@ function showCard(index) {
     currentCardIndex = index;
     currentCard = cards[index];
     
+    // Reset card flip state
+    document.getElementById('flashcard').classList.remove('flipped');
+    
+    // Update card content
     document.getElementById('word').textContent = currentCard.word;
     document.getElementById('meaning').textContent = currentCard.meaning || '';
     document.getElementById('example').textContent = currentCard.example || '';
@@ -187,7 +182,7 @@ function toggleFlip() {
 function speakWord() {
     if (!currentCard) return;
     
-    const audio = new Audio(`/api/speak/${currentCard.word}`);
+    const audio = new Audio(`/api/speak/${encodeURIComponent(currentCard.word)}`);
     audio.play().catch(error => {
         console.error('Error playing audio:', error);
         showToast('Error playing pronunciation');
@@ -257,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('prevBtn').addEventListener('click', showPreviousCard);
     document.getElementById('nextBtn').addEventListener('click', showNextCard);
     document.getElementById('flipBtn').addEventListener('click', toggleFlip);
+    document.getElementById('flipBackBtn').addEventListener('click', toggleFlip);
     
     // Card action buttons
     document.getElementById('speakBtn').addEventListener('click', speakWord);
@@ -277,6 +273,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case ' ':
                 toggleFlip();
+                event.preventDefault(); // Prevent page scroll
+                break;
+            case 'k':
+                reviewCard(true); // Know this word
+                break;
+            case 'r':
+                reviewCard(false); // Review again
+                break;
+            case 's':
+                speakWord(); // Speak word
                 break;
         }
     });
