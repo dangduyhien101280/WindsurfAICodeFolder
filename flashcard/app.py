@@ -15,6 +15,28 @@ from pathlib import Path
 import os
 import time
 from contextlib import contextmanager
+import nltk
+
+# Download necessary NLTK resources
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt', quiet=True)
+
+try:
+    nltk.data.find('taggers/averaged_perceptron_tagger')
+except LookupError:
+    nltk.download('averaged_perceptron_tagger', quiet=True)
+
+# Optional ngrok import
+try:
+    from pyngrok import ngrok
+    NGROK_AVAILABLE = True
+except ImportError:
+    NGROK_AVAILABLE = False
+    ngrok = None
+
+import threading
 
 # Configure logging
 logging.basicConfig(
@@ -23,8 +45,19 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+try:
+    from flask_cors import CORS
+except ImportError:
+    print("Flask-CORS not found. Installing...")
+    import subprocess
+    subprocess.check_call(['pip', 'install', 'flask-cors'])
+    from flask_cors import CORS
+
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, 
+            static_folder='static', 
+            static_url_path='/static')
+CORS(app)  # Enable CORS for all routes
 
 # Database configuration
 Base = declarative_base()
@@ -195,6 +228,76 @@ def get_word_details(word):
     except Exception as e:
         logger.error(f"Error fetching word details for {word}: {e}")
         return '', "Definition not found", "No example available"
+
+def infer_pos(word):
+    """
+    Infer part of speech with high precision
+    Returns the most accurate POS or an empty string if uncertain
+    """
+    # Normalize the word
+    word = word.lower().strip()
+    
+    # Comprehensive dictionary of known words with their POS
+    pos_dictionary = {
+        # Pronouns
+        'i': 'pronoun', 'me': 'pronoun', 'my': 'pronoun',
+        'you': 'pronoun', 'your': 'pronoun',
+        'he': 'pronoun', 'him': 'pronoun', 'his': 'pronoun',
+        'she': 'pronoun', 'her': 'pronoun', 'hers': 'pronoun',
+        'it': 'pronoun', 'its': 'pronoun',
+        'we': 'pronoun', 'us': 'pronoun', 'our': 'pronoun',
+        'they': 'pronoun', 'them': 'pronoun', 'their': 'pronoun',
+        
+        # Articles
+        'the': '', 'a': '', 'an': '',
+        
+        # Conjunctions
+        'and': '', 'but': '', 'or': '', 'nor': '', 'for': '', 
+        'yet': '', 'so': '',
+        
+        # Prepositions
+        'in': 'preposition', 'on': 'preposition', 'at': 'preposition', 
+        'to': 'preposition', 'for': 'preposition', 'with': 'preposition', 
+        'by': 'preposition', 'from': 'preposition', 'of': 'preposition', 
+        'about': 'preposition', 'under': 'preposition', 'over': 'preposition',
+        
+        # Common adverbs
+        'here': 'adverb', 'there': 'adverb', 'now': 'adverb', 
+        'then': 'adverb', 'always': 'adverb', 'never': 'adverb', 
+        'sometimes': 'adverb', 'often': 'adverb', 'rarely': 'adverb',
+        'very': 'adverb', 'too': 'adverb', 'almost': 'adverb',
+        
+        # Demonstratives
+        'this': 'pronoun', 'that': 'pronoun', 
+        'these': 'pronoun', 'those': 'pronoun'
+    }
+    
+    # Check dictionary first
+    if word in pos_dictionary:
+        return pos_dictionary[word]
+    
+    # Endings-based inference (more precise)
+    endings = {
+        'noun': ['tion', 'sion', 'ness', 'ment', 'ship', 
+                 'dom', 'hood', 'ity', 'age', 'ance', 'ence'],
+        'verb': ['ize', 'ise', 'ate', 'en', 'ify', 'ed', 'ing'],
+        'adjective': ['able', 'ible', 'ous', 'ful', 'less', 
+                      'al', 'ive', 'ic', 'ed', 'en'],
+        'adverb': ['ly']
+    }
+    
+    # Check endings
+    for pos, suffixes in endings.items():
+        if any(word.endswith(suffix) for suffix in suffixes):
+            return pos
+    
+    # Special cases for some irregular words
+    if word.endswith('s') and len(word) > 2:
+        # Potential noun or verb (3rd person singular)
+        return 'noun'
+    
+    # If no clear identification, return empty string
+    return ''
 
 # Routes
 @app.route('/')
@@ -391,7 +494,8 @@ def import_youtube():
                                     word=word,
                                     meaning=meaning or "To be defined",
                                     ipa=ipa,
-                                    example=str(example) if example else "To be added"
+                                    example=str(example) if example else "To be added",
+                                    pos=infer_pos(word)
                                 )
                                 session.merge(card)  # Use merge instead of add
                                 words_added += 1
@@ -448,7 +552,8 @@ def import_youtube_words():
                         meaning=get_word_definition(word),
                         example=f'From YouTube video: {youtube_url}',
                         box_number=0,
-                        next_review=datetime.utcnow()
+                        next_review=datetime.utcnow(),
+                        pos=infer_pos(word)
                     )
                     session.add(new_card)
                     imported_count += 1
@@ -692,26 +797,6 @@ def init_db():
     finally:
         session.close()
 
-def infer_pos(word):
-    """Simple POS inference based on word characteristics"""
-    word = word.lower()
-    
-    # Common verb endings
-    verb_endings = ['ize', 'ise', 'ate', 'en', 'ify', 'ed', 'ing']
-    # Common noun endings
-    noun_endings = ['tion', 'sion', 'ness', 'ment', 'ship', 'dom', 'hood']
-    # Common adjective endings
-    adj_endings = ['able', 'ible', 'ous', 'ful', 'less', 'al', 'ive', 'ic', 'ed']
-    
-    if any(word.endswith(ending) for ending in verb_endings):
-        return 'verb'
-    elif any(word.endswith(ending) for ending in noun_endings):
-        return 'noun'
-    elif any(word.endswith(ending) for ending in adj_endings):
-        return 'adjective'
-    
-    return 'noun'  # Default to noun if no clear indication
-
 @app.errorhandler(404)
 def not_found_error(error):
     """Handle 404 errors"""
@@ -724,16 +809,43 @@ def internal_error(error):
 
 if __name__ == '__main__':
     import sys
+    import traceback
     
-    # Check if cleanup flag is passed
-    if '--cleanup-cards' in sys.argv:
-        cleanup_cards_cli()
+    try:
+        # Check if cleanup flag is passed
+        if '--cleanup-cards' in sys.argv:
+            cleanup_cards_cli()
+        
+        # Check if reset flag is passed
+        if '--reset-db' in sys.argv:
+            reset_database()
+            print("Database has been reset and reinitialized.")
+            sys.exit(0)
+        
+        # Initialize database
+        init_db()
+        
+        # Ensure database is populated
+        with session_scope() as session:
+            card_count = session.query(Card).count()
+            print(f"Total cards in database: {card_count}")
+            if card_count == 0:
+                print("WARNING: No cards in database. Consider adding sample data.")
+        
+        # Optionally start ngrok tunnel
+        public_url = None
+        if NGROK_AVAILABLE:
+            try:
+                public_url = ngrok.connect(5000)
+                print(f"Public URL: {public_url}")
+            except Exception as ngrok_error:
+                print(f"Failed to start ngrok tunnel: {ngrok_error}")
+        
+        # Run the app directly
+        print("Starting Flask application...")
+        app.run(host='0.0.0.0', port=5000, debug=True)
     
-    # Check if reset flag is passed
-    if '--reset-db' in sys.argv:
-        reset_database()
-        print("Database has been reset and reinitialized.")
-        sys.exit(0)
-    
-    init_db()
-    app.run(debug=True)
+    except Exception as e:
+        print("An error occurred while starting the application:")
+        print(traceback.format_exc())
+        sys.exit(1)
