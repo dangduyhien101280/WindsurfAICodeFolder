@@ -114,6 +114,10 @@ function showCard(index) {
     const exampleElement = document.getElementById('example');
     const ipaElement = document.getElementById('ipa');
     const posElement = document.getElementById('pos');  // New POS element
+    const cardNumberElement = document.getElementById('card-number');  // Card number element
+    const boxNumberElement = document.getElementById('box-number');  // Box number element
+    const cardNumberBackElement = document.getElementById('card-number-back');  // Card number back element
+    const boxNumberBackElement = document.getElementById('box-number-back');  // Box number back element
 
     // Validate DOM elements
     const elementsToCheck = [
@@ -122,7 +126,11 @@ function showCard(index) {
         { element: meaningElement, name: 'meaning' },
         { element: exampleElement, name: 'example' },
         { element: ipaElement, name: 'ipa' },
-        { element: posElement, name: 'pos' }
+        { element: posElement, name: 'pos' },
+        { element: cardNumberElement, name: 'card-number' },
+        { element: boxNumberElement, name: 'box-number' },
+        { element: cardNumberBackElement, name: 'card-number-back' },
+        { element: boxNumberBackElement, name: 'box-number-back' }
     ];
 
     // Check if any required elements are missing
@@ -155,6 +163,16 @@ function showCard(index) {
         posElement.style.backgroundColor = '#7f8c8d';
         posElement.style.display = 'inline-block';
     }
+
+    // Update card number on both sides
+    const cardNumberText = `${currentCardIndex + 1}/${cards.length}`;
+    cardNumberElement.textContent = cardNumberText;
+    cardNumberBackElement.textContent = cardNumberText;
+
+    // Update box number on both sides
+    const boxNumberText = `Box: ${currentCard.box_number}`;
+    boxNumberElement.textContent = boxNumberText;
+    boxNumberBackElement.textContent = boxNumberText;
 
     // Update box number display
     updateBoxIndicator(currentCard.box_number);

@@ -87,6 +87,8 @@
         <!-- Flashcard -->
         <div class="flashcard" id="flashcard">
             <div class="card-inner">
+                <span id="card-number" class="card-number card-number-front">0/0</span>
+                <span id="box-number" class="box-number box-number-front">Box: 0</span>
                 <div class="card-front">
                     <div class="card-header">
                         <span id="pos" class="pos-tag">POS</span>
@@ -101,6 +103,8 @@
                     </div>
                 </div>
                 <div class="card-back">
+                    <span id="card-number-back" class="card-number card-number-back">0/0</span>
+                    <span id="box-number-back" class="box-number box-number-back">Box: 0</span>
                     <p id="meaning">to greet someone in a polite or friendly way</p>
                     <p id="example">They welcomed us with open arms.</p>
                     <div class="card-actions">
@@ -142,5 +146,11 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- Developer Information -->
+<div class="developer-info">
+    Powered by AI | Developed by MBA.Đặng Duy Hiền (email: hien.dang@bu.com.vn)
+</div>
+
 </body>
 </html>
