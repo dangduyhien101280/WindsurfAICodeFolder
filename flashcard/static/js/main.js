@@ -148,7 +148,15 @@ function reviewCard(correct) {
         },
         body: JSON.stringify({ correct })
     })
-    .then(response => response.json())
+    .then(response => {
+        // Add explicit error handling for non-200 responses
+        if (!response.ok) {
+            return response.text().then(errorText => {
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            });
+        }
+        return response.json();
+    })
     .then(updatedCard => {
         // Update the card in our local array
         const index = cards.findIndex(c => c.id === cardId);
@@ -171,7 +179,7 @@ function reviewCard(correct) {
     })
     .catch(error => {
         console.error('Error reviewing card:', error);
-        showToast('Error updating card progress');
+        showToast(`Error reviewing card: ${error.message}`, 5000);
     });
 }
 

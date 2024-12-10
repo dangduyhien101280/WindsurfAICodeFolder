@@ -1,7 +1,8 @@
 import logging
 import re
 import ssl
-from datetime import datetime
+import sqlite3
+from datetime import datetime, timedelta
 from typing import Set, Optional, List, Tuple
 import requests
 from flask import Flask, jsonify, request, render_template, send_file, abort
@@ -202,9 +203,13 @@ def index():
 @app.route('/api/cards')
 def get_cards():
     """Get all flashcards"""
-    with session_scope() as session:
-        cards = session.query(Card).all()
-        return jsonify([card.to_dict() for card in cards])
+    try:
+        with session_scope() as session:
+            cards = session.query(Card).all()
+            return jsonify([card.to_dict() for card in cards])
+    except Exception as e:
+        logger.error(f"Error in get_cards: {e}", exc_info=True)
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/speak/<word>')
 def speak_word(word):
@@ -238,67 +243,83 @@ def speak_word(word):
 @retry_operation
 def mark_learned(card_id: int):
     """Mark a card as learned"""
-    with session_scope() as session:
-        card = session.query(Card).get(card_id)
-        if not card:
-            abort(404)
-        
-        card.learned = True
-        return jsonify({'success': True})
+    try:
+        with session_scope() as session:
+            card = session.query(Card).get(card_id)
+            if not card:
+                abort(404)
+            
+            card.learned = True
+            return jsonify({'success': True})
+    except Exception as e:
+        logger.error(f"Error in mark_learned: {e}", exc_info=True)
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/cards/<int:card_id>/review', methods=['POST'])
 def review_card(card_id: int):
     """Review a card and update its box number based on the result"""
-    data = request.get_json()
-    correct = data.get('correct', False)
-    
-    with session_scope() as session:
-        card = session.query(Card).get(card_id)
-        if not card:
-            return jsonify({'error': 'Card not found'}), 404
-            
-        now = datetime.utcnow()
-        card.last_reviewed = now
+    try:
+        data = request.get_json()
+        correct = data.get('correct', False)
         
-        if correct:
-            # Move to next box if answered correctly
-            if card.box_number < 5:
-                card.box_number += 1
-        else:
-            # Move back to box 1 if answered incorrectly
-            card.box_number = 1
+        with session_scope() as session:
+            card = session.query(Card).get(card_id)
+            if not card:
+                return jsonify({'error': 'Card not found'}), 404
+                
+            now = datetime.utcnow()
+            card.last_reviewed = now
             
-        # Calculate next review date
-        days = BOX_INTERVALS[card.box_number]
-        card.next_review = now + datetime.timedelta(days=days)
-        
-        session.commit()
-        return jsonify(card.to_dict())
+            if correct:
+                # Move to next box if answered correctly
+                if card.box_number < 5:
+                    card.box_number += 1
+            else:
+                # Move back to box 1 if answered incorrectly
+                card.box_number = 1
+                
+            # Calculate next review date
+            days = BOX_INTERVALS[card.box_number]
+            card.next_review = now + timedelta(days=days)
+            
+            session.commit()
+            return jsonify(card.to_dict())
+    except Exception as e:
+        logger.error(f"Error in review_card: {e}", exc_info=True)
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/cards/due')
 def get_due_cards():
     """Get all cards due for review"""
-    now = datetime.utcnow()
-    with session_scope() as session:
-        cards = session.query(Card).filter(
-            (Card.next_review <= now) | (Card.next_review == None)
-        ).all()
-        return jsonify([card.to_dict() for card in cards])
+    try:
+        now = datetime.utcnow()
+        with session_scope() as session:
+            cards = session.query(Card).filter(
+                (Card.next_review <= now) | (Card.next_review == None)
+            ).all()
+            return jsonify([card.to_dict() for card in cards])
+    except Exception as e:
+        logger.error(f"Error in get_due_cards: {e}", exc_info=True)
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/cards/stats')
 def get_box_stats():
     """Get statistics about cards in each box"""
-    with session_scope() as session:
-        stats = {}
-        total_cards = session.query(Card).count()
-        for box in range(6):
-            count = session.query(Card).filter(Card.box_number == box).count()
-            stats[f'box_{box}'] = {
-                'count': count,
-                'percentage': round((count / total_cards * 100) if total_cards > 0 else 0, 1)
-            }
-        stats['total'] = total_cards
-        return jsonify(stats)
+    try:
+        with session_scope() as session:
+            stats = {}
+            total_cards = session.query(Card).count()
+            for box in range(6):
+                count = session.query(Card).filter(Card.box_number == box).count()
+                stats[f'box_{box}'] = {
+                    'count': count,
+                    'percentage': round((count / total_cards * 100) if total_cards > 0 else 0, 1)
+                }
+            stats['total'] = total_cards
+            return jsonify(stats)
+    except Exception as e:
+        logger.error(f"Error in get_box_stats: {e}", exc_info=True)
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/import-youtube', methods=['POST'])
 @retry_operation
@@ -505,22 +526,26 @@ def remove_incomplete_cards():
     Returns:
         int: Number of cards removed
     """
-    with session_scope() as session:
-        # Find and delete cards without IPA
-        incomplete_cards = session.query(Card).filter(
-            (Card.ipa == '') | (Card.ipa == None)
-        ).all()
-        
-        # Count and log the number of cards to be deleted
-        cards_to_delete_count = len(incomplete_cards)
-        logger.info(f"Removing {cards_to_delete_count} cards without IPA")
-        
-        # Delete the incomplete cards
-        for card in incomplete_cards:
-            logger.info(f"Removing card: {card.word}")
-            session.delete(card)
-        
-        return cards_to_delete_count
+    try:
+        with session_scope() as session:
+            # Find and delete cards without IPA
+            incomplete_cards = session.query(Card).filter(
+                (Card.ipa == '') | (Card.ipa == None)
+            ).all()
+            
+            # Count and log the number of cards to be deleted
+            cards_to_delete_count = len(incomplete_cards)
+            logger.info(f"Removing {cards_to_delete_count} cards without IPA")
+            
+            # Delete the incomplete cards
+            for card in incomplete_cards:
+                logger.info(f"Removing card: {card.word}")
+                session.delete(card)
+            
+            return cards_to_delete_count
+    except Exception as e:
+        logger.error(f"Error removing incomplete cards: {str(e)}")
+        return 0
 
 # Optional: Add a CLI method to trigger card cleanup
 def cleanup_cards_cli():
@@ -528,9 +553,13 @@ def cleanup_cards_cli():
     Command-line interface method to remove incomplete cards
     Can be called directly from the script
     """
-    removed_count = remove_incomplete_cards()
-    print(f"Removed {removed_count} cards without IPA")
-    return removed_count
+    try:
+        removed_count = remove_incomplete_cards()
+        print(f"Removed {removed_count} cards without IPA")
+        return removed_count
+    except Exception as e:
+        logger.error(f"Error in cleanup_cards_cli: {str(e)}")
+        return 0
 
 def reset_database():
     """
@@ -615,58 +644,61 @@ def internal_error(error):
 
 def init_db():
     """Initialize database with sample words"""
-    Base.metadata.create_all(engine)
-    
-    # Check if database is empty
-    with session_scope() as session:
-        if session.query(Card).count() == 0:
-            # Sample vocabulary words
-            sample_words = [
-                {
-                    'word': 'welcome',
-                    'meaning': 'to greet someone in a polite or friendly way',
-                    'example': 'They welcomed us with open arms.',
-                    'ipa': '/ˈwelkəm/'
-                },
-                {
-                    'word': 'journey',
-                    'meaning': 'an act of traveling from one place to another',
-                    'example': 'It was a long journey across the country.',
-                    'ipa': '/ˈdʒɜːrni/'
-                },
-                {
-                    'word': 'challenge',
-                    'meaning': 'a task or situation that tests someone\'s abilities',
-                    'example': 'Climbing the mountain was a real challenge.',
-                    'ipa': '/ˈtʃæləndʒ/'
-                },
-                {
-                    'word': 'inspire',
-                    'meaning': 'to encourage or motivate someone',
-                    'example': 'Her story inspired many young entrepreneurs.',
-                    'ipa': '/ɪnˈspaɪər/'
-                },
-                {
-                    'word': 'adventure',
-                    'meaning': 'an exciting experience or unusual activity',
-                    'example': 'Traveling alone is a great adventure.',
-                    'ipa': '/ədˈventʃər/'
-                }
-            ]
-            
-            for word_data in sample_words:
-                card = Card(
-                    word=word_data['word'],
-                    meaning=word_data['meaning'],
-                    example=word_data['example'],
-                    ipa=word_data['ipa'],
-                    box_number=0,
-                    next_review=datetime.utcnow()
-                )
-                session.add(card)
-            
-            session.commit()
-            logger.info("Database initialized with sample words")
+    try:
+        Base.metadata.create_all(engine)
+        
+        # Check if database is empty
+        with session_scope() as session:
+            if session.query(Card).count() == 0:
+                # Sample vocabulary words
+                sample_words = [
+                    {
+                        'word': 'welcome',
+                        'meaning': 'to greet someone in a polite or friendly way',
+                        'example': 'They welcomed us with open arms.',
+                        'ipa': '/ˈwelkəm/'
+                    },
+                    {
+                        'word': 'journey',
+                        'meaning': 'an act of traveling from one place to another',
+                        'example': 'It was a long journey across the country.',
+                        'ipa': '/ˈdʒɜːrni/'
+                    },
+                    {
+                        'word': 'challenge',
+                        'meaning': 'a task or situation that tests someone\'s abilities',
+                        'example': 'Climbing the mountain was a real challenge.',
+                        'ipa': '/ˈtʃæləndʒ/'
+                    },
+                    {
+                        'word': 'inspire',
+                        'meaning': 'to encourage or motivate someone',
+                        'example': 'Her story inspired many young entrepreneurs.',
+                        'ipa': '/ɪnˈspaɪər/'
+                    },
+                    {
+                        'word': 'adventure',
+                        'meaning': 'an exciting experience or unusual activity',
+                        'example': 'Traveling alone is a great adventure.',
+                        'ipa': '/ədˈventʃər/'
+                    }
+                ]
+                
+                for word_data in sample_words:
+                    card = Card(
+                        word=word_data['word'],
+                        meaning=word_data['meaning'],
+                        example=word_data['example'],
+                        ipa=word_data['ipa'],
+                        box_number=0,
+                        next_review=datetime.utcnow()
+                    )
+                    session.add(card)
+                
+                session.commit()
+                logger.info("Database initialized with sample words")
+    except Exception as e:
+        logger.error(f"Error initializing database: {str(e)}")
 
 if __name__ == '__main__':
     import sys
