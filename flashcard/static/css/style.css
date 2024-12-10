@@ -719,6 +719,9 @@ header h1 {
     cursor: pointer;
     position: relative;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .settings-box-container .setting-item input[type="checkbox"]:hover {
@@ -1020,4 +1023,30 @@ header h1 {
 
 .settings-box-container .setting-item input[type="checkbox"]:checked {
     animation: checkboxPulse 0.3s ease;
+}
+
+/* POS tag and card header */
+.pos-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-right: 10px;
+    color: white;
+    background-color: #7f8c8d; /* Default gray */
+}
+
+.ipa-text {
+    font-size: 0.9em;
+    color: #666;
+    font-style: italic;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }

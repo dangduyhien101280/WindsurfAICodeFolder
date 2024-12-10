@@ -6,6 +6,21 @@ let autoSpeak = false;
 let isInitialLoad = true; // Add flag for initial load
 let speechRate = 1.0; // Default speech rate
 
+// POS color mapping
+const POS_COLORS = {
+    'noun': '#03A9F4',      // Vibrant Blue
+    'verb': '#8BC34A',      // Vibrant Green
+    'adjective': '#FFC107', // Vibrant Orange
+    'adverb': '#FF9800',    // Vibrant Coral
+    'preposition': '#9C27B0', // Vibrant Purple
+    'pronoun': '#00BCD4',   // Vibrant Teal
+    'conjunction': '#2196F3', // Vibrant Cyan
+    'interjection': '#FF69B4', // Vibrant Pink
+    'article': '#4CAF50', // Vibrant Lime
+    'auxiliary verb': '#3F51B5', // Vibrant Indigo
+    'modal verb': '#9E9E9E', // Vibrant Gray
+};
+
 // Box system functionality
 function updateBoxStats() {
     fetch('/api/cards/stats')
@@ -81,22 +96,71 @@ function loadCards() {
 }
 
 function showCard(index) {
-    if (cards.length === 0) return;
-    
+    // Validate index and cards array
+    if (index < 0 || index >= cards.length) {
+        console.error('Invalid card index:', index);
+        showToast('No more cards to show');
+        return;
+    }
+
+    // Update current card and index
     currentCardIndex = index;
-    currentCard = cards[index];
-    
-    // Reset card flip state
-    document.getElementById('flashcard').classList.remove('flipped');
+    currentCard = cards[currentCardIndex];
+
+    // Get DOM elements with error checking
+    const cardElement = document.getElementById('flashcard');
+    const wordElement = document.getElementById('word');
+    const meaningElement = document.getElementById('meaning');
+    const exampleElement = document.getElementById('example');
+    const ipaElement = document.getElementById('ipa');
+    const posElement = document.getElementById('pos');  // New POS element
+
+    // Validate DOM elements
+    const elementsToCheck = [
+        { element: cardElement, name: 'flashcard' },
+        { element: wordElement, name: 'word' },
+        { element: meaningElement, name: 'meaning' },
+        { element: exampleElement, name: 'example' },
+        { element: ipaElement, name: 'ipa' },
+        { element: posElement, name: 'pos' }
+    ];
+
+    // Check if any required elements are missing
+    const missingElements = elementsToCheck.filter(item => !item.element);
+    if (missingElements.length > 0) {
+        console.error('Missing DOM elements:', 
+            missingElements.map(item => item.name).join(', '));
+        showToast('Error displaying card. Check console.');
+        return;
+    }
+
+    // Reset card state
+    if (cardElement) {
+        cardElement.classList.remove('flipped');
+    }
     
     // Update card content
-    document.getElementById('word').textContent = currentCard.word;
-    document.getElementById('meaning').textContent = currentCard.meaning || '';
-    document.getElementById('example').textContent = currentCard.example || '';
-    document.getElementById('ipa').textContent = currentCard.ipa || '';
+    wordElement.textContent = currentCard.word || 'No word';
+    meaningElement.textContent = 'Tap to reveal meaning';
+    exampleElement.textContent = '';
+    ipaElement.textContent = currentCard.ipa || '';
     
-    // Update box indicator
+    // Set POS with color
+    if (currentCard.pos) {
+        posElement.textContent = currentCard.pos.toUpperCase();
+        posElement.style.backgroundColor = POS_COLORS[currentCard.pos.toLowerCase()] || '#7f8c8d'; // Default gray if not found
+        posElement.style.display = 'inline-block';
+    } else {
+        posElement.textContent = 'N/A';
+        posElement.style.backgroundColor = '#7f8c8d';
+        posElement.style.display = 'inline-block';
+    }
+
+    // Update box number display
     updateBoxIndicator(currentCard.box_number);
+
+    // Update card count
+    updateCardCount();
     
     // Update next review date
     const nextReview = currentCard.next_review ? new Date(currentCard.next_review) : null;
@@ -197,12 +261,55 @@ function getIntervalText(boxNumber) {
 
 // Card flipping with auto-pronunciation
 function toggleFlip() {
-    const flashcard = document.getElementById('flashcard');
-    flashcard.classList.toggle('flipped');
-    
-    // Auto-pronounce when flipping to front
-    if (!flashcard.classList.contains('flipped') && autoSpeak && !isInitialLoad) {
-        speakWord();
+    // Get card element with error checking
+    const cardElement = document.getElementById('flashcard');
+    const meaningElement = document.getElementById('meaning');
+    const exampleElement = document.getElementById('example');
+    const wordElement = document.getElementById('word');
+    const ipaElement = document.getElementById('ipa');
+
+    // Validate DOM elements
+    const elementsToCheck = [
+        { element: cardElement, name: 'flashcard' },
+        { element: meaningElement, name: 'meaning' },
+        { element: exampleElement, name: 'example' },
+        { element: wordElement, name: 'word' },
+        { element: ipaElement, name: 'ipa' }
+    ];
+
+    // Check if any required elements are missing
+    const missingElements = elementsToCheck.filter(item => !item.element);
+    if (missingElements.length > 0) {
+        console.error('Missing DOM elements:', 
+            missingElements.map(item => item.name).join(', '));
+        showToast('Error flipping card. Check console.');
+        return;
+    }
+
+    // Check if current card exists
+    if (!currentCard) {
+        console.error('No current card to flip');
+        showToast('No card to display');
+        return;
+    }
+
+    // Toggle card flip
+    cardElement.classList.toggle('flipped');
+
+    // Update content when flipping to back
+    if (cardElement.classList.contains('flipped')) {
+        // Populate back of card
+        meaningElement.textContent = currentCard.meaning || 'No meaning available';
+        exampleElement.textContent = currentCard.example || 'No example available';
+        
+        // Speak word if auto-speak is enabled
+        if (autoSpeak) {
+            speakWord();
+        }
+    } else {
+        // Reset to initial state when flipping back
+        meaningElement.textContent = 'Tap to reveal meaning';
+        exampleElement.textContent = '';
     }
 }
 

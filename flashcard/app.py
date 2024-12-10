@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from typing import Set, Optional, List, Tuple
 import requests
 from flask import Flask, jsonify, request, render_template, send_file, abort
-from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -51,6 +51,7 @@ class Card(Base):
     meaning = Column(Text, nullable=False)
     example = Column(Text)
     ipa = Column(String(100))
+    pos = Column(String(50))  # New column for Part of Speech
     box_number = Column(Integer, default=0)  # New column
     last_reviewed = Column(DateTime)         # New column
     next_review = Column(DateTime)
@@ -65,6 +66,7 @@ class Card(Base):
             'meaning': self.meaning,
             'example': self.example,
             'ipa': self.ipa,
+            'pos': self.pos,  # Include POS in dictionary
             'box_number': self.box_number,
             'last_reviewed': self.last_reviewed.isoformat() if self.last_reviewed else None,
             'next_review': self.next_review.isoformat() if self.next_review else None,
@@ -579,37 +581,41 @@ def reset_database():
         
         # Initialize with sample words
         with session_scope() as session:
-            # Sample vocabulary words with complete IPA
             sample_words = [
                 {
                     'word': 'welcome',
                     'meaning': 'to greet someone in a polite or friendly way',
                     'example': 'They welcomed us with open arms.',
-                    'ipa': '/ˈwelkəm/'
+                    'ipa': '/ˈwelkəm/',
+                    'pos': 'verb'
                 },
                 {
                     'word': 'journey',
                     'meaning': 'an act of traveling from one place to another',
                     'example': 'It was a long journey across the country.',
-                    'ipa': '/ˈdʒɜːrni/'
+                    'ipa': '/ˈdʒɜːrni/',
+                    'pos': 'noun'
                 },
                 {
                     'word': 'challenge',
                     'meaning': 'a task or situation that tests someone\'s abilities',
                     'example': 'Climbing the mountain was a real challenge.',
-                    'ipa': '/ˈtʃæləndʒ/'
+                    'ipa': '/ˈtʃæləndʒ/',
+                    'pos': 'noun'
                 },
                 {
                     'word': 'inspire',
                     'meaning': 'to encourage or motivate someone',
                     'example': 'Her story inspired many young entrepreneurs.',
-                    'ipa': '/ɪnˈspaɪər/'
+                    'ipa': '/ɪnˈspaɪər/',
+                    'pos': 'verb'
                 },
                 {
                     'word': 'adventure',
                     'meaning': 'an exciting experience or unusual activity',
                     'example': 'Traveling alone is a great adventure.',
-                    'ipa': '/ədˈventʃər/'
+                    'ipa': '/ədˈventʃər/',
+                    'pos': 'noun'
                 }
             ]
             
@@ -619,6 +625,7 @@ def reset_database():
                     meaning=word_data['meaning'],
                     example=word_data['example'],
                     ipa=word_data['ipa'],
+                    pos=word_data['pos'],
                     box_number=0,
                     next_review=datetime.utcnow()
                 )
@@ -632,6 +639,79 @@ def reset_database():
         logger.error(f"Error resetting database: {e}")
         return False
 
+def add_pos_column_if_not_exists(engine):
+    """
+    Check if 'pos' column exists in cards table, add if not present.
+    This ensures backward compatibility during database migration.
+    """
+    try:
+        inspector = inspect(engine)
+        columns = [col['name'] for col in inspector.get_columns('cards')]
+        
+        if 'pos' not in columns:
+            print("Adding 'pos' column to cards table...")
+            with engine.begin() as connection:
+                connection.execute(f"ALTER TABLE cards ADD COLUMN pos VARCHAR(50)")
+            print("'pos' column added successfully!")
+    except Exception as e:
+        print(f"Error checking/adding 'pos' column: {e}")
+
+def init_db():
+    Base.metadata.create_all(bind=engine)
+    
+    # Ensure pos column exists
+    add_pos_column_if_not_exists(engine)
+    
+    # Rest of the init_db function remains the same
+    session = SessionLocal()
+    try:
+        # Check if database is empty
+        card_count = session.query(Card).count()
+        if card_count == 0:
+            # Sample words with initial data
+            sample_words = [
+                {"word": "hello", "translation": "안녕하세요", "language": "korean"},
+                {"word": "goodbye", "translation": "안녕히 가세요", "language": "korean"},
+                {"word": "thank", "translation": "감사합니다", "language": "korean"}
+            ]
+            
+            for word_data in sample_words:
+                card = Card(
+                    word=word_data['word'], 
+                    translation=word_data['translation'], 
+                    language=word_data['language'],
+                    pos=infer_pos(word_data['word'])  # Add POS inference here
+                )
+                session.add(card)
+            
+            session.commit()
+            print("Initialized database with sample words")
+    except Exception as e:
+        session.rollback()
+        print(f"Error initializing database: {e}")
+    finally:
+        session.close()
+
+def infer_pos(word):
+    """Simple POS inference based on word characteristics"""
+    word = word.lower()
+    
+    # Common verb endings
+    verb_endings = ['ize', 'ise', 'ate', 'en', 'ify', 'ed', 'ing']
+    # Common noun endings
+    noun_endings = ['tion', 'sion', 'ness', 'ment', 'ship', 'dom', 'hood']
+    # Common adjective endings
+    adj_endings = ['able', 'ible', 'ous', 'ful', 'less', 'al', 'ive', 'ic', 'ed']
+    
+    if any(word.endswith(ending) for ending in verb_endings):
+        return 'verb'
+    elif any(word.endswith(ending) for ending in noun_endings):
+        return 'noun'
+    elif any(word.endswith(ending) for ending in adj_endings):
+        return 'adjective'
+    
+    return 'noun'  # Default to noun if no clear indication
+
 @app.errorhandler(404)
 def not_found_error(error):
     """Handle 404 errors"""
@@ -641,64 +721,6 @@ def not_found_error(error):
 def internal_error(error):
     """Handle 500 errors"""
     return jsonify({'error': 'Internal server error'}), 500
-
-def init_db():
-    """Initialize database with sample words"""
-    try:
-        Base.metadata.create_all(engine)
-        
-        # Check if database is empty
-        with session_scope() as session:
-            if session.query(Card).count() == 0:
-                # Sample vocabulary words
-                sample_words = [
-                    {
-                        'word': 'welcome',
-                        'meaning': 'to greet someone in a polite or friendly way',
-                        'example': 'They welcomed us with open arms.',
-                        'ipa': '/ˈwelkəm/'
-                    },
-                    {
-                        'word': 'journey',
-                        'meaning': 'an act of traveling from one place to another',
-                        'example': 'It was a long journey across the country.',
-                        'ipa': '/ˈdʒɜːrni/'
-                    },
-                    {
-                        'word': 'challenge',
-                        'meaning': 'a task or situation that tests someone\'s abilities',
-                        'example': 'Climbing the mountain was a real challenge.',
-                        'ipa': '/ˈtʃæləndʒ/'
-                    },
-                    {
-                        'word': 'inspire',
-                        'meaning': 'to encourage or motivate someone',
-                        'example': 'Her story inspired many young entrepreneurs.',
-                        'ipa': '/ɪnˈspaɪər/'
-                    },
-                    {
-                        'word': 'adventure',
-                        'meaning': 'an exciting experience or unusual activity',
-                        'example': 'Traveling alone is a great adventure.',
-                        'ipa': '/ədˈventʃər/'
-                    }
-                ]
-                
-                for word_data in sample_words:
-                    card = Card(
-                        word=word_data['word'],
-                        meaning=word_data['meaning'],
-                        example=word_data['example'],
-                        ipa=word_data['ipa'],
-                        box_number=0,
-                        next_review=datetime.utcnow()
-                    )
-                    session.add(card)
-                
-                session.commit()
-                logger.info("Database initialized with sample words")
-    except Exception as e:
-        logger.error(f"Error initializing database: {str(e)}")
 
 if __name__ == '__main__':
     import sys
