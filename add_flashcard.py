@@ -69,25 +69,43 @@ def add_flashcard(word, meaning, meaning_vn=None, example=None, example_vn=None,
     finally:
         conn.close()
 
+def remove_incomplete_tags():
+    # TO DO: implement removing incomplete tags from database
+    pass
+
 def main():
-    parser = argparse.ArgumentParser(description='Add or update flashcards in the database.')
-    parser.add_argument('word', help='The word to add')
-    parser.add_argument('meaning', help='The meaning of the word')
-    parser.add_argument('--meaning_vn', help='Vietnamese meaning (optional)', default=None)
-    parser.add_argument('--example', help='Example sentence (optional)', default=None)
-    parser.add_argument('--example_vn', help='Vietnamese example (optional)', default=None)
-    parser.add_argument('--ipa', help='IPA pronunciation (optional)', default=None)
+    parser = argparse.ArgumentParser(description='Flashcard Management Tool')
+    
+    # Mutually exclusive group to handle different modes
+    mode_group = parser.add_mutually_exclusive_group(required=True)
+    mode_group.add_argument('--cleanup', action='store_true', help='Remove incomplete tags from database')
+    mode_group.add_argument('--add', nargs='+', help='Add a new flashcard (word meaning [options])')
+    
+    # Optional arguments for adding flashcards
+    parser.add_argument('--meaning_vn', help='Vietnamese meaning', default=None)
+    parser.add_argument('--example', help='Example sentence', default=None)
+    parser.add_argument('--example_vn', help='Vietnamese example', default=None)
+    parser.add_argument('--ipa', help='IPA pronunciation', default=None)
     
     args = parser.parse_args()
     
-    add_flashcard(
-        args.word, 
-        args.meaning, 
-        args.meaning_vn, 
-        args.example, 
-        args.example_vn, 
-        args.ipa
-    )
+    if args.cleanup:
+        remove_incomplete_tags()
+    elif args.add:
+        # If add mode, ensure at least word and meaning are provided
+        if len(args.add) < 2:
+            parser.error("Add mode requires at least word and meaning")
+        
+        word = args.add[0]
+        meaning = args.add[1]
+        add_flashcard(
+            word, 
+            meaning, 
+            args.meaning_vn, 
+            args.example, 
+            args.example_vn, 
+            args.ipa
+        )
 
 if __name__ == '__main__':
     main()

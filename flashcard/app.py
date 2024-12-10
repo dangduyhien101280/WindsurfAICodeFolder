@@ -1,32 +1,19 @@
-import nltk
-import ssl
-
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
-
-nltk.download('punkt', quiet=True)
-nltk.download('averaged_perceptron_tagger', quiet=True)
-
-from flask import Flask, render_template, jsonify, request, send_file, abort
-from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, DateTime
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy.orm.session import Session
-from contextlib import contextmanager
-from datetime import datetime, timedelta
-from gtts import gTTS
-from youtube_transcript_api import YouTubeTranscriptApi
-import re
-import os
 import logging
-import sqlite3
-import random
-from typing import Optional, Set, List, Tuple
+import re
+import ssl
+from datetime import datetime
+from typing import Set, Optional, List, Tuple
+import requests
+from flask import Flask, jsonify, request, render_template, send_file, abort
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from youtube_transcript_api import YouTubeTranscriptApi
+from gtts import gTTS
 from pathlib import Path
+import os
 import time
+from contextlib import contextmanager
 
 # Configure logging
 logging.basicConfig(
@@ -143,26 +130,24 @@ def get_youtube_id(url: str) -> Optional[str]:
     return None
 
 def extract_words_from_transcript(transcript):
+    """
+    Extract unique words from YouTube transcript
+    """
     # Combine all transcript text
     full_text = ' '.join([entry['text'] for entry in transcript])
     
-    # Tokenize and tag words
-    words = nltk.word_tokenize(full_text)
-    tagged_words = nltk.pos_tag(words)
+    # Use regex to extract words
+    words = re.findall(r'\b[a-z]{3,}\b', full_text.lower())
     
-    # Filter unique nouns and verbs
-    unique_words = set()
-    for word, tag in tagged_words:
-        # Clean word: lowercase, remove punctuation
-        clean_word = re.sub(r'[^\w\s]', '', word.lower())
-        
-        # Filter conditions
-        if (len(clean_word) > 2 and  # More than 2 characters
-            clean_word not in unique_words and  # Unique
-            tag in ['NN', 'NNS', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']):  # Nouns and Verbs
-            unique_words.add(clean_word)
+    # Remove duplicates while preserving order
+    unique_words = []
+    seen = set()
+    for word in words:
+        if word not in seen:
+            unique_words.append(word)
+            seen.add(word)
     
-    return list(unique_words)
+    return unique_words
 
 def get_word_definition(word):
     # Simple definition generation
@@ -176,42 +161,37 @@ def get_word_definition(word):
     
     return definitions.get(word, f'A word commonly used in context.')
 
-def get_word_details(word: str) -> Tuple[Optional[str], Optional[str], Optional[str]]:
-    """Get word details from Free Dictionary API"""
-    import requests
-    
-    api_url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
+def get_word_details(word):
+    """
+    Fetch word details from a dictionary API with improved robustness
+    """
     try:
-        response = requests.get(api_url)
+        # Use Free Dictionary API
+        response = requests.get(f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}")
         if response.status_code == 200:
             data = response.json()[0]
             
-            # Get IPA
-            ipa = None
-            if 'phonetic' in data:
-                ipa = data['phonetic']
-            elif 'phonetics' in data and data['phonetics']:
+            # Extract meaning
+            meaning = data['meanings'][0]['definitions'][0]['definition'] if data['meanings'] else "No definition found"
+            
+            # Extract example (if available)
+            example = data['meanings'][0]['definitions'][0].get('example', "No example available")
+            
+            # Extract IPA with more robust checking
+            ipa = ''
+            if data.get('phonetics'):
+                # Try to find a non-empty IPA
                 for phonetic in data['phonetics']:
-                    if 'text' in phonetic:
+                    if phonetic.get('text'):
                         ipa = phonetic['text']
                         break
             
-            # Get meaning and example
-            meaning = None
-            example = None
-            if 'meanings' in data and data['meanings']:
-                first_meaning = data['meanings'][0]
-                if 'definitions' in first_meaning and first_meaning['definitions']:
-                    first_def = first_meaning['definitions'][0]
-                    meaning = first_def.get('definition')
-                    example = first_def.get('example')
-            
             return ipa, meaning, example
-            
+        else:
+            return '', "Definition not found", "No example available"
     except Exception as e:
-        logger.error(f"Error fetching word details for '{word}': {str(e)}")
-    
-    return None, None, None
+        logger.error(f"Error fetching word details for {word}: {e}")
+        return '', "Definition not found", "No example available"
 
 # Routes
 @app.route('/')
@@ -290,7 +270,7 @@ def review_card(card_id: int):
             
         # Calculate next review date
         days = BOX_INTERVALS[card.box_number]
-        card.next_review = now + timedelta(days=days)
+        card.next_review = now + datetime.timedelta(days=days)
         
         session.commit()
         return jsonify(card.to_dict())
@@ -334,11 +314,22 @@ def import_youtube():
         if not video_id:
             return jsonify({'error': 'Invalid YouTube URL'}), 400
         
-        # Get video transcript
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        words: Set[str] = set()
+        # Try getting transcript in multiple languages
+        languages_to_try = ['en', 'vi', 'auto']
+        transcript = None
+        
+        for lang in languages_to_try:
+            try:
+                transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[lang])
+                break
+            except Exception as e:
+                logger.warning(f"Couldn't get transcript in {lang}: {e}")
+        
+        if not transcript:
+            return jsonify({'error': 'No transcript available in any language'}), 400
         
         # Extract words from transcript
+        words: Set[str] = set()
         words = extract_words_from_transcript(transcript)
         
         words_added = 0
@@ -355,7 +346,7 @@ def import_youtube():
                         try:
                             # Check if word exists
                             existing_card = session.query(Card).filter_by(word=word).first()
-                            
+                             
                             if existing_card:
                                 # Update existing card if it has no meaning
                                 if existing_card.meaning == "To be defined":
@@ -366,20 +357,22 @@ def import_youtube():
                                         existing_card.example = str(example) if example else "To be added"
                                         words_updated += 1
                                 continue
-                            
+                             
                             # Get word details from dictionary API
                             ipa, meaning, example = get_word_details(word)
-                            
-                            # Create new card
-                            card = Card(
-                                word=word,
-                                meaning=meaning or "To be defined",
-                                ipa=ipa,
-                                example=str(example) if example else "To be added"
-                            )
-                            session.merge(card)  # Use merge instead of add
-                            words_added += 1
-                            
+                             
+                            # Only add card if IPA is available
+                            if ipa:
+                                # Create new card
+                                card = Card(
+                                    word=word,
+                                    meaning=meaning or "To be defined",
+                                    ipa=ipa,
+                                    example=str(example) if example else "To be added"
+                                )
+                                session.merge(card)  # Use merge instead of add
+                                words_added += 1
+                             
                         except Exception as e:
                             logger.error(f"Error processing word '{word}': {str(e)}")
                             continue
@@ -394,8 +387,7 @@ def import_youtube():
                 
         return jsonify({
             'success': True, 
-            'words_added': words_added,
-            'words_updated': words_updated
+            'words_added': words_added
         })
         
     except Exception as e:
@@ -448,6 +440,168 @@ def import_youtube_words():
     except Exception as e:
         logger.error(f"YouTube import error: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+@app.route('/api/cards/cleanup', methods=['POST'])
+def cleanup_incomplete_cards():
+    """Remove cards without IPA transcription"""
+    try:
+        with session_scope() as session:
+            # Find and delete cards without IPA
+            incomplete_cards = session.query(Card).filter(
+                (Card.ipa == '') | (Card.ipa == None)
+            ).all()
+            
+            # Count the number of cards to be deleted
+            cards_to_delete_count = len(incomplete_cards)
+            
+            # Delete the incomplete cards
+            for card in incomplete_cards:
+                session.delete(card)
+            
+            # Commit the changes
+            session.commit()
+            
+            return jsonify({
+                'success': True, 
+                'cards_removed': cards_to_delete_count
+            })
+    except Exception as e:
+        logger.error(f"Error cleaning up incomplete cards: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/api/cards/update_ipa', methods=['POST'])
+def update_card_ipa():
+    """Update IPA for existing cards"""
+    try:
+        with session_scope() as session:
+            # Find cards without IPA
+            cards_without_ipa = session.query(Card).filter(
+                (Card.ipa == '') | (Card.ipa == None)
+            ).all()
+            
+            updated_count = 0
+            for card in cards_without_ipa:
+                # Try to fetch IPA for the word
+                ipa, _, _ = get_word_details(card.word)
+                
+                if ipa:
+                    card.ipa = ipa
+                    updated_count += 1
+            
+            session.commit()
+            
+            return jsonify({
+                'success': True, 
+                'cards_updated': updated_count
+            })
+    except Exception as e:
+        logger.error(f"Error updating card IPAs: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+
+def remove_incomplete_cards():
+    """
+    Remove cards without IPA transcription directly in the database
+    
+    Returns:
+        int: Number of cards removed
+    """
+    with session_scope() as session:
+        # Find and delete cards without IPA
+        incomplete_cards = session.query(Card).filter(
+            (Card.ipa == '') | (Card.ipa == None)
+        ).all()
+        
+        # Count and log the number of cards to be deleted
+        cards_to_delete_count = len(incomplete_cards)
+        logger.info(f"Removing {cards_to_delete_count} cards without IPA")
+        
+        # Delete the incomplete cards
+        for card in incomplete_cards:
+            logger.info(f"Removing card: {card.word}")
+            session.delete(card)
+        
+        return cards_to_delete_count
+
+# Optional: Add a CLI method to trigger card cleanup
+def cleanup_cards_cli():
+    """
+    Command-line interface method to remove incomplete cards
+    Can be called directly from the script
+    """
+    removed_count = remove_incomplete_cards()
+    print(f"Removed {removed_count} cards without IPA")
+    return removed_count
+
+def reset_database():
+    """
+    Completely reset the database by:
+    1. Dropping all existing tables
+    2. Recreating tables
+    3. Reinitializing with sample data
+    """
+    try:
+        # Drop all existing tables
+        Base.metadata.drop_all(engine)
+        logger.info("Existing database tables dropped")
+        
+        # Recreate all tables
+        Base.metadata.create_all(engine)
+        logger.info("Database tables recreated")
+        
+        # Initialize with sample words
+        with session_scope() as session:
+            # Sample vocabulary words with complete IPA
+            sample_words = [
+                {
+                    'word': 'welcome',
+                    'meaning': 'to greet someone in a polite or friendly way',
+                    'example': 'They welcomed us with open arms.',
+                    'ipa': '/ˈwelkəm/'
+                },
+                {
+                    'word': 'journey',
+                    'meaning': 'an act of traveling from one place to another',
+                    'example': 'It was a long journey across the country.',
+                    'ipa': '/ˈdʒɜːrni/'
+                },
+                {
+                    'word': 'challenge',
+                    'meaning': 'a task or situation that tests someone\'s abilities',
+                    'example': 'Climbing the mountain was a real challenge.',
+                    'ipa': '/ˈtʃæləndʒ/'
+                },
+                {
+                    'word': 'inspire',
+                    'meaning': 'to encourage or motivate someone',
+                    'example': 'Her story inspired many young entrepreneurs.',
+                    'ipa': '/ɪnˈspaɪər/'
+                },
+                {
+                    'word': 'adventure',
+                    'meaning': 'an exciting experience or unusual activity',
+                    'example': 'Traveling alone is a great adventure.',
+                    'ipa': '/ədˈventʃər/'
+                }
+            ]
+            
+            for word_data in sample_words:
+                card = Card(
+                    word=word_data['word'],
+                    meaning=word_data['meaning'],
+                    example=word_data['example'],
+                    ipa=word_data['ipa'],
+                    box_number=0,
+                    next_review=datetime.utcnow()
+                )
+                session.add(card)
+            
+            session.commit()
+            logger.info("Database reinitialized with sample words")
+        
+        return True
+    except Exception as e:
+        logger.error(f"Error resetting database: {e}")
+        return False
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -515,5 +669,17 @@ def init_db():
             logger.info("Database initialized with sample words")
 
 if __name__ == '__main__':
+    import sys
+    
+    # Check if cleanup flag is passed
+    if '--cleanup-cards' in sys.argv:
+        cleanup_cards_cli()
+    
+    # Check if reset flag is passed
+    if '--reset-db' in sys.argv:
+        reset_database()
+        print("Database has been reset and reinitialized.")
+        sys.exit(0)
+    
     init_db()
     app.run(debug=True)
