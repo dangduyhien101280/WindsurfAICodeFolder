@@ -6,3 +6,10 @@ gTTS==2.3.2
 youtube-transcript-api==0.6.1
 SQLAlchemy==1.4.41
 PyDictionary==2.0.1
+sqlite3==3.35.5
+python-dateutil==2.8.2
+configparser==5.2.0
+tkinter==8.6
+uuid
+hashlib
+getpass==0.2.0

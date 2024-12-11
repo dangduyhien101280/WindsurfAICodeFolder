@@ -6,9 +6,10 @@ from datetime import datetime, timedelta
 from typing import Set, Optional, List, Tuple
 import requests
 from flask import Flask, jsonify, request, render_template, send_file, abort
-from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, inspect
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Float, ForeignKey, inspect, text
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+
 from youtube_transcript_api import YouTubeTranscriptApi
 from gtts import gTTS
 from pathlib import Path
@@ -16,6 +17,11 @@ import os
 import time
 from contextlib import contextmanager
 import nltk
+import tkinter as tk
+from user_interface import FlashcardLearningApp, login_page, register_page
+from models import UserModel, User, Achievement, Base
+import uuid
+import hashlib
 
 # Download necessary NLTK resources
 try:
@@ -38,12 +44,43 @@ except ImportError:
 
 import threading
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+# Cấu hình logging
+import logging
+from logging.handlers import RotatingFileHandler
+import os
+
+# Tạo thư mục logs nếu chưa tồn tại
+logs_dir = os.path.join(os.path.dirname(__file__), 'logs')
+os.makedirs(logs_dir, exist_ok=True)
+
+# Cấu hình logging
+logger = logging.getLogger('app')
+logger.setLevel(logging.DEBUG)
+
+# Tạo file handler
+log_file = os.path.join(logs_dir, 'app.log')
+file_handler = RotatingFileHandler(
+    log_file, 
+    maxBytes=1024 * 1024,  # 1 MB
+    backupCount=5
 )
-logger = logging.getLogger(__name__)
+file_handler.setLevel(logging.DEBUG)
+
+# Tạo console handler
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+
+# Tạo formatter
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+
+# Thêm handlers vào logger
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
 
 try:
     from flask_cors import CORS
@@ -60,7 +97,6 @@ app = Flask(__name__,
 CORS(app)  # Enable CORS for all routes
 
 # Database configuration
-Base = declarative_base()
 engine = create_engine('sqlite:///flashcards.db', 
     connect_args={
         'timeout': 30,        # Increase SQLite timeout
@@ -412,7 +448,50 @@ def test_word_details():
 @app.route('/')
 def index():
     """Render the main page"""
-    return render_template('index.html')
+    return render_template('index.html', 
+        ui_style='''
+        <style>
+            .ui-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                padding: 20px 0;
+                background-color: #f0f0f0;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .main-content {
+                margin-top: 100px; /* Adjust based on UI height */
+            }
+        </style>
+        <div class="ui-container">
+            <div class="ui-buttons">
+                <button>Import Words</button>
+                <button>Review Cards</button>
+                <button>Add Flashcard</button>
+            </div>
+        </div>
+        ''')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """
+    Route xử lý đăng nhập
+    """
+    from user_interface import login_page
+    return login_page()
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """
+    Route xử lý đăng ký
+    """
+    from user_interface import register_page
+    return register_page()
 
 @app.route('/api/cards')
 def get_cards():
@@ -871,41 +950,354 @@ def add_pos_column_if_not_exists(engine):
     except Exception as e:
         print(f"Error checking/adding 'pos' column: {e}")
 
-def init_db():
-    Base.metadata.create_all(bind=engine)
-    
-    # Ensure pos column exists
-    add_pos_column_if_not_exists(engine)
-    
-    # Rest of the init_db function remains the same
-    session = SessionLocal()
+def add_updated_at_column_if_not_exists(engine):
+    """
+    Check if 'updated_at' column exists in users table, add if not present.
+    This ensures backward compatibility during database migration.
+    """
     try:
-        # Check if database is empty
-        card_count = session.query(Card).count()
-        if card_count == 0:
-            # Sample words with initial data
-            sample_words = [
-                {"word": "hello", "translation": "안녕하세요", "language": "korean"},
-                {"word": "goodbye", "translation": "안녕히 가세요", "language": "korean"},
-                {"word": "thank", "translation": "감사합니다", "language": "korean"}
+        # Kết nối trực tiếp với SQLite
+        conn = engine.connect()
+        
+        # Kiểm tra xem cột đã tồn tại chưa
+        try:
+            conn.execute(text("SELECT updated_at FROM users LIMIT 1"))
+            logger.info("'updated_at' column already exists")
+            return
+        except Exception:
+            # Nếu cột chưa tồn tại, thêm cột
+            conn.execute(text('''
+                ALTER TABLE users 
+                ADD COLUMN updated_at DATETIME
+            '''))
+            
+            # Cập nhật giá trị mặc định cho cột
+            conn.execute(text('''
+                UPDATE users 
+                SET updated_at = created_at
+            '''))
+            
+            logger.info("Added 'updated_at' column to users table")
+    except Exception as e:
+        logger.error(f"Error adding 'updated_at' column: {e}")
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+add_updated_at_column_if_not_exists(engine)
+
+def init_db():
+    # Khởi tạo UserModel
+    user_model = UserModel()
+    
+    # Tạo session
+    session = user_model._get_connection()
+    
+    try:
+        # Kiểm tra xem người dùng đã tồn tại chưa
+        existing_user = session.query(User).filter(User.username == 'testuser').first()
+        
+        if not existing_user:
+            # Tạo người dùng mẫu
+            salt, hashed_password = user_model._hash_password('testpassword')
+            
+            new_user = User(
+                username='testuser', 
+                email='testuser@example.com', 
+                password_salt=salt, 
+                password_hash=hashed_password,
+                full_name='Test User', 
+                language_level='Intermediate', 
+                learning_goal='Improve English Vocabulary',
+                total_words_learned=250,
+                total_study_time=1500,  # 25 giờ
+                current_streak=15,
+                max_streak=30,
+                total_achievements=5,
+                achievement_points=150
+            )
+            
+            session.add(new_user)
+            session.flush()  # Đảm bảo user được tạo để lấy ID
+            
+            # Thêm một số thành tích mẫu
+            achievements = [
+                Achievement(
+                    user_id=new_user.id,
+                    achievement_name='Vocabulary Starter', 
+                    achievement_description='Learned first 50 words',
+                    points=25,
+                    date_earned=datetime.now()
+                ),
+                Achievement(
+                    user_id=new_user.id,
+                    achievement_name='Consistent Learner', 
+                    achievement_description='15-day learning streak',
+                    points=50,
+                    date_earned=datetime.now()
+                ),
+                Achievement(
+                    user_id=new_user.id,
+                    achievement_name='Word Master', 
+                    achievement_description='Learned 250 words',
+                    points=75,
+                    date_earned=datetime.now()
+                )
             ]
             
-            for word_data in sample_words:
-                card = Card(
-                    word=word_data['word'], 
-                    translation=word_data['translation'], 
-                    language=word_data['language'],
-                    pos=infer_pos(word_data['word'])  # Add POS inference here
-                )
-                session.add(card)
-            
+            session.add_all(achievements)
             session.commit()
-            print("Initialized database with sample words")
+            
+            print("Initialized test user and achievements")
+    
     except Exception as e:
         session.rollback()
         print(f"Error initializing database: {e}")
+    
     finally:
         session.close()
+
+def create_test_user_if_not_exists(session):
+    try:
+        # Kiểm tra xem đã tồn tại người dùng testuser chưa
+        existing_user = session.query(User).filter_by(username='testuser').first()
+        
+        if not existing_user:
+            # Tạo người dùng mẫu
+            salt = str(uuid.uuid4())
+            password_hash = hashlib.sha256((salt + 'testpassword').encode()).hexdigest()
+            
+            test_user = User(
+                username='testuser',
+                email='testuser@example.com',
+                password_salt=salt,
+                password_hash=password_hash,
+                full_name='Test User',
+                language_level='Intermediate',
+                learning_goal='Cải thiện từ vựng tiếng Anh',
+                total_words_learned=50,
+                total_study_time=120.5,
+                current_streak=5,
+                max_streak=10,
+                total_achievements=3,
+                achievement_points=150
+            )
+            
+            # Tạo một số thành tích mẫu
+            achievements = [
+                Achievement(
+                    user=test_user,
+                    achievement_name='Người Học Chăm Chỉ',
+                    achievement_description='Học liên tục 5 ngày',
+                    points=50,
+                    date_earned=datetime.utcnow()
+                ),
+                Achievement(
+                    user=test_user,
+                    achievement_name='Từ Vựng Mới',
+                    achievement_description='Học 50 từ mới',
+                    points=100,
+                    date_earned=datetime.utcnow()
+                )
+            ]
+            
+            session.add(test_user)
+            session.add_all(achievements)
+            session.commit()
+            logger.info("Created test user 'testuser'")
+        
+        return existing_user or test_user
+    except Exception as e:
+        logger.error(f"Error creating test user: {e}")
+        session.rollback()
+        return None
+
+@app.route('/user_profile')
+def user_profile():
+    # Khởi tạo UserModel
+    user_model = UserModel()
+    
+    try:
+        # Kết nối và truy vấn thông tin người dùng
+        session = user_model._get_connection()
+        
+        # Kiểm tra và thêm cột nếu chưa tồn tại
+        try:
+            session.execute(text("SELECT updated_at FROM users LIMIT 1"))
+        except Exception:
+            # Nếu cột chưa tồn tại, thêm cột
+            session.execute(text('''
+                ALTER TABLE users 
+                ADD COLUMN updated_at DATETIME
+            '''))
+            session.execute(text('''
+                UPDATE users 
+                SET updated_at = created_at
+            '''))
+            session.commit()
+        
+        # Tạo người dùng mẫu nếu không tồn tại
+        user = create_test_user_if_not_exists(session)
+        
+        # Kiểm tra nếu không tạo được người dùng
+        if user is None:
+            logger.error("Failed to create or retrieve test user")
+            return jsonify({
+                'error': True,
+                'message': 'Lỗi hệ thống: Không thể tạo người dùng'
+            }), 500
+        
+        # Truy vấn danh sách thành tích
+        try:
+            achievements = session.query(Achievement).filter(
+                Achievement.user_id == user.id
+            ).order_by(Achievement.date_earned.desc()).limit(5).all()
+        except Exception as ach_error:
+            logger.error(f"Error querying achievements: {ach_error}")
+            achievements = []
+        
+        # Chuẩn bị dữ liệu để render
+        user_profile_data = {
+            'error': False,
+            'username': user.username,
+            'email': user.email,
+            'full_name': user.full_name or 'Chưa cập nhật',
+            'total_words': user.total_words_learned or 0,
+            'study_time': round((user.total_study_time or 0) / 60, 1),  # Chuyển sang giờ
+            'current_streak': user.current_streak or 0,
+            'max_streak': user.max_streak or 0,
+            'language_level': user.language_level or 'Chưa xác định',
+            'learning_goal': user.learning_goal or 'Chưa đặt mục tiêu',
+            'total_achievements': user.total_achievements or 0,
+            'achievement_points': user.achievement_points or 0,
+            'recent_achievements': [
+                {
+                    'name': achievement.achievement_name,
+                    'description': achievement.achievement_description,
+                    'points': achievement.points,
+                    'date': str(achievement.date_earned)
+                } for achievement in achievements
+            ]
+        }
+        
+        logger.info(f"User profile loaded successfully for {user.username}")
+        return jsonify(user_profile_data)
+    
+    except Exception as e:
+        logger.error(f"Unexpected error in user_profile: {e}", exc_info=True)
+        return jsonify({
+            'error': True,
+            'message': f"Lỗi hệ thống: {str(e)}"
+        }), 500
+    finally:
+        if 'session' in locals():
+            session.close()
+
+import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'uploads', 'avatars')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload_avatar', methods=['POST'])
+def upload_avatar():
+    if 'avatar' not in request.files:
+        return jsonify({'success': False, 'message': 'Không có file ảnh'}), 400
+    
+    file = request.files['avatar']
+    
+    if file.filename == '':
+        return jsonify({'success': False, 'message': 'Không có file được chọn'}), 400
+    
+    if file and allowed_file(file.filename):
+        try:
+            # Kiểm tra và tạo thư mục nếu chưa tồn tại
+            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+            
+            # Tạo tên file an toàn
+            user_id = 1  # Tạm thởi hardcode
+            filename = f"avatar_{user_id}_{secure_filename(file.filename)}"
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            
+            # Lưu file
+            file.save(filepath)
+            
+            # Cập nhật đường dẫn avatar trong database
+            user_model = UserModel()
+            session = user_model._get_connection()
+            
+            user = session.query(User).filter(User.id == user_id).first()
+            if user:
+                user.avatar_path = f'/static/uploads/avatars/{filename}'
+                session.commit()
+            
+            return jsonify({
+                'success': True, 
+                'avatar_url': f'/static/uploads/avatars/{filename}'
+            })
+        
+        except Exception as e:
+            logger.error(f"Lỗi upload avatar: {e}")
+            return jsonify({
+                'success': False, 
+                'message': 'Lỗi hệ thống khi upload avatar'
+            }), 500
+    
+    return jsonify({
+        'success': False, 
+        'message': 'Định dạng file không được phép'
+    }), 400
+
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    try:
+        data = request.get_json()
+        
+        # Xác thực dữ liệu
+        if not data:
+            return jsonify({'success': False, 'message': 'Không có dữ liệu'}), 400
+        
+        # Lấy user hiện tại
+        user_id = 1  # Tạm thởi hardcode
+        user_model = UserModel()
+        session = user_model._get_connection()
+        
+        user = session.query(User).filter(User.id == user_id).first()
+        
+        if not user:
+            return jsonify({'success': False, 'message': 'Người dùng không tồn tại'}), 404
+        
+        # Cập nhật thông tin
+        if 'full_name' in data:
+            user.full_name = data['full_name']
+        
+        if 'language_level' in data:
+            user.language_level = data['language_level']
+        
+        if 'learning_goal' in data:
+            user.learning_goal = data['learning_goal']
+        
+        # Cập nhật thởi gian
+        user.updated_at = datetime.utcnow()
+        
+        # Lưu thay đổi
+        session.commit()
+        
+        return jsonify({
+            'success': True, 
+            'message': 'Cập nhật hồ sơ thành công'
+        })
+    
+    except Exception as e:
+        logger.error(f"Lỗi cập nhật hồ sơ: {e}")
+        return jsonify({
+            'success': False, 
+            'message': 'Lỗi hệ thống khi cập nhật hồ sơ'
+        }), 500
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -916,6 +1308,19 @@ def not_found_error(error):
 def internal_error(error):
     """Handle 500 errors"""
     return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/user_interface')
+def user_interface():
+    """
+    Route to render the user interface page
+    Returns the rendered HTML for the user interface
+    """
+    try:
+        # Render the user interface template
+        return render_template('user_interface.html')
+    except Exception as e:
+        logger.error(f"Error rendering user interface: {str(e)}")
+        return render_template('error.html', error_message="Could not load user interface"), 500
 
 if __name__ == '__main__':
     import sys

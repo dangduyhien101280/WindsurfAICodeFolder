@@ -1,0 +1,165 @@
+2024-12-11 10:01:54 - app - INFO - Existing database tables dropped
+2024-12-11 10:01:55 - app - INFO - Database tables recreated
+2024-12-11 10:01:55 - app - INFO - Database reinitialized with sample words
+2024-12-11 10:02:16 - app - ERROR - Error adding 'updated_at' column: (sqlite3.OperationalError) Cannot add a column with non-constant default
+[SQL: 
+                    ALTER TABLE users 
+                    ADD COLUMN updated_at DATETIME DEFAULT (datetime('now'))
+                ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:02:19 - app - ERROR - Error adding 'updated_at' column: (sqlite3.OperationalError) Cannot add a column with non-constant default
+[SQL: 
+                    ALTER TABLE users 
+                    ADD COLUMN updated_at DATETIME DEFAULT (datetime('now'))
+                ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:02:29 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:02:29 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:04:24 - app - ERROR - Error adding 'updated_at' column: (sqlite3.OperationalError) Cannot add a column with non-constant default
+[SQL: 
+                    ALTER TABLE users 
+                    ADD COLUMN updated_at DATETIME DEFAULT (datetime('now'))
+                ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:04:27 - app - ERROR - Error adding 'updated_at' column: (sqlite3.OperationalError) Cannot add a column with non-constant default
+[SQL: 
+                    ALTER TABLE users 
+                    ADD COLUMN updated_at DATETIME DEFAULT (datetime('now'))
+                ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:04:50 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-11 10:04:50 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:04:58 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-11 10:04:58 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:05:01 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-11 10:05:01 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:05:08 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-11 10:05:08 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:05:18 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-11 10:05:18 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:05:22 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-11 10:05:22 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:05:50 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-11 10:05:50 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:07:07 - app - ERROR - Error adding 'updated_at' column: (sqlite3.OperationalError) Cannot add a column with non-constant default
+[SQL: 
+                    ALTER TABLE users 
+                    ADD COLUMN updated_at DATETIME DEFAULT (datetime('now'))
+                ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:07:55 - app - INFO - Existing database tables dropped
+2024-12-11 10:07:56 - app - INFO - Database tables recreated
+2024-12-11 10:07:56 - app - INFO - Database reinitialized with sample words
+2024-12-11 10:08:34 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:08:34 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:08:38 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:08:38 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:08:48 - app - ERROR - Error creating test user: (sqlite3.OperationalError) no such column: users.updated_at
+[SQL: SELECT users.id AS users_id, users.username AS users_username, users.email AS users_email, users.password_salt AS users_password_salt, users.password_hash AS users_password_hash, users.full_name AS users_full_name, users.language_level AS users_language_level, users.learning_goal AS users_learning_goal, users.total_words_learned AS users_total_words_learned, users.total_study_time AS users_total_study_time, users.current_streak AS users_current_streak, users.max_streak AS users_max_streak, users.total_achievements AS users_total_achievements, users.achievement_points AS users_achievement_points, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('testuser', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-11 10:08:48 - app - ERROR - Failed to create or retrieve test user
+2024-12-11 10:09:47 - app - INFO - Added 'updated_at' column to users table
+2024-12-11 10:10:11 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:10:20 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:10:21 - app - INFO - Existing database tables dropped
+2024-12-11 10:10:22 - app - INFO - Database tables recreated
+2024-12-11 10:10:22 - app - INFO - Database reinitialized with sample words
+2024-12-11 10:10:43 - app - INFO - Created test user 'testuser'
+2024-12-11 10:10:43 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:11:19 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:17:54 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:18:47 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:18:59 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:24:57 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:25:13 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:25:48 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:26:03 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:28:57 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:30:22 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:30:38 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:31:08 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:32:55 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:34:03 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:34:20 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 10:38:29 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:39:05 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:56:56 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:56:59 - app - INFO - 'updated_at' column already exists
+2024-12-11 10:57:07 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 11:09:15 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 11:09:22 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 11:26:41 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 11:30:19 - app - INFO - 'updated_at' column already exists
+2024-12-11 11:31:23 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 11:31:38 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 11:31:49 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 11:32:41 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 11:36:04 - app - INFO - 'updated_at' column already exists
+2024-12-11 11:36:15 - app - INFO - 'updated_at' column already exists
+2024-12-11 11:38:49 - app - INFO - 'updated_at' column already exists
+2024-12-11 11:39:29 - app - INFO - 'updated_at' column already exists
+2024-12-11 11:40:29 - app - INFO - User profile loaded successfully for testuser

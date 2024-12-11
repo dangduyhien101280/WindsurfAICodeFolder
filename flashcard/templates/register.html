@@ -1,0 +1,77 @@
+
+{% extends "base.html" %}
+
+{% block title %}Đăng Ký{% endblock %}
+
+{% block content %}
+<div class="container register-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card register-card">
+                <div class="card-header text-center">
+                    <h2>Đăng Ký Tài Khoản</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên Đăng Nhập</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật Khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Xác Nhận Mật Khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus me-2"></i>Đăng Ký
+                            </button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Đã có tài khoản? <a href="{{ url_for('login_page') }}">Đăng Nhập</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .register-container {
+        margin-top: 50px;
+    }
+    .register-card {
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border: none;
+    }
+    .register-card .card-header {
+        background-color: #28a745;
+        color: white;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}

@@ -762,8 +762,8 @@ header h1 {
 }
 
 .settings-box-container .setting-item input[type="checkbox"]:checked {
-    background-color: var(--primary-color);
     border-color: var(--primary-color);
+    background-color: var(--primary-color);
 }
 
 .settings-box-container .setting-item input[type="checkbox"]:checked::after {
@@ -1102,4 +1102,202 @@ header h1 {
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.8);
     z-index: 1000;
+}
+
+.user-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.btn-user-profile {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-user-profile:hover {
+    background-color: #45a049;
+}
+
+.btn-user-profile i {
+    margin-right: 8px;
+}
+
+/* User Profile Styles */
+.profile-section {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    margin-right: 30px;
+}
+
+.profile-avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-details h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.learning-stats {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat-item {
+    background-color: white;
+    padding: 15px;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+    display: block;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* User Profile Achievements Styles */
+.recent-achievements {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.achievements-list {
+    display: grid;
+    gap: 15px;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.achievement-item:hover {
+    transform: scale(1.02);
+}
+
+.achievement-icon {
+    background-color: #FFC107;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.achievement-icon i {
+    font-size: 24px;
+}
+
+.achievement-details h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.achievement-details p {
+    margin: 0 0 5px 0;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.achievement-points {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    margin-right: 10px;
+}
+
+.achievement-details small {
+    color: #999;
+    font-size: 0.7em;
+}
+
+.btn-edit-profile {
+    display: block;
+    margin-top: 10px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-edit-profile:hover {
+    background-color: #1976D2;
+}
+
+.back-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn i {
+    margin-right: 8px;
+}
+
+/* Spinner Overlay */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
 }

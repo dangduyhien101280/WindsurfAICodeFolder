@@ -6,11 +6,18 @@
     <title>Vocabulary Flashcards</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {{ ui_style | safe }}
 </head>
 <body>
-    <div class="container">
+    <div class="container main-content">
         <header>
             <h1>Vocabulary Flashcards</h1>
+            <div class="user-section">
+                <button class="btn btn-user-login" id="userLoginBtn">
+                    <i class="fas fa-user"></i>Learning Dashboard
+                </button>
+
+            </div>
             <p class="progress-text">
                 Progress: <span id="learned">0</span> / <span id="total">0</span> words learned
             </p>
@@ -19,7 +26,7 @@
             <!-- Settings Section -->
             <div class="settings">
                 <div class="setting-item">
-                    <label for="autoSpeak">Auto-speak words:</label>
+                    <label for="autoSpeak">Auto-speak:</label>
                     <input type="checkbox" id="autoSpeak">
                 </div>
                 <div class="setting-item">
@@ -27,11 +34,7 @@
                     <input type="range" id="speechRate" min="0.5" max="2.0" step="0.1" value="1.0">
                     <span id="rateValue">1.0x</span>
                 </div>
-                <div class="setting-item">
-                    <button class="btn btn-secondary" id="exportBtn">Export Data</button>
-                    <button class="btn btn-secondary" id="importBtn">Import Data</button>
-                    <input type="file" id="importFile" accept=".json" style="display: none;">
-                </div>
+
             </div>
         </header>
 
@@ -130,8 +133,13 @@
         <!-- YouTube Import -->
         <div class="import-container">
             <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL">
-            <button class="btn import-btn" id="importBtn">Import Words</button>
+            <button class="btn btn-secondary import-btn" id="importBtn">Import Words</button>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+            
+            <button class="btn btn-secondary exportdata-btn" id="exportdataBtn">Export Data</button>
+            <button class="btn btn-secondary importdata-btn" id="importdataBtn">Import Data</button>
         </div>
+
     </div>
 
     <!-- Loading Indicator -->

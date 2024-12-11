@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}Hồ Sơ Người Dùng{% endblock %}
+
+{% block content %}
+<div class="user-profile-container">
+    <div class="profile-header text-center mb-4">
+        <a href="/" class="btn btn-secondary back-btn position-absolute top-0 start-0 m-3">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+        
+        {% if not current_user.is_authenticated %}
+        <div class="auth-buttons position-absolute top-0 end-0 m-3">
+            <a href="{{ url_for('login') }}" class="btn btn-primary me-2">
+                <i class="fas fa-sign-in-alt"></i> Đăng Nhập
+            </a>
+            <a href="{{ url_for('register') }}" class="btn btn-success">
+                <i class="fas fa-user-plus"></i> Đăng Ký
+            </a>
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+        {% else %}
+        <div class="profile-avatar-container mb-3">
+            <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="Avatar" class="profile-avatar">
+            <div class="avatar-badge">
+                <i class="fas fa-edit" data-bs-toggle="modal" data-bs-target="#avatarModal"></i>
+            </div>
+        </div>
+        
+        <h1 class="mb-1">{{ full_name }}</h1>
+        <p class="username text-muted mb-3">@{{ username }}</p>
+        
+        <div class="profile-quick-stats d-flex justify-content-center mb-4">
+            <div class="stat-item mx-3">
+                <h4 class="stat-number">{{ total_words }}</h4>
+                <small>Từ Đã Học</small>
+            </div>
+            <div class="stat-item mx-3">
+                <h4 class="stat-number">{{ study_time }} giờ</h4>
+                <small>Thời Gian Học</small>
+            </div>
+            <div class="stat-item mx-3">
+                <h4 class="stat-number">{{ achievement_points }}</h4>
+                <small>Điểm Thành Tích</small>
+            </div>
+        </div>
+        
+        <div class="profile-progress mb-4">
+            <h3>Tiến Độ Học Tập</h3>
+            <div class="progress" style="height: 20px;">
+                <div class="progress-bar" role="progressbar" 
+                     style="width: {{ (total_words / 1000 * 100)|round(2) }}%" 
+                     aria-valuenow="{{ total_words }}" 
+                     aria-valuemin="0" 
+                     aria-valuemax="1000">
+                    {{ total_words }} / 1000 từ
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card profile-details-card">
+                    <div class="card-header">
+                        <h3>Thông Tin Cá Nhân</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Email:</strong> {{ email }}</p>
+                        <p><strong>Trình Độ:</strong> {{ language_level }}</p>
+                        <p><strong>Mục Tiêu Học Tập:</strong> {{ learning_goal }}</p>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="fas fa-edit"></i> Chỉnh Sửa
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card learning-stats-card">
+                    <div class="card-header">
+                        <h3>Thống Kê Học Tập</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="streak-info mb-3">
+                            <h4>Chuỗi Học Tập</h4>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <strong>Hiện Tại:</strong> {{ current_streak }} ngày
+                                </div>
+                                <div>
+                                    <strong>Cao Nhất:</strong> {{ max_streak }} ngày
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="total-achievements">
+                            <h4>Thành Tích</h4>
+                            <p>
+                                <strong>Tổng Số:</strong> {{ total_achievements }} 
+                                <strong>Điểm:</strong> {{ achievement_points }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="recent-achievements mt-4">
+            <h3>Thành Tích Gần Đây</h3>
+            {% if recent_achievements %}
+            <div class="achievements-list row g-3">
+                {% for achievement in recent_achievements %}
+                <div class="col-md-4">
+                    <div class="achievement-item card">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ achievement.name }}</h4>
+                            <p class="card-text">{{ achievement.description }}</p>
+                            <div class="achievement-footer">
+                                <span class="badge bg-primary">+{{ achievement.points }} điểm</span>
+                                <small class="text-muted">{{ achievement.date }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted">Chưa có thành tích nào.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Avatar Modal -->
+<div class="modal fade" id="avatarModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thay Đổi Ảnh Đại Diện</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="file" class="form-control" accept="image/*">
+                <div class="preview-container mt-3 text-center"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary">Lưu Thay Đổi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chỉnh Sửa Hồ Sơ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Họ Và Tên</label>
+                        <input type="text" class="form-control" value="{{ full_name }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Địa Chỉ Email</label>
+                        <input type="email" class="form-control" value="{{ email }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Trình Độ Ngôn Ngữ</label>
+                        <select class="form-select">
+                            <option {% if language_level == 'Beginner' %}selected{% endif %}>Beginner</option>
+                            <option {% if language_level == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+                            <option {% if language_level == 'Advanced' %}selected{% endif %}>Advanced</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mục Tiêu Học Tập</label>
+                        <textarea class="form-control">{{ learning_goal }}</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary">Lưu Thay Đổi</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .user-profile-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .profile-avatar-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-avatar {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #007bff;
+    }
+
+    .avatar-badge {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: white;
+        border-radius: 50%;
+        padding: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        cursor: pointer;
+    }
+
+    .profile-quick-stats .stat-item {
+        text-align: center;
+    }
+
+    .profile-quick-stats .stat-number {
+        font-size: 1.8rem;
+        color: #007bff;
+        margin-bottom: 0;
+    }
+
+    .profile-details-card, .learning-stats-card {
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-details-card:hover, .learning-stats-card:hover {
+        transform: scale(1.02);
+    }
+
+    .achievement-item {
+        transition: transform 0.3s ease;
+    }
+
+    .achievement-item:hover {
+        transform: scale(1.05);
+    }
+
+    .back-btn {
+        z-index: 10;
+    }
+</style>
+{% endblock %}
