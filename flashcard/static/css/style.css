@@ -378,10 +378,9 @@ header h1 {
 .card-actions {
     position: absolute;
     right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 1rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
 }
 
@@ -1300,4 +1299,8 @@ header h1 {
 .spinner-border {
     width: 3rem;
     height: 3rem;
+}
+
+.flashcard.flipped .card-back #meaning {
+    font-weight: bold;
 }

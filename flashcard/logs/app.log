@@ -183,3 +183,5 @@ WHERE users.username = ?
 2024-12-11 21:15:58 - app - INFO - 'updated_at' column already exists
 2024-12-11 21:16:23 - app - INFO - 'updated_at' column already exists
 2024-12-11 21:16:42 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:27:02 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:27:07 - app - INFO - 'updated_at' column already exists

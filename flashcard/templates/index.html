@@ -108,7 +108,7 @@
                 <div class="card-back">
                     <span id="card-number-back" class="card-number card-number-back">0/0</span>
                     <span id="box-number-back" class="box-number box-number-back">Box: 0</span>
-                    <p id="meaning">to greet someone in a polite or friendly way</p>
+                    <p id="meaning"><strong>to greet someone in a polite or friendly way</strong></p>
                     <p id="example">They welcomed us with open arms.</p>
                     <div class="card-actions">
                         <button class="btn-icon" id="flipBackBtn" title="Flip">↻</button>
@@ -131,11 +131,7 @@
         </p>
 
         <!-- YouTube Import -->
-        <div class="import-container">
-            <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL">
-            <button class="btn btn-secondary import-btn" id="importBtn">Import Words</button>
-            <input type="file" id="importFile" accept=".json" style="display: none;">
-            
+        <div class="import-container">           
             <button class="btn btn-secondary exportdata-btn" id="exportdataBtn">Export Data</button>
             <button class="btn btn-secondary importdata-btn" id="importdataBtn">Import Data</button>
         </div>
@@ -156,6 +152,7 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
     <!-- Developer Information -->
+
 <div class="developer-info">
     Powered by AI | Developed by MBA.Đặng Duy Hiền (email: hien.dang@bu.com.vn)
 </div>
