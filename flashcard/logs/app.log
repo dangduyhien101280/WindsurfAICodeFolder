@@ -163,3 +163,23 @@ WHERE users.username = ?
 2024-12-11 11:38:49 - app - INFO - 'updated_at' column already exists
 2024-12-11 11:39:29 - app - INFO - 'updated_at' column already exists
 2024-12-11 11:40:29 - app - INFO - User profile loaded successfully for testuser
+2024-12-11 20:33:20 - app - INFO - 'updated_at' column already exists
+2024-12-11 20:33:25 - app - INFO - 'updated_at' column already exists
+2024-12-11 20:37:49 - app - ERROR - Error adding 'updated_at' column: (sqlite3.OperationalError) no such table: users
+[SQL: 
+                ALTER TABLE users 
+                ADD COLUMN updated_at DATETIME
+            ]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-11 20:57:35 - app - INFO - 'updated_at' column already exists
+2024-12-11 20:57:39 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:00:23 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:00:39 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:03:51 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:03:58 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:06:08 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:06:14 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:15:34 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:15:58 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:16:23 - app - INFO - 'updated_at' column already exists
+2024-12-11 21:16:42 - app - INFO - 'updated_at' column already exists

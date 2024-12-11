@@ -1,0 +1,5 @@
+1, welcome, to greet someone in a polite or friendly way, They welcomed us with open arms., /ˈwelkəm/, verb, 0, None, 2024-12-11 03:10:22.240259, 2024-12-11 03:10:22.257502, 2024-12-11 03:10:22.257534
+2, journey, an act of traveling from one place to another, It was a long journey across the country., /ˈdʒɜːrni/, noun, 0, None, 2024-12-11 03:10:22.251956, 2024-12-11 03:10:22.260044, 2024-12-11 03:10:22.260060
+3, challenge, a task or situation that tests someone's abilities, Climbing the mountain was a real challenge., /ˈtʃæləndʒ/, noun, 0, None, 2024-12-11 03:10:22.252077, 2024-12-11 03:10:22.260490, 2024-12-11 03:10:22.260510
+4, inspire, to encourage or motivate someone, Her story inspired many young entrepreneurs., /ɪnˈspaɪər/, verb, 0, None, 2024-12-11 03:10:22.252243, 2024-12-11 03:10:22.260742, 2024-12-11 03:10:22.260758
+5, adventure, an exciting experience or unusual activity, Traveling alone is a great adventure., /ədˈventʃər/, noun, 0, None, 2024-12-11 03:10:22.252322, 2024-12-11 03:10:22.261001, 2024-12-11 03:10:22.261016
