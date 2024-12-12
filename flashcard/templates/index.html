@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocabulary Flashcards</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {{ ui_style | safe }}
+    <title>Vocabulary Flashcards</title>
 </head>
 <body>
     <div class="container main-content">
@@ -109,6 +108,11 @@
                     <span id="card-number-back" class="card-number card-number-back">0/0</span>
                     <span id="box-number-back" class="box-number box-number-back">Box: 0</span>
                     <p id="meaning"><strong>to greet someone in a polite or friendly way</strong></p>
+                    <div class="back">
+                        <span id="back-word" style="color: red;"></span>
+                        <p id="translation">Translation will appear here</p>
+                        <p id="vietnamese-translation">{{ vietnamese_translation }}</p>
+                    </div>
                     <p id="example">They welcomed us with open arms.</p>
                     <div class="card-actions">
                         <button class="btn-icon" id="flipBackBtn" title="Flip">↻</button>
@@ -149,13 +153,13 @@
         <span id="toastMessage"></span>
     </div>
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
     <!-- Developer Information -->
 
 <div class="developer-info">
     Powered by AI | Developed by MBA.Đặng Duy Hiền (email: hien.dang@bu.com.vn)
 </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 </body>
 </html>

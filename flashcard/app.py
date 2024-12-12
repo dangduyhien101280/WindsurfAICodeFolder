@@ -7,8 +7,9 @@ from typing import Set, Optional, List, Tuple
 import requests
 from flask import Flask, jsonify, request, render_template, send_file, abort
 from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Float, ForeignKey, inspect, text
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
+from sqlalchemy import event
 
 from youtube_transcript_api import YouTubeTranscriptApi
 from gtts import gTTS
@@ -22,6 +23,7 @@ from user_interface import FlashcardLearningApp, login_page, register_page
 from models import UserModel, User, Achievement, Base
 import uuid
 import hashlib
+from googletrans import Translator
 
 # Download necessary NLTK resources
 try:
@@ -105,11 +107,8 @@ engine = create_engine('sqlite:///flashcards.db',
     pool_recycle=3600,       # Recycle connections after an hour
     pool_pre_ping=True       # Verify connection before using
 )
-SessionLocal = sessionmaker(bind=engine)
 
-# Configure audio directory
-AUDIO_DIR = Path('static/audio').absolute()
-AUDIO_DIR.mkdir(parents=True, exist_ok=True)
+Base = declarative_base()
 
 class Card(Base):
     """Database model for flashcards with spaced repetition"""
@@ -126,6 +125,7 @@ class Card(Base):
     next_review = Column(DateTime)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    vietnamese_translation = Column(Text)  # New column
     
     def to_dict(self):
         """Convert card to dictionary for JSON serialization"""
@@ -140,8 +140,24 @@ class Card(Base):
             'last_reviewed': self.last_reviewed.isoformat() if self.last_reviewed else None,
             'next_review': self.next_review.isoformat() if self.next_review else None,
             'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
+            'updated_at': self.updated_at.isoformat(),
+            'vietnamese_translation': self.vietnamese_translation
         }
+
+Session = sessionmaker(bind=engine)
+
+@contextmanager
+def session_scope():
+    """Provide a transactional scope around a series of operations."""
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
 
 # Spaced repetition intervals (in days) for each box
 BOX_INTERVALS = {
@@ -152,22 +168,6 @@ BOX_INTERVALS = {
     4: 30,     # Fourth review after 30 days
     5: 90      # Fifth review after 90 days
 }
-
-@contextmanager
-def session_scope():
-    """Provide a transactional scope around a series of operations."""
-    session = SessionLocal()
-    try:
-        yield session
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        if isinstance(e, sqlite3.OperationalError) and "database is locked" in str(e):
-            logger.warning("Database lock detected, rolling back transaction")
-            time.sleep(0.1)  # Small delay before retrying
-        raise
-    finally:
-        session.close()
 
 def retry_operation(func):
     """Decorator to retry operations with exponential backoff"""
@@ -1321,6 +1321,52 @@ def user_interface():
     except Exception as e:
         logger.error(f"Error rendering user interface: {str(e)}")
         return render_template('error.html', error_message="Could not load user interface"), 500
+
+def translate_to_vietnamese(word):
+    translator = Translator()
+    translated_word = translator.translate(word, dest='vi').text
+    return translated_word
+
+def create_flashcard(front_word):
+    translated_word = translate_to_vietnamese(front_word)
+    back_content = f'{translated_word}\n{get_back_content(front_word)}'
+    print(f"Flashcard created: {front_word} - {back_content}")
+
+def save_flashcard(front_word, back_content):
+    # Assuming there's a function to save or display the flashcard
+    print(f"Saving flashcard: {front_word} - {back_content}")
+
+@app.route('/translate', methods=['GET'])
+def translate():
+    text = request.args.get('text')
+    target = request.args.get('target')
+    # Call external translation API
+    response = requests.get(f'https://api.example.com/translate?text={text}&target={target}')
+    return jsonify(response.json())
+
+@contextmanager
+def add_vietnamese_translation_column(engine):
+    connection = engine.connect()
+    trans = connection.begin()
+    try:
+        # Add the new column if it doesn't exist
+        # connection.execute("ALTER TABLE cards ADD COLUMN vietnamese_translation TEXT")
+        trans.commit()
+    except Exception as e:
+        trans.rollback()
+        print(f"Error adding column: {e}")
+    finally:
+        connection.close()
+
+add_vietnamese_translation_column(engine)
+
+@app.route('/get_translation/<int:card_id>')
+def get_translation(card_id):
+    with session_scope() as session:
+        card = session.query(Card).filter(Card.id == card_id).first()
+        if card:
+            return jsonify({'translation': card.vietnamese_translation})
+        return jsonify({'translation': None}), 404
 
 if __name__ == '__main__':
     import sys

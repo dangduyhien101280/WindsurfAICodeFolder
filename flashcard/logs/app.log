@@ -185,3 +185,229 @@ WHERE users.username = ?
 2024-12-11 21:16:42 - app - INFO - 'updated_at' column already exists
 2024-12-11 21:27:02 - app - INFO - 'updated_at' column already exists
 2024-12-11 21:27:07 - app - INFO - 'updated_at' column already exists
+2024-12-12 12:44:11 - app - INFO - 'updated_at' column already exists
+2024-12-12 12:44:14 - app - INFO - 'updated_at' column already exists
+2024-12-12 12:55:11 - app - INFO - 'updated_at' column already exists
+2024-12-12 14:25:17 - app - INFO - 'updated_at' column already exists
+2024-12-12 14:25:29 - app - INFO - 'updated_at' column already exists
+2024-12-12 14:27:31 - app - INFO - 'updated_at' column already exists
+2024-12-12 14:30:16 - app - INFO - 'updated_at' column already exists
+2024-12-12 14:30:32 - app - INFO - 'updated_at' column already exists
+2024-12-12 14:31:54 - app - INFO - 'updated_at' column already exists
+2024-12-12 14:32:04 - app - INFO - 'updated_at' column already exists
+2024-12-12 14:32:44 - app - INFO - 'updated_at' column already exists
+2024-12-12 15:22:10 - app - INFO - 'updated_at' column already exists
+2024-12-12 15:48:36 - app - INFO - 'updated_at' column already exists
+2024-12-12 16:03:03 - app - INFO - 'updated_at' column already exists
+2024-12-12 16:09:41 - app - INFO - 'updated_at' column already exists
+2024-12-12 16:13:52 - app - INFO - 'updated_at' column already exists
+2024-12-12 16:22:23 - app - INFO - 'updated_at' column already exists
+2024-12-12 16:22:27 - app - INFO - 'updated_at' column already exists
+2024-12-12 16:39:22 - app - INFO - 'updated_at' column already exists
+2024-12-12 16:39:26 - app - INFO - 'updated_at' column already exists
+2024-12-12 17:05:20 - app - INFO - 'updated_at' column already exists
+2024-12-12 17:05:20 - app - INFO - 'updated_at' column already exists
+2024-12-12 18:48:33 - app - INFO - 'updated_at' column already exists
+2024-12-12 18:48:34 - app - INFO - 'updated_at' column already exists
+2024-12-12 18:55:54 - app - INFO - 'updated_at' column already exists
+2024-12-12 18:55:54 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:26:04 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:26:08 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:29:06 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:29:06 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:29:06 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:35:22 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:35:22 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:35:22 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:36:23 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:36:23 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:36:24 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:37:16 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:37:16 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:37:16 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:38:41 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:38:41 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:38:41 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:40:32 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:40:32 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:40:33 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:41:49 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:41:50 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:41:50 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:42:41 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:42:41 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:42:41 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:47:10 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:47:10 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:47:11 - app - INFO - 'updated_at' column already exists
+2024-12-12 19:51:06 - app - INFO - 'updated_at' column already exists
+2024-12-12 21:57:01 - app - INFO - 'updated_at' column already exists
+2024-12-12 21:57:08 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:29:06 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:29:06 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:29:06 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:29:06 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:30:08 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:31:43 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:31:47 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:37:19 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:41:12 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:43:55 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:44:11 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:44:11 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:44:11 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:44:38 - app - ERROR - Exception on /get_translation/2 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:44:44 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:44:48 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:49:34 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:50:46 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:50:57 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:50:57 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:50:57 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    card = Card.query.get(card_id)  # Assuming Card is your model
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:54:16 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:54:59 - app - ERROR - Exception on /get_translation/1 [GET]
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\flask\app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\Python\lib\site-packages\flask_cors\extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "D:\Python\lib\site-packages\flask\app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Python\lib\site-packages\flask\app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 1368, in get_translation
+    return jsonify({'translation': None}), 404
+AttributeError: type object 'Card' has no attribute 'query'
+2024-12-12 22:55:51 - app - INFO - 'updated_at' column already exists
+2024-12-12 22:57:50 - app - INFO - 'updated_at' column already exists
+2024-12-12 23:11:08 - app - INFO - 'updated_at' column already exists
+2024-12-12 23:16:42 - app - INFO - 'updated_at' column already exists
+2024-12-12 23:16:45 - app - INFO - 'updated_at' column already exists
