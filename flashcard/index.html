@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Translations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .translation {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .blue {
+            color: blue;
+        }
+        .red {
+            color: red;
+        }
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Flashcard Translations</h1>
+    <div class="translation blue">Vietnamese Translation: <span id="vietnamese-translation">[Your Translation Here]</span></div>
+    <div>
+        <button class="btn" onclick="changeColor('blue')">Blue</button>
+        <button class="btn" onclick="changeColor('red')">Red</button>
+        <button class="btn" onclick="changeColor('green')">Green</button>
+    </div>
+
+    <div class="user-profile">
+        <button id="user-profile-btn" class="btn" onclick="openModal()">User Profile</button>
+        <input type="file" id="avatar-input" accept="image/*" style="display:none;" />
+        <button id="avatar-save-btn" class="btn" onclick="saveAvatar()">Save Avatar</button>
+    </div>
+
+    <div id="edit-profile-modal" style="display:none;">
+        <h2>Edit Profile</h2>
+        <form id="edit-profile-form" onsubmit="submitProfileEdit(event)">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+            <button type="submit" class="btn">Save Changes</button>
+        </form>
+        <button onclick="closeModal()" class="btn">Close</button>
+    </div>
+
+    <div class="export-import">
+        <button id="exportdataBtn" class="btn">Export</button>
+        <button id="importdataBtn" class="btn">Import</button>
+        <input type="file" id="import-file-input" accept="application/json" style="display:none;" />
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded and parsed');
+
+            const exportDataBtn = document.getElementById('exportdataBtn');
+            if (exportDataBtn) {
+                exportDataBtn.addEventListener('click', function() {
+                    try {
+                        // Collect comprehensive learning data
+                        const learningData = {
+                            timestamp: new Date().toISOString(),
+                            vocabularyCards: collectVocabularyData(),
+                            studyProgress: collectStudyProgress(),
+                            learningBoxes: collectLearningBoxes(),
+                            achievements: collectAchievements()
+                        };
+
+                        // Convert data to JSON string
+                        const exportData = JSON.stringify(learningData, null, 2);
+
+                        // Create a Blob with the data
+                        const blob = new Blob([exportData], { type: 'application/json' });
+
+                        // Create a download link
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = URL.createObjectURL(blob);
+                        
+                        // Generate filename with current date
+                        const now = new Date();
+                        const filename = `flashcard_learning_data_${now.toISOString().split('T')[0]}.json`;
+                        downloadLink.download = filename;
+
+                        // Trigger download
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        document.body.removeChild(downloadLink);
+
+                        // Optional: Save to local storage
+                        localStorage.setItem('flashcard_learning_backup', exportData);
+                        localStorage.setItem('flashcard_learning_backup_timestamp', now.toISOString());
+
+                        // Show success toast
+                        showToast('Learning data exported successfully!', 'success');
+                    } catch (error) {
+                        console.error('Export failed:', error);
+                        showToast('Failed to export data. Please try again.', 'error');
+                    }
+                });
+            } else {
+                console.error('Export data button not found.');
+            }
+
+            const importButton = document.getElementById('importdataBtn');
+            if (importButton) {
+                importButton.addEventListener('click', function() {
+                    console.log('Import button clicked');
+                    const importFileInput = document.getElementById('import-file-input');
+                    if (importFileInput) {
+                        importFileInput.click();
+                    } else {
+                        console.error('Import file input not found.');
+                    }
+                });
+            } else {
+                console.error('Import button not found.');
+            }
+
+            const importFileInput = document.getElementById('import-file-input');
+            if (importFileInput) {
+                importFileInput.addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            try {
+                                const importedData = JSON.parse(e.target.result);
+                                
+                                // Validate imported data
+                                if (!importedData.timestamp || !importedData.vocabularyCards) {
+                                    throw new Error('Invalid data format');
+                                }
+
+                                // Restore vocabulary cards
+                                if (importedData.vocabularyCards) {
+                                    restoreVocabularyData(importedData.vocabularyCards);
+                                }
+
+                                // Restore study progress
+                                if (importedData.studyProgress) {
+                                    restoreStudyProgress(importedData.studyProgress);
+                                }
+
+                                // Restore learning boxes
+                                if (importedData.learningBoxes) {
+                                    restoreLearningBoxes(importedData.learningBoxes);
+                                }
+
+                                // Restore achievements
+                                if (importedData.achievements) {
+                                    restoreAchievements(importedData.achievements);
+                                }
+
+                                // Show success toast
+                                showToast('Learning data imported successfully!', 'success');
+
+                                // Optional: Refresh UI
+                                updateUIAfterImport();
+                            } catch (error) {
+                                console.error('Import failed:', error);
+                                showToast('Failed to import data. Please check the file.', 'error');
+                            }
+                        };
+
+                        reader.onerror = function(error) {
+                            console.error('File reading error:', error);
+                            showToast('Error reading file. Please try again.', 'error');
+                        };
+
+                        // Read the file
+                        reader.readAsText(file);
+                    }
+                });
+            } else {
+                console.error('Import file input not found.');
+            }
+
+            function changeColor(color) {
+                const translationDiv = document.querySelector('.translation');
+                translationDiv.className = 'translation ' + color;
+            }
+
+            function openModal() {
+                console.log('Opening modal');
+                const modal = document.getElementById('edit-profile-modal');
+                modal.style.display = 'block';
+            }
+
+            function closeModal() {
+                console.log('Closing modal');
+                const modal = document.getElementById('edit-profile-modal');
+                modal.style.display = 'none';
+            }
+
+            function saveAvatar() {
+                console.log('Saving avatar');
+                const avatarInput = document.getElementById('avatar-input');
+                // Add functionality to save avatar here
+            }
+
+            function submitProfileEdit(event) {
+                event.preventDefault();
+                console.log('Submitting profile edit');
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                // Add functionality to submit profile edit here
+            }
+        });
+    </script>
+</body>
+</html>

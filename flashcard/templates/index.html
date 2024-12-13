@@ -135,8 +135,9 @@
 
         <!-- YouTube Import -->
         <div class="import-container">           
-            <button class="btn btn-secondary exportdata-btn" id="exportdataBtn">Export Data</button>
-            <button class="btn btn-secondary importdata-btn" id="importdataBtn">Import Data</button>
+            <button class="btn btn-secondary" id="exportdataBtn">Export Data</button>
+            <button class="btn btn-secondary" id="importdataBtn">Import Data</button>
+            <input type="file" id="import-file-input" accept="application/json" style="display:none;" />
         </div>
 
     </div>
@@ -159,6 +160,189 @@
 </div>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to collect vocabulary data
+            function collectVocabularyData() {
+                return JSON.parse(localStorage.getItem('vocabulary_cards') || '[]');
+            }
+
+            // Function to collect study progress
+            function collectStudyProgress() {
+                return {
+                    totalCards: parseInt(document.getElementById('total').textContent) || 0,
+                    learnedCards: parseInt(document.getElementById('learned').textContent) || 0,
+                    studyTime: localStorage.getItem('total_study_time') || '0 minutes',
+                    lastStudySession: localStorage.getItem('last_study_session') || 'N/A'
+                };
+            }
+
+            // Function to collect learning boxes progress
+            function collectLearningBoxes() {
+                const boxProgress = [];
+                const boxElements = document.querySelectorAll('.box');
+                
+                boxElements.forEach(box => {
+                    const boxNumber = box.getAttribute('data-box');
+                    const boxCount = box.querySelector('.box-count').textContent;
+                    
+                    boxProgress.push({
+                        boxNumber: boxNumber,
+                        cardCount: parseInt(boxCount)
+                    });
+                });
+
+                return boxProgress;
+            }
+
+            // Function to collect achievements
+            function collectAchievements() {
+                return [
+                    { name: 'Vocabulary Novice', status: localStorage.getItem('vocabulary_novice_status') || 'Not Completed' },
+                    { name: 'Language Explorer', status: localStorage.getItem('language_explorer_status') || 'Not Completed' }
+                ];
+            }
+
+            // Function to restore vocabulary data
+            function restoreVocabularyData(vocabularyCards) {
+                localStorage.setItem('vocabulary_cards', JSON.stringify(vocabularyCards));
+                // Update the UI if necessary
+            }
+
+            // Function to restore study progress
+            function restoreStudyProgress(studyProgress) {
+                const totalElement = document.getElementById('total');
+                const learnedElement = document.getElementById('learned');
+                
+                if (totalElement) totalElement.textContent = studyProgress.totalCards;
+                if (learnedElement) learnedElement.textContent = studyProgress.learnedCards;
+
+                localStorage.setItem('total_study_time', studyProgress.studyTime);
+                localStorage.setItem('last_study_session', studyProgress.lastStudySession);
+            }
+
+            // Function to restore learning boxes
+            function restoreLearningBoxes(boxProgress) {
+                const boxElements = document.querySelectorAll('.box');
+                
+                boxProgress.forEach(boxData => {
+                    const boxElement = Array.from(boxElements).find(
+                        el => el.getAttribute('data-box') === boxData.boxNumber.toString()
+                    );
+                    
+                    if (boxElement) {
+                        const countElement = boxElement.querySelector('.box-count');
+                        if (countElement) countElement.textContent = boxData.cardCount;
+                    }
+                });
+            }
+
+            // Function to restore achievements
+            function restoreAchievements(achievements) {
+                achievements.forEach(achievement => {
+                    localStorage.setItem(`${achievement.name.toLowerCase().replace(' ', '_')}_status`, achievement.status);
+                });
+            }
+
+            // Function to update UI after import
+            function updateUIAfterImport() {
+                console.log('UI updated after data import');
+                // Implement any necessary UI updates or refreshes
+            }
+
+            const exportDataBtn = document.getElementById('exportdataBtn');
+            if (exportDataBtn) {
+                exportDataBtn.addEventListener('click', function() {
+                    try {
+                        const learningData = {
+                            timestamp: new Date().toISOString(),
+                            vocabularyCards: collectVocabularyData(),
+                            studyProgress: collectStudyProgress(),
+                            learningBoxes: collectLearningBoxes(),
+                            achievements: collectAchievements()
+                        };
+
+                        const exportData = JSON.stringify(learningData, null, 2);
+                        const blob = new Blob([exportData], { type: 'application/json' });
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = URL.createObjectURL(blob);
+                        const now = new Date();
+                        const filename = `flashcard_learning_data_${now.toISOString().split('T')[0]}.json`;
+                        downloadLink.download = filename;
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        document.body.removeChild(downloadLink);
+                        localStorage.setItem('flashcard_learning_backup', exportData);
+                        localStorage.setItem('flashcard_learning_backup_timestamp', now.toISOString());
+                        showToast('Learning data exported successfully!', 'success');
+                    } catch (error) {
+                        console.error('Export failed:', error);
+                        showToast('Failed to export data. Please try again.', 'error');
+                    }
+                });
+            } else {
+                console.error('Export data button not found.');
+            }
+
+            const importButton = document.getElementById('importdataBtn');
+            if (importButton) {
+                importButton.addEventListener('click', function() {
+                    console.log('Import button clicked');
+                    const importFileInput = document.getElementById('import-file-input');
+                    if (importFileInput) {
+                        importFileInput.click();
+                    } else {
+                        console.error('Import file input not found.');
+                    }
+                });
+            } else {
+                console.error('Import button not found.');
+            }
+
+            const importFileInput = document.getElementById('import-file-input');
+            if (importFileInput) {
+                importFileInput.addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            try {
+                                const importedData = JSON.parse(e.target.result);
+                                if (!importedData.timestamp || !importedData.vocabularyCards) {
+                                    throw new Error('Invalid data format');
+                                }
+                                if (importedData.vocabularyCards) {
+                                    restoreVocabularyData(importedData.vocabularyCards);
+                                }
+                                if (importedData.studyProgress) {
+                                    restoreStudyProgress(importedData.studyProgress);
+                                }
+                                if (importedData.learningBoxes) {
+                                    restoreLearningBoxes(importedData.learningBoxes);
+                                }
+                                if (importedData.achievements) {
+                                    restoreAchievements(importedData.achievements);
+                                }
+                                localStorage.setItem('flashcard_learning_data', JSON.stringify(importedData));
+                                showToast('Learning data imported successfully!', 'success');
+                                updateUIAfterImport();
+                            } catch (error) {
+                                console.error('Import failed:', error);
+                                showToast('Failed to import data. Please check the file.', 'error');
+                            }
+                        };
+                        reader.onerror = function(error) {
+                            console.error('File reading error:', error);
+                            showToast('Error reading file. Please try again.', 'error');
+                        };
+                        reader.readAsText(file);
+                    }
+                });
+            } else {
+                console.error('Import file input not found.');
+            }
+        });
+    </script>
 
 </body>
 </html>
