@@ -96,6 +96,7 @@ except ImportError:
 app = Flask(__name__, 
             static_folder='static', 
             static_url_path='/static')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///e:/WindsurfAICodeFolder/flashcard/flashcards.db'
 CORS(app)  # Enable CORS for all routes
 
 # Database configuration
@@ -1332,6 +1333,19 @@ def create_flashcard(front_word):
     back_content = f'{translated_word}\n{get_back_content(front_word)}'
     print(f"Flashcard created: {front_word} - {back_content}")
 
+    # Save to the database
+    with session_scope() as session:
+        existing_card = session.query(Card).filter_by(word=front_word).first()
+        if existing_card:
+            existing_card.vietnamese_translation = translated_word
+        else:
+            new_card = Card(
+                word=front_word,
+                vietnamese_translation=translated_word
+            )
+            session.add(new_card)
+        session.commit()
+
 def save_flashcard(front_word, back_content):
     # Assuming there's a function to save or display the flashcard
     print(f"Saving flashcard: {front_word} - {back_content}")
@@ -1367,6 +1381,40 @@ def get_translation(card_id):
         if card:
             return jsonify({'translation': card.vietnamese_translation})
         return jsonify({'translation': None}), 404
+
+@app.route('/translations', methods=['GET'])
+def get_translations():
+    session = Session()
+    try:
+        translations = session.query(Card.word, Card.vietnamese_translation).all()
+        translations_list = [{"word": word, "vietnamese_translation": vietnamese} for word, vietnamese in translations]
+        return jsonify(translations_list)
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    finally:
+        session.close()
+
+@app.route('/api/cards/schema', methods=['GET'])
+def get_cards_schema():
+    """Get the schema of the cards table"""
+    try:
+        with session_scope() as session:
+            inspector = inspect(session.bind)
+            schema = inspector.get_columns('cards')
+            return jsonify(schema)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/cards/check_translations', methods=['GET'])
+def check_translations():
+    """Check if Vietnamese translations are populated for all cards"""
+    try:
+        with session_scope() as session:
+            cards = session.query(Card).all()
+            missing_translations = [card for card in cards if not card.vietnamese_translation]
+            return jsonify({"missing_translations": len(missing_translations), "total_cards": len(cards)}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     import sys

@@ -118,6 +118,7 @@ function showCard(index) {
     const boxNumberElement = document.getElementById('box-number');  // Box number element
     const cardNumberBackElement = document.getElementById('card-number-back');  // Card number back element
     const boxNumberBackElement = document.getElementById('box-number-back');  // Box number back element
+    const vietnameseTranslationElement = document.getElementById('vietnamese-translation');  // Vietnamese translation element
 
     // Validate DOM elements
     const elementsToCheck = [
@@ -130,7 +131,8 @@ function showCard(index) {
         { element: cardNumberElement, name: 'card-number' },
         { element: boxNumberElement, name: 'box-number' },
         { element: cardNumberBackElement, name: 'card-number-back' },
-        { element: boxNumberBackElement, name: 'box-number-back' }
+        { element: boxNumberBackElement, name: 'box-number-back' },
+        { element: vietnameseTranslationElement, name: 'vietnamese-translation' }
     ];
 
     // Check if any required elements are missing
@@ -163,6 +165,10 @@ function showCard(index) {
         posElement.style.backgroundColor = '#7f8c8d';
         posElement.style.display = 'inline-block';
     }
+
+    // Update Vietnamese translation
+    vietnameseTranslationElement.textContent = currentCard.vietnamese_translation || 'No translation';
+    vietnameseTranslationElement.classList.add('vietnamese-translation');
 
     // Update card number on both sides
     const cardNumberText = `${currentCardIndex + 1}/${cards.length}`;
@@ -823,26 +829,54 @@ document.addEventListener('DOMContentLoaded', function() {
     loadCards();
     
     // Navigation buttons
-    document.getElementById('prevBtn').addEventListener('click', showPreviousCard);
-    document.getElementById('nextBtn').addEventListener('click', showNextCard);
-    document.getElementById('flipBtn').addEventListener('click', toggleFlip);
-    document.getElementById('flipBackBtn').addEventListener('click', toggleFlip);
+    const prevBtn = document.getElementById('prevBtn');
+    if (prevBtn) {
+        prevBtn.addEventListener('click', showPreviousCard);
+    }
+
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', showNextCard);
+    }
+
+    const flipBtn = document.getElementById('flipBtn');
+    if (flipBtn) {
+        flipBtn.addEventListener('click', toggleFlip);
+    }
+
+    const flipBackBtn = document.getElementById('flipBackBtn');
+    if (flipBackBtn) {
+        flipBackBtn.addEventListener('click', toggleFlip);
+    }
     
     // Card action buttons
-    document.getElementById('speakBtn').addEventListener('click', speakWord);
-    document.getElementById('markLearnedBtn').addEventListener('click', () => reviewCard(true));
-    document.getElementById('markReviewBtn').addEventListener('click', () => reviewCard(false));
+    const speakBtn = document.getElementById('speakBtn');
+    if (speakBtn) {
+        speakBtn.addEventListener('click', speakWord);
+    }
+
+    const markLearnedBtn = document.getElementById('markLearnedBtn');
+    if (markLearnedBtn) {
+        markLearnedBtn.addEventListener('click', () => reviewCard(true));
+    }
+
+    const markReviewBtn = document.getElementById('markReviewBtn');
+    if (markReviewBtn) {
+        markReviewBtn.addEventListener('click', () => reviewCard(false));
+    }
     
     // Auto-speak setting
     const autoSpeakCheckbox = document.getElementById('autoSpeak');
-    autoSpeakCheckbox.checked = localStorage.getItem('autoSpeak') === 'true';
-    autoSpeak = autoSpeakCheckbox.checked;
-    
-    autoSpeakCheckbox.addEventListener('change', (e) => {
-        autoSpeak = e.target.checked;
-        localStorage.setItem('autoSpeak', autoSpeak);
-        showToast(autoSpeak ? 'Auto-pronunciation enabled' : 'Auto-pronunciation disabled');
-    });
+    if (autoSpeakCheckbox) {
+        autoSpeakCheckbox.checked = localStorage.getItem('autoSpeak') === 'true';
+        autoSpeak = autoSpeakCheckbox.checked;
+        
+        autoSpeakCheckbox.addEventListener('change', (e) => {
+            autoSpeak = e.target.checked;
+            localStorage.setItem('autoSpeak', autoSpeak);
+            showToast(autoSpeak ? 'Auto-pronunciation enabled' : 'Auto-pronunciation disabled');
+        });
+    }
     
     // Speech rate control
     const rateControl = document.getElementById('speechRate');
@@ -862,7 +896,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // YouTube import
-    document.getElementById('importBtn').addEventListener('click', importFromYouTube);
+    const importBtn = document.getElementById('importBtn');
+    if (importBtn) {
+        importBtn.addEventListener('click', importFromYouTube);
+    }
     
     // Keyboard navigation
     document.addEventListener('keydown', (event) => {
@@ -891,7 +928,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Điều hướng tới trang User Profile
     const userProfileButton = document.getElementById('userProfileBtn');
-    
     if (userProfileButton) {
         userProfileButton.addEventListener('click', function(event) {
             event.preventDefault();
@@ -1020,100 +1056,139 @@ document.addEventListener('DOMContentLoaded', function() {
                 showLoading(false);
             });
         });
+    } else {
+        console.error('User profile button not found.');
     }
 });
 
 // Xử lý Avatar Modal
 document.addEventListener('DOMContentLoaded', function() {
     const avatarFileInput = document.querySelector('#avatarModal input[type="file"]');
-    const avatarPreviewContainer = document.querySelector('#avatarModal .preview-container');
+    if (avatarFileInput) {
+        avatarFileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatarPreviewContainer = document.querySelector('#avatarModal .preview-container');
+                    if (avatarPreviewContainer) {
+                        avatarPreviewContainer.innerHTML = `
+                            <img src="${e.target.result}" 
+                                 style="max-width: 250px; max-height: 250px; border-radius: 50%;">
+                        `;
+                    } else {
+                        console.error('Avatar preview container not found.');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    } else {
+        console.error('Avatar file input not found.');
+    }
+
     const avatarSaveButton = document.querySelector('#avatarModal .btn-primary');
+    if (avatarSaveButton) {
+        avatarSaveButton.addEventListener('click', function() {
+            const avatarFileInput = document.querySelector('#avatarModal input[type="file"]');
+            if (avatarFileInput) {
+                const file = avatarFileInput.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('avatar', file);
 
-    avatarFileInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                avatarPreviewContainer.innerHTML = `
-                    <img src="${e.target.result}" 
-                         style="max-width: 250px; max-height: 250px; border-radius: 50%;">
-                `;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    avatarSaveButton.addEventListener('click', function() {
-        const file = avatarFileInput.files[0];
-        if (file) {
-            const formData = new FormData();
-            formData.append('avatar', file);
-
-            fetch('/upload_avatar', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Cập nhật ảnh đại diện
-                    document.querySelector('.profile-avatar').src = data.avatar_url;
-                    bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
-                } else {
-                    alert('Lỗi: ' + data.message);
+                    fetch('/upload_avatar', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Cập nhật ảnh đại diện
+                            const profileAvatar = document.querySelector('.profile-avatar');
+                            if (profileAvatar) {
+                                profileAvatar.src = data.avatar_url;
+                            } else {
+                                console.error('Profile avatar not found.');
+                            }
+                            bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
+                        } else {
+                            alert('Lỗi: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi:', error);
+                        alert('Có lỗi xảy ra khi tải ảnh lên');
+                    });
                 }
-            })
-            .catch(error => {
-                console.error('Lỗi:', error);
-                alert('Có lỗi xảy ra khi tải ảnh lên');
-            });
-        }
-    });
+            } else {
+                console.error('Avatar file input not found.');
+            }
+        });
+    } else {
+        console.error('Avatar save button not found.');
+    }
 });
 
 // Xử lý Edit Profile Modal
 document.addEventListener('DOMContentLoaded', function() {
     const editProfileModal = document.getElementById('editProfileModal');
-    const saveProfileButton = editProfileModal.querySelector('.btn-primary');
+    if (editProfileModal) {
+        const saveProfileButton = editProfileModal.querySelector('.btn-primary');
+        if (saveProfileButton) {
+            saveProfileButton.addEventListener('click', function() {
+                const fullName = editProfileModal.querySelector('input[type="text"]').value;
+                const languageLevel = editProfileModal.querySelector('.form-select').value;
+                const learningGoal = editProfileModal.querySelector('textarea').value;
 
-    saveProfileButton.addEventListener('click', function() {
-        const fullName = editProfileModal.querySelector('input[type="text"]').value;
-        const languageLevel = editProfileModal.querySelector('.form-select').value;
-        const learningGoal = editProfileModal.querySelector('textarea').value;
+                const profileData = {
+                    full_name: fullName,
+                    language_level: languageLevel,
+                    learning_goal: learningGoal
+                };
 
-        const profileData = {
-            full_name: fullName,
-            language_level: languageLevel,
-            learning_goal: learningGoal
-        };
+                fetch('/update_profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(profileData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Cập nhật thông tin trên trang
+                        const profileHeader = document.querySelector('.profile-header h1');
+                        if (profileHeader) {
+                            profileHeader.textContent = fullName;
+                        } else {
+                            console.error('Profile header not found.');
+                        }
+                        
+                        const personalDetailsCard = document.querySelector('.profile-details-card .card-body');
+                        if (personalDetailsCard) {
+                            personalDetailsCard.querySelector('p:nth-child(2)').innerHTML = `<strong>Trình Độ:</strong> ${languageLevel}`;
+                            personalDetailsCard.querySelector('p:nth-child(3)').innerHTML = `<strong>Mục Tiêu Học Tập:</strong> ${learningGoal}`;
+                        } else {
+                            console.error('Personal details card not found.');
+                        }
 
-        fetch('/update_profile', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(profileData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Cập nhật thông tin trên trang
-                document.querySelector('.profile-header h1').textContent = fullName;
-                
-                const personalDetailsCard = document.querySelector('.profile-details-card .card-body');
-                personalDetailsCard.querySelector('p:nth-child(2)').innerHTML = `<strong>Trình Độ:</strong> ${languageLevel}`;
-                personalDetailsCard.querySelector('p:nth-child(3)').innerHTML = `<strong>Mục Tiêu Học Tập:</strong> ${learningGoal}`;
-
-                bootstrap.Modal.getInstance(editProfileModal).hide();
-            } else {
-                alert('Lỗi: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Lỗi:', error);
-            alert('Có lỗi xảy ra khi cập nhật hồ sơ');
-        });
-    });
+                        bootstrap.Modal.getInstance(editProfileModal).hide();
+                    } else {
+                        alert('Lỗi: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra khi cập nhật hồ sơ');
+                });
+            });
+        } else {
+            console.error('Save profile button not found.');
+        }
+    } else {
+        console.error('Edit profile modal not found.');
+    }
 });
 
 // Add event listener for user login button
@@ -1146,6 +1221,8 @@ if (userLoginBtn) {
                 showLoading(false);
             });
     });
+} else {
+    console.error('User login button not found.');
 }
 
 // Add event listener for export button
@@ -1153,16 +1230,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const exportButton = document.getElementById('exportDataBtn');
     if (exportButton) {
         exportButton.addEventListener('click', exportLearningData);
+    } else {
+        console.error('Export button not found.');
     }
 });
 
 // Data Export and Import Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const exportDataBtn = document.getElementById('exportdataBtn');
-    const importDataBtn = document.getElementById('importdataBtn');
-    const importFileInput = document.getElementById('importFile');
-
-    // Export Data Button Event Listener
     if (exportDataBtn) {
         exportDataBtn.addEventListener('click', function() {
             try {
@@ -1206,17 +1281,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 showToast('Failed to export data. Please try again.', 'error');
             }
         });
+    } else {
+        console.error('Export data button not found.');
     }
 
-    // Import Data Button Event Listener
-    if (importDataBtn) {
-        importDataBtn.addEventListener('click', function() {
+    const importButton = document.getElementById('importDataBtn');
+    if (importButton) {
+        importButton.addEventListener('click', function() {
             // Trigger file input click
-            importFileInput.click();
+            const importFileInput = document.getElementById('importFileInput');
+            if (importFileInput) {
+                importFileInput.click();
+            } else {
+                console.error('Import file input not found.');
+            }
         });
+    } else {
+        console.error('Import button not found.');
     }
 
-    // File Input Change Event Listener
+    const importFileInput = document.getElementById('importFileInput');
     if (importFileInput) {
         importFileInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -1272,6 +1356,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 reader.readAsText(file);
             }
         });
+    } else {
+        console.error('Import file input not found.');
     }
 
     // Helper function to collect vocabulary data

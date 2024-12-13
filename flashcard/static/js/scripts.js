@@ -62,30 +62,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const flashcardElement = document.querySelector('.flashcard');
     if (flashcardElement) {
-        flashcardElement.addEventListener('click', async function() {
-            this.classList.toggle('flipped');
-            if (this.classList.contains('flipped')) {
-                const cardId = currentIndex; // Ensure currentIndex corresponds to the card ID
-                console.log('Fetching translation for card ID:', cardId);
-                const response = await fetch(`/get_translation/${cardId}`);
-                console.log('Response status:', response.status);
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Translation data received:', data);
-                    const backWordElement = document.getElementById('back-word');
-                    if (backWordElement) {
-                        backWordElement.textContent = data.translation; // Update the back with translation
-                        console.log('Translation displayed:', data.translation);
-                    } else {
-                        console.error('Back word element not found');
-                    }
-                } else {
-                    console.error('Failed to fetch translation:', response.statusText);
-                }
-            }
+        flashcardElement.addEventListener('click', function() {
+            flipCard();
         });
     } else {
         console.error('Flashcard element not found');
+    }
+
+    function flipCard() {
+        const card = document.querySelector('.flashcard');
+        const englishWord = card.querySelector('#front-word');
+        const vietnameseTranslation = card.querySelector('#back-word');
+
+        console.log('Flipping card. Current state:', card.classList.contains('flipped'));
+        console.log('English Word:', englishWord.textContent);
+        console.log('Vietnamese Translation:', vietnameseTranslation.textContent);
+
+        // Logic to flip the card
+        if (card.classList.contains('flipped')) {
+            card.classList.remove('flipped');
+            englishWord.style.display = 'block';
+            vietnameseTranslation.style.display = 'none';
+        } else {
+            card.classList.add('flipped');
+            englishWord.style.display = 'none';
+            vietnameseTranslation.style.display = 'block'; // Show the Vietnamese translation
+        }
     }
 
     // Initial display
