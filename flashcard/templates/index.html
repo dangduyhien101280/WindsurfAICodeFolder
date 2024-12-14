@@ -15,7 +15,11 @@
                 <button class="btn btn-user-login" id="userLoginBtn">
                     <i class="fas fa-user"></i>Learning Dashboard
                 </button>
-
+                <button class="btn btn-profile" id="userProfileBtn">
+                    <i class="fas fa-user-circle"></i>Profile
+                </button>
+                <input type="file" id="avatarUpload" accept="image/*" style="display:none;" />
+                <button class="btn btn-save-avatar" id="saveAvatarBtn" style="display:none;">Save Avatar</button>
             </div>
             <p class="progress-text">
                 Progress: <span id="learned">0</span> / <span id="total">0</span> words learned
@@ -110,9 +114,20 @@
                     <p id="meaning"><strong>to greet someone in a polite or friendly way</strong></p>
                     <div class="back">
                         <span id="back-word" style="color: red;">{{ english_word }}</span>
-                        <p id="vietnamese-translation">{{ vietnamese_translation }}</p>
+                        <table>
+                            <tr>
+                                <th>Tiếng Việt</th>
+                                <th>Tiếng Trung</th>
+                                <th>Tiếng Nhật</th>
+                            </tr>
+                            <tr>
+                                <td id="vietnamese-translation">{{ vietnamese_translation }}</td>
+                                <td id="chinese-translation">{{ chinese if chinese else 'Không có bản dịch' }}</td>
+                                <td id="japanese-translation">{{ japanese if japanese else 'Không có bản dịch' }}</td>
+                            </tr>
+                        </table>
+                        <p id="example">They welcomed us with open arms.</p>
                     </div>
-                    <p id="example">They welcomed us with open arms.</p>
                     <div class="card-actions">
                         <button class="btn-icon" id="flipBackBtn" title="Flip">↻</button>
                     </div>
@@ -151,6 +166,22 @@
     <!-- Toast Notification -->
     <div class="toast hidden" id="toast">
         <span id="toastMessage"></span>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">×</span>
+            <h2>Edit Profile</h2>
+            <label for="avatarUpload">Upload Avatar:</label>
+            <input type="file" id="avatarUpload" accept="image/*">
+            <button class="btn btn-save-avatar" id="saveAvatarBtn">Save Avatar</button>
+            <label for="exportDataBtn">Export Data:</label>
+            <button class="btn btn-export" id="exportDataBtn">Export</button>
+            <label for="importDataBtn">Import Data:</label>
+            <input type="file" id="importDataBtn" accept="application/json">
+            <button class="btn btn-import" id="importDataBtn">Import</button>
+        </div>
     </div>
 
     <!-- Developer Information -->

@@ -4784,3 +4784,1891 @@ FROM cards) AS anon_1]
 2024-12-13 11:59:50 - app - INFO - 'updated_at' column already exists
 2024-12-13 14:36:35 - app - INFO - 'updated_at' column already exists
 2024-12-13 14:41:30 - app - INFO - 'updated_at' column already exists
+2024-12-13 19:20:41 - app - INFO - 'updated_at' column already exists
+2024-12-13 19:20:45 - app - INFO - 'updated_at' column already exists
+2024-12-13 19:38:09 - app - INFO - 'updated_at' column already exists
+2024-12-13 19:48:04 - app - INFO - 'updated_at' column already exists
+2024-12-13 19:48:08 - app - INFO - 'updated_at' column already exists
+2024-12-13 19:52:29 - app - INFO - 'updated_at' column already exists
+2024-12-13 21:03:44 - app - INFO - 'updated_at' column already exists
+2024-12-13 21:03:48 - app - INFO - 'updated_at' column already exists
+2024-12-13 21:32:31 - app - INFO - 'updated_at' column already exists
+2024-12-13 21:51:44 - app - INFO - 'updated_at' column already exists
+2024-12-13 22:00:35 - app - INFO - User profile loaded successfully for testuser
+2024-12-13 22:04:37 - app - INFO - User profile loaded successfully for testuser
+2024-12-13 22:19:38 - app - INFO - User profile loaded successfully for testuser
+2024-12-13 22:40:32 - app - INFO - 'updated_at' column already exists
+2024-12-13 22:56:27 - app - INFO - 'updated_at' column already exists
+2024-12-13 22:58:12 - app - INFO - 'updated_at' column already exists
+2024-12-13 22:58:27 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 22:58:27 - app - ERROR - Error in get_cards: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 410, in get_cards
+    cards = session.query(Card).all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2772, in all
+    return self._iter().all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 22:58:27 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 22:59:13 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 22:59:13 - app - ERROR - Error in get_cards: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 410, in get_cards
+    cards = session.query(Card).all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2772, in all
+    return self._iter().all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 22:59:13 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 22:59:16 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 22:59:16 - app - ERROR - Error in get_cards: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 410, in get_cards
+    cards = session.query(Card).all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2772, in all
+    return self._iter().all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 22:59:16 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:00:15 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:01:16 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:02:15 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:13:00 - app - INFO - 'updated_at' column already exists
+2024-12-13 23:13:09 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:13:09 - app - ERROR - Error in get_cards: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 410, in get_cards
+    cards = session.query(Card).all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2772, in all
+    return self._iter().all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:13:09 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:14:09 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:14:27 - app - INFO - 'updated_at' column already exists
+2024-12-13 23:15:09 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:15:14 - app - INFO - 'updated_at' column already exists
+2024-12-13 23:16:09 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:17:09 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:09 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:17 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:17 - app - ERROR - Error in get_cards: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 410, in get_cards
+    cards = session.query(Card).all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2772, in all
+    return self._iter().all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:17 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:19 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:19 - app - ERROR - Error in get_cards: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 410, in get_cards
+    cards = session.query(Card).all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2772, in all
+    return self._iter().all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:20 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:21 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:21 - app - ERROR - Error in get_cards: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 410, in get_cards
+    cards = session.query(Card).all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2772, in all
+    return self._iter().all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:21 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:23 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:23 - app - ERROR - Error in get_cards: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 410, in get_cards
+    cards = session.query(Card).all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2772, in all
+    return self._iter().all()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:18:23 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-13 23:19:23 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-14 08:04:36 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-14 08:05:22 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-14 08:06:22 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-14 08:07:22 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-14 08:08:22 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-14 08:09:22 - app - ERROR - Error in get_box_stats: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+Traceback (most recent call last):
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: cards.word
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\WindsurfAICodeFolder\flashcard\app.py", line 513, in get_box_stats
+    total_cards = session.query(Card).count()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 3167, in count
+    return self._from_self(col).enable_eagerloads(False).scalar()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2892, in scalar
+    ret = self.one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2869, in one
+    return self._iter().one()
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\query.py", line 2907, in _iter
+    result = self.session.execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\orm\session.py", line 1712, in execute
+    result = conn._execute_20(statement, params or {}, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1705, in _execute_20
+    return meth(self, args_10style, kwargs_10style, execution_options)
+  File "D:\Python\lib\site-packages\sqlalchemy\sql\elements.py", line 333, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "D:\Python\lib\site-packages\sqlalchemy\util\compat.py", line 208, in raise_
+    raise exception
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "D:\Python\lib\site-packages\sqlalchemy\engine\default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: cards.word
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cards.id AS cards_id, cards.word AS cards_word, cards.meaning AS cards_meaning, cards.example AS cards_example, cards.ipa AS cards_ipa, cards.pos AS cards_pos, cards.box_number AS cards_box_number, cards.last_reviewed AS cards_last_reviewed, cards.next_review AS cards_next_review, cards.created_at AS cards_created_at, cards.updated_at AS cards_updated_at, cards.vietnamese_translation AS cards_vietnamese_translation 
+FROM cards) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2024-12-14 08:22:51 - app - INFO - 'updated_at' column already exists
+2024-12-14 08:24:30 - app - INFO - 'updated_at' column already exists
+2024-12-14 08:26:24 - app - INFO - 'updated_at' column already exists
+2024-12-14 08:31:57 - app - INFO - 'updated_at' column already exists
+2024-12-14 08:41:24 - app - INFO - 'updated_at' column already exists
+2024-12-14 08:49:39 - app - INFO - 'updated_at' column already exists
+2024-12-14 08:54:08 - app - INFO - 'updated_at' column already exists
+2024-12-14 08:54:37 - app - INFO - 'updated_at' column already exists
+2024-12-14 09:13:51 - app - INFO - 'updated_at' column already exists
+2024-12-14 09:13:55 - app - INFO - 'updated_at' column already exists
+2024-12-14 09:15:58 - app - INFO - 'updated_at' column already exists
+2024-12-14 09:16:11 - app - INFO - 'updated_at' column already exists
+2024-12-14 09:16:24 - app - INFO - 'updated_at' column already exists
+2024-12-14 09:16:29 - app - INFO - 'updated_at' column already exists
+2024-12-14 09:35:47 - app - INFO - 'updated_at' column already exists
+2024-12-14 09:56:11 - app - INFO - 'updated_at' column already exists
+2024-12-14 11:42:53 - app - INFO - 'updated_at' column already exists
+2024-12-14 13:03:18 - app - INFO - 'updated_at' column already exists
+2024-12-14 13:03:22 - app - INFO - 'updated_at' column already exists
+2024-12-14 14:58:04 - app - INFO - 'updated_at' column already exists
+2024-12-14 14:58:07 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:03:10 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:03:10 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:03:11 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:03:55 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:05:03 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:08:16 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:10:50 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:12:16 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:13:57 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:15:22 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:16:26 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:17:56 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:19:18 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:19:22 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:26:23 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:27:42 - app - INFO - User profile loaded successfully for testuser
+2024-12-14 15:31:30 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:49:10 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:49:15 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:50:07 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:50:11 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:51:49 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:51:53 - app - INFO - 'updated_at' column already exists
+2024-12-14 15:59:35 - app - INFO - User profile loaded successfully for testuser

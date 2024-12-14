@@ -119,6 +119,8 @@ function showCard(index) {
     const cardNumberBackElement = document.getElementById('card-number-back');  // Card number back element
     const boxNumberBackElement = document.getElementById('box-number-back');  // Box number back element
     const vietnameseTranslationElement = document.getElementById('vietnamese-translation');  // Vietnamese translation element
+    const chineseTranslationElement = document.getElementById('chinese-translation');  // Chinese translation element
+    const japaneseTranslationElement = document.getElementById('japanese-translation');  // Japanese translation element
 
     // Validate DOM elements
     const elementsToCheck = [
@@ -132,7 +134,9 @@ function showCard(index) {
         { element: boxNumberElement, name: 'box-number' },
         { element: cardNumberBackElement, name: 'card-number-back' },
         { element: boxNumberBackElement, name: 'box-number-back' },
-        { element: vietnameseTranslationElement, name: 'vietnamese-translation' }
+        { element: vietnameseTranslationElement, name: 'vietnamese-translation' },
+        { element: chineseTranslationElement, name: 'chinese-translation' },
+        { element: japaneseTranslationElement, name: 'japanese-translation' }
     ];
 
     // Check if any required elements are missing
@@ -169,6 +173,14 @@ function showCard(index) {
     // Update Vietnamese translation
     vietnameseTranslationElement.textContent = currentCard.vietnamese_translation || 'No translation';
     vietnameseTranslationElement.classList.add('vietnamese-translation');
+
+    // Update Chinese translation
+    chineseTranslationElement.textContent = currentCard.chinese_translation || 'No translation';
+    chineseTranslationElement.classList.add('chinese-translation');
+
+    // Update Japanese translation
+    japaneseTranslationElement.textContent = currentCard.japanese_translation || 'No translation';
+    japaneseTranslationElement.classList.add('japanese-translation');
 
     // Update card number on both sides
     const cardNumberText = `${currentCardIndex + 1}/${cards.length}`;
@@ -769,7 +781,7 @@ function exportLearningData() {
         downloadLink.click();
         document.body.removeChild(downloadLink);
 
-        // Optional: Save to local storage as backup
+        // Optional: Save to local storage
         localStorage.setItem('flashcard_learning_data', exportData);
 
         // Show success toast
@@ -1117,7 +1129,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     })
                     .catch(error => {
-                        console.error('Lỗi:', error);
+                        console.error('Error:', error);
                         alert('Có lỗi xảy ra khi tải ảnh lên');
                     });
                 }
@@ -1179,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 })
                 .catch(error => {
-                    console.error('Lỗi:', error);
+                    console.error('Error:', error);
                     alert('Có lỗi xảy ra khi cập nhật hồ sơ');
                 });
             });
@@ -1460,3 +1472,141 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('UI updated after data import');
     }
 });
+
+const avatarFileInput = document.getElementById('avatarUpload');
+if (avatarFileInput) {
+    avatarFileInput.addEventListener('change', function() {
+        const file = avatarFileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Optionally handle the loaded file
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+} else {
+    console.error('Avatar file input not found.');
+}
+
+const avatarSaveButton = document.getElementById('saveAvatarBtn');
+if (avatarSaveButton) {
+    avatarSaveButton.addEventListener('click', function() {
+        const file = avatarFileInput.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            fetch('/upload_avatar', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update profile avatar
+                    const profileAvatar = document.querySelector('.profile-avatar');
+                    if (profileAvatar) {
+                        profileAvatar.src = data.avatar_url;
+                    } else {
+                        console.error('Profile avatar not found.');
+                    }
+                    bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while uploading the image.');
+            });
+        }
+    });
+} else {
+    console.error('Avatar save button not found.');
+}
+
+const saveProfileButton = document.querySelector('#editProfileModal .btn-primary');
+if (saveProfileButton) {
+    saveProfileButton.addEventListener('click', function() {
+        const fullName = editProfileModal.querySelector('input[type="text"]').value;
+        const languageLevel = editProfileModal.querySelector('.form-select').value;
+        const learningGoal = editProfileModal.querySelector('textarea').value;
+
+        const profileData = {
+            full_name: fullName,
+            language_level: languageLevel,
+            learning_goal: learningGoal
+        };
+
+        fetch('/update_profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(profileData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Profile updated successfully!');
+                bootstrap.Modal.getInstance(editProfileModal).hide();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the profile.');
+        });
+    });
+} else {
+    console.error('Save profile button not found.');
+}
+
+const importFileInput = document.getElementById('importDataBtn');
+if (importFileInput) {
+    importFileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = JSON.parse(e.target.result);
+                // Handle imported data
+                restoreLearningData(data);
+            };
+            reader.readAsText(file);
+        }
+    });
+} else {
+    console.error('Import file input not found.');
+}
+
+// Xử lý bản dịch sang tiếng Việt, tiếng Trung và tiếng Nhật
+function getTranslations(word) {
+    fetch('/translate/' + encodeURIComponent(word), {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Cập nhật các phần tử hiển thị
+        document.getElementById('vietnamese-translation').textContent = data.vietnamese_translation || 'Không có bản dịch'; // Tiếng Việt
+        document.getElementById('chinese-translation').textContent = data.chinese || 'Không có bản dịch'; // Tiếng Trung
+        document.getElementById('japanese-translation').textContent = data.japanese || 'Không có bản dịch'; // Tiếng Nhật
+    })
+    .catch(error => {
+        console.error('Error fetching translations:', error);
+        // Cập nhật hiển thị nếu có lỗi
+        document.getElementById('vietnamese-translation').textContent = 'Lỗi khi lấy bản dịch';
+        document.getElementById('chinese-translation').textContent = 'Lỗi khi lấy bản dịch';
+        document.getElementById('japanese-translation').textContent = 'Lỗi khi lấy bản dịch';
+    });
+}

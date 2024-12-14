@@ -1,63 +1,86 @@
+// Global variables
+let cards = [];
+let currentCardIndex = 0;
+let currentCard = null;
+let autoSpeak = false;
+
+// Event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed'); // Log when DOM is ready
+    console.log('DOM fully loaded and parsed');
     const flashcards = [
         { front: "Hello", back: "Xin chào" },
         { front: "Goodbye", back: "Tạm biệt" },
         { front: "Thank you", back: "Cảm ơn" },
         { front: "Yes", back: "Có" },
-        { front: "No", back: "Không" }
+        { front: "No", back: "Không" },
+        { front: "Welcome", back: "Chào mừng" },
+        { front: "Chào mừng", back: "Welcome" } // New flashcard added
     ];
 
     let currentIndex = 0;
 
-    // Function to translate the word to Vietnamese
-    async function translateToVietnamese(word) {
-        console.log(`Translating word: ${word}`); // Log translation attempt
-        const response = await fetch(`https://api.example.com/translate?text=${word}&target=vi`);
-        console.log(`Received response from translation API`); // Log API response
+    // Function to translate the word to Vietnamese, Chinese, and Japanese
+    async function translateWord(word) {
+        console.log(`Translating word: ${word}`);
+        const response = await fetch(`https://api.example.com/translate?text=${word}&target=vi,zh,jp`);
+        console.log(`Received response from translation API`);
         const data = await response.json();
-        console.log(`Received translation data: ${data.translation}`); // Log translation data
-        return data.translation;
+        console.log(`Received translation data: ${JSON.stringify(data)}`);
+        return {
+            vietnamese: data.vietnamese_translation,
+            chinese: data.chinese_translation,
+            japanese: data.japanese_translation
+        };
     }
 
     // Update flashcard display
     async function updateFlashcard(word) {
-        console.log(`Updating flashcard with word: ${word}`); // Log flashcard update attempt
-        const translation = await translateToVietnamese(word);
-        const translationElement = document.getElementById('back-word');
-        if (translationElement) {
-            console.log(`Found translation element, updating text`); // Log translation element found
-            translationElement.innerText = translation;
+        console.log(`Updating flashcard with word: ${word}`);
+        const translations = await translateWord(word);
+        const translationElementVi = document.getElementById('back-word');
+        const translationElementZh = document.getElementById('chinese-translation');
+        const translationElementJp = document.getElementById('japanese-translation');
+
+        if (translationElementVi) {
+            translationElementVi.innerText = translations.vietnamese || 'Không có bản dịch';
         } else {
-            console.error('Translation element not found'); // Log translation element not found
+            console.error('Vietnamese translation element not found');
+        }
+
+        if (translationElementZh) {
+            translationElementZh.innerText = translations.chinese || '没有翻译'; // "No translation" in Chinese
+        } else {
+            console.error('Chinese translation element not found');
+        }
+
+        if (translationElementJp) {
+            translationElementJp.innerText = translations.japanese || '翻訳がありません'; // "No translation" in Japanese
+        } else {
+            console.error('Japanese translation element not found');
         }
     }
 
     async function displayFlashcard() {
-        console.log(`Displaying flashcard at index: ${currentIndex}`); // Log flashcard display attempt
+        console.log(`Displaying flashcard at index: ${currentIndex}`);
         const frontWordElement = document.getElementById('front-word');
         const backWordElement = document.getElementById('back-word');
 
         if (frontWordElement && backWordElement) {
-            console.log(`Found front and back word elements, updating text`); // Log front and back word elements found
             frontWordElement.textContent = flashcards[currentIndex].front;
-            const translation = await translateToVietnamese(flashcards[currentIndex].front);
-            backWordElement.textContent = translation; // Update back with translation
+            await updateFlashcard(flashcards[currentIndex].front);
         } else {
-            console.error('Front or back word element not found'); // Log front or back word element not found
+            console.error('Front or back word element not found');
         }
     }
 
     const nextButton = document.getElementById('next-button');
     if (nextButton) {
-        console.log(`Found next button, adding event listener`); // Log next button found
         nextButton.addEventListener('click', async function() {
-            console.log(`Next button clicked, incrementing index`); // Log next button click
-            currentIndex = (currentIndex + 1) % flashcards.length; // Cycle through flashcards
+            currentIndex = (currentIndex + 1) % flashcards.length;
             await displayFlashcard();
         });
     } else {
-        console.error('Next button not found'); // Log next button not found
+        console.error('Next button not found');
     }
 
     const flashcardElement = document.querySelector('.flashcard');
@@ -74,11 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const englishWord = card.querySelector('#front-word');
         const vietnameseTranslation = card.querySelector('#back-word');
 
-        console.log('Flipping card. Current state:', card.classList.contains('flipped'));
-        console.log('English Word:', englishWord.textContent);
-        console.log('Vietnamese Translation:', vietnameseTranslation.textContent);
-
-        // Logic to flip the card
         if (card.classList.contains('flipped')) {
             card.classList.remove('flipped');
             englishWord.style.display = 'block';
@@ -86,11 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             card.classList.add('flipped');
             englishWord.style.display = 'none';
-            vietnameseTranslation.style.display = 'block'; // Show the Vietnamese translation
+            vietnameseTranslation.style.display = 'block';
         }
     }
 
     // Initial display
-    console.log(`Displaying initial flashcard`); // Log initial flashcard display
     displayFlashcard();
 });

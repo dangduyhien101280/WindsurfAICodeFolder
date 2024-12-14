@@ -1382,13 +1382,20 @@ def get_translation(card_id):
             return jsonify({'translation': card.vietnamese_translation})
         return jsonify({'translation': None}), 404
 
-@app.route('/translations', methods=['GET'])
-def get_translations():
+@app.route('/translate/<word>', methods=['GET'])
+def get_translations(word):
     session = Session()
     try:
-        translations = session.query(Card.word, Card.vietnamese_translation).all()
-        translations_list = [{"word": word, "vietnamese_translation": vietnamese} for word, vietnamese in translations]
-        return jsonify(translations_list)
+        # Fetch translations from the database
+        translation = session.query(Card).filter(Card.word == word).first()
+        if translation:
+            return jsonify({
+                'vietnamese_translation': translation.vietnamese_translation,
+                'chinese': translation.chinese,
+                'japanese': translation.japanese
+            })
+        else:
+            return jsonify({'error': 'Word not found'}), 404
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
