@@ -6672,3 +6672,5 @@ FROM cards) AS anon_1]
 2024-12-14 15:51:49 - app - INFO - 'updated_at' column already exists
 2024-12-14 15:51:53 - app - INFO - 'updated_at' column already exists
 2024-12-14 15:59:35 - app - INFO - User profile loaded successfully for testuser
+2024-12-14 17:14:44 - app - INFO - 'updated_at' column already exists
+2024-12-14 17:14:48 - app - INFO - 'updated_at' column already exists

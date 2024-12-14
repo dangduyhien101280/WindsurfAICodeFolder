@@ -171,15 +171,15 @@ function showCard(index) {
     }
 
     // Update Vietnamese translation
-    vietnameseTranslationElement.textContent = currentCard.vietnamese_translation || 'No translation';
+    vietnameseTranslationElement.textContent = currentCard.vietnamese_translation || 'xxxxxxxx';
     vietnameseTranslationElement.classList.add('vietnamese-translation');
 
     // Update Chinese translation
-    chineseTranslationElement.textContent = currentCard.chinese_translation || 'No translation';
+    chineseTranslationElement.textContent = currentCard.chinese_translation || 'xxxxxxxx';
     chineseTranslationElement.classList.add('chinese-translation');
 
     // Update Japanese translation
-    japaneseTranslationElement.textContent = currentCard.japanese_translation || 'No translation';
+    japaneseTranslationElement.textContent = currentCard.japanese_translation || 'xxxxxxxx';
     japaneseTranslationElement.classList.add('japanese-translation');
 
     // Update card number on both sides
@@ -1598,9 +1598,9 @@ function getTranslations(word) {
     })
     .then(data => {
         // Cập nhật các phần tử hiển thị
-        document.getElementById('vietnamese-translation').textContent = data.vietnamese_translation || 'Không có bản dịch'; // Tiếng Việt
-        document.getElementById('chinese-translation').textContent = data.chinese || 'Không có bản dịch'; // Tiếng Trung
-        document.getElementById('japanese-translation').textContent = data.japanese || 'Không có bản dịch'; // Tiếng Nhật
+        document.getElementById('vietnamese-translation').textContent = data.vietnamese_translation || ''; // Tiếng Việt
+        document.getElementById('chinese-translation').textContent = data.chinese || ''; // Tiếng Trung
+        document.getElementById('japanese-translation').textContent = data.japanese || ''; // Tiếng Nhật
     })
     .catch(error => {
         console.error('Error fetching translations:', error);
