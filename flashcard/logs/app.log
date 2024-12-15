@@ -6744,3 +6744,195 @@ with app.app_context(). See the documentation for more information.
 2024-12-15 12:32:03 - app - INFO - User profile loaded successfully for testuser
 2024-12-15 12:32:07 - app - INFO - 'updated_at' column already exists
 2024-12-15 12:32:07 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 14:02:24 - app - INFO - 'updated_at' column already exists
+2024-12-15 14:04:32 - app - INFO - 'updated_at' column already exists
+2024-12-15 14:04:32 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 14:04:36 - app - INFO - 'updated_at' column already exists
+2024-12-15 14:04:36 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 16:48:27 - app - INFO - 'updated_at' column already exists
+2024-12-15 16:48:27 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 16:51:26 - app - INFO - 'updated_at' column already exists
+2024-12-15 16:51:26 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 16:53:46 - app - INFO - 'updated_at' column already exists
+2024-12-15 16:53:46 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 16:53:50 - app - INFO - 'updated_at' column already exists
+2024-12-15 16:53:50 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 16:59:44 - app - INFO - 'updated_at' column already exists
+2024-12-15 16:59:44 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 16:59:48 - app - INFO - 'updated_at' column already exists
+2024-12-15 16:59:48 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:02:37 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:02:37 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:03:30 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:03:30 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:03:34 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:03:34 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:04:47 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:04:47 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:04:47 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:04:47 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:05:06 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:05:06 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:05:09 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:05:09 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:05:30 - app - INFO - Retrieved 5807 cards due for review.
+2024-12-15 17:06:23 - app - INFO - Retrieved 5807 cards due for review.
+2024-12-15 17:08:07 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:08:07 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:08:07 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:08:07 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:08:07 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:08:07 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:08:55 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:08:55 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:08:59 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:08:59 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:09:58 - app - INFO - Retrieved 5807 cards due for review.
+2024-12-15 17:09:58 - app - INFO - Cards returned: <Response 3026332 bytes [200 OK]>
+2024-12-15 17:11:06 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:11:06 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:11:06 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:11:06 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:11:06 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:11:06 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:11:06 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:11:06 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:11:30 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:11:30 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:11:34 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:11:34 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:11:56 - app - INFO - Cards returned: <Response 3026332 bytes [200 OK]>
+2024-12-15 17:14:08 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:14:08 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:14:08 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:14:08 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:14:08 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:14:08 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:14:08 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:14:08 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:14:08 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:14:08 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:14:28 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:14:29 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:14:32 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:14:32 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:14:42 - app - INFO - Cards returned: <Response 3026332 bytes [200 OK]>
+2024-12-15 17:14:42 - app - INFO - Returning cards: <Response 3026332 bytes [200 OK]>
+2024-12-15 17:15:42 - app - INFO - Cards returned: <Response 3026332 bytes [200 OK]>
+2024-12-15 17:15:42 - app - INFO - Returning cards: <Response 3026332 bytes [200 OK]>
+2024-12-15 17:17:57 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:17:57 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:17:57 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:17:57 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:17:57 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:17:57 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:17:57 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:17:57 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:17:57 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:17:57 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:17:57 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:17:57 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:19:22 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:19:22 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:19:25 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:19:25 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:20:01 - app - INFO - Cards returned: <Response 3026332 bytes [200 OK]>
+2024-12-15 17:20:01 - app - INFO - Returning cards: <Response 3026332 bytes [200 OK]>
+2024-12-15 17:20:40 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:20:40 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:20:44 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:20:44 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:22:37 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:22:37 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:22:37 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:22:37 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:22:37 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:22:37 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:22:37 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:22:37 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:22:38 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:22:38 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:22:38 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:22:38 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:22:38 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:22:38 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:22:38 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:22:38 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:23:04 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:23:04 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:23:08 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:23:08 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:24:32 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:24:32 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:24:36 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:24:36 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:51 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:51 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:51 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:51 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:51 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:51 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:51 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:51 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:51 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:51 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:52 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:52 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:52 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:52 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:52 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:52 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:25:52 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:52 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:52 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:25:52 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:26:17 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:26:17 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:26:20 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:26:20 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:30:39 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:30:39 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:30:42 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:30:42 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:35:29 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:35:29 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:36:45 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:36:45 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:36:49 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:36:49 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:47:38 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:47:38 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:47:38 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:47:39 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:47:57 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:47:57 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:48:01 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:48:01 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:50:01 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:50:01 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:50:05 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:50:05 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:59:58 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:59:58 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:59:58 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:59:58 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:59:58 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:59:58 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 17:59:58 - app - INFO - 'updated_at' column already exists
+2024-12-15 17:59:58 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 18:07:46 - app - INFO - 'updated_at' column already exists
+2024-12-15 18:07:46 - app - INFO - 'updated_at' column already exists
+2024-12-15 18:07:46 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 18:07:46 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 18:07:46 - app - INFO - 'updated_at' column already exists
+2024-12-15 18:07:46 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 18:07:46 - app - INFO - 'updated_at' column already exists
+2024-12-15 18:07:46 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 18:14:27 - app - INFO - 'updated_at' column already exists
+2024-12-15 18:14:27 - app - INFO - 'updated_at' column already exists
+2024-12-15 18:14:27 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 18:14:27 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 18:14:27 - app - INFO - 'updated_at' column already exists
+2024-12-15 18:14:27 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 18:14:27 - app - INFO - 'updated_at' column already exists
+2024-12-15 18:14:27 - app - INFO - User profile loaded successfully for testuser

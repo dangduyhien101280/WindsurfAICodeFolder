@@ -1349,6 +1349,52 @@ def check_translations():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/refresh', methods=['GET'])
+def refresh_cards():
+    """Refresh the cards data from the database."""
+    try:
+        cards = fetch_all_cards()  # Replace with your actual function
+        return jsonify({'status': 'success', 'data': cards}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+def fetch_all_cards():
+    """Fetch all cards from the database."""
+    try:
+        connection = sqlite3.connect('flashcards.db')  # Adjust the path if necessary
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT * FROM cards")  # Ensure all columns are selected
+        cards = cursor.fetchall()
+
+        card_list = []
+        for card in cards:
+            card_dict = {
+                'id': card[0],
+                'word': card[1],
+                'meaning': card[2],
+                'example': card[3],
+                'ipa': card[4],
+                'pos': card[10],
+                'box_number': card[5],
+                'chinese': card[13],
+                'japanese': card[15],  # Ensure this corresponds to the correct index
+                'vietnamese_translation': card[12],
+                'created_at': card[8],
+                'updated_at': card[9],
+                'last_reviewed': card[6],
+                'next_review': card[7]
+            }
+            card_list.append(card_dict)
+
+        return card_list
+    except Exception as e:
+        print(f"Error fetching cards: {e}")
+        return []
+    finally:
+        if connection:
+            connection.close()
+
 def create_test_user_if_not_exists(session):
     try:
         # Check if the test user already exists
