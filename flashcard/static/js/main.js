@@ -185,15 +185,15 @@ function showCard(index) {
     }
 
     // Update Vietnamese translation
-    vietnameseTranslationElement.textContent = currentCard.vietnamese_translation || 'xxxxxxxx';
+    vietnameseTranslationElement.textContent = currentCard.vietnamese_translation || '   |xxx|   ';
     vietnameseTranslationElement.classList.add('vietnamese-translation');
 
     // Update Chinese translation
-    chineseTranslationElement.textContent = currentCard.chinese || '---xxxxxx';
+    chineseTranslationElement.textContent = currentCard.chinese || '   |xxx|   ';
     chineseTranslationElement.classList.add('chinese-translation');
 
     // Update Japanese translation
-    japaneseTranslationElement.textContent = currentCard.japanese || '---xxxxxx';
+    japaneseTranslationElement.textContent = currentCard.japanese || '   |xxx|   ';
     japaneseTranslationElement.classList.add('japanese-translation');
 
     // Update card number on both sides

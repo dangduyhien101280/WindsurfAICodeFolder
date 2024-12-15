@@ -98,8 +98,8 @@
         <!-- Flashcard -->
         <div class="flashcard" id="flashcard">
             <div class="card-inner">
-                <span id="card-number" class="card-number card-number-front">0/0</span>
-                <span id="box-number" class="box-number box-number-front">Box: 0</span>
+                <span id="card-number" class="card-number card-number-front" style="color: rgb(27, 17, 17);">0/0</span>
+                <span id="box-number" class="box-number box-number-front" style="color: rgb(19, 11, 11);">Box: 0</span>
                 <div class="card-front">
                     <div class="card-header">
                         <span id="pos" class="pos-tag">POS</span>
@@ -114,24 +114,26 @@
                     </div>
                 </div>
                 <div class="card-back">
-                    <span id="card-number-back" class="card-number card-number-back">0/0</span>
-                    <span id="box-number-back" class="box-number box-number-back">Box: 0</span>
+                    <span id="card-number-back" class="card-number card-number-back" style="color: rgb(27, 17, 17);">0/0</span>
+                    <span id="box-number-back" class="box-number box-number-back" style="color: rgb(19, 11, 11);">Box: 0</span>
                     <p id="meaning"><strong>to greet someone in a polite or friendly way</strong></p>
                     <div class="back">
-                        <span id="back-word" style="color: red;">{{ english_word }}</span>
+                        <span id="back-word" style="color: rgb(128, 0, 0);">{{ english_word }}</span>
                         <table>
-                            <tr> ----------------------------------------
-                                <th>VN</th>
-                                <th>CN</th>
-                                <th>JP</th>
+                            <tr> 
+                                <td>VN</td>
+
+                                <td>CN</td>
+                                
+                                <td>JP</td>
                             </tr>
                             <tr>
-                                <td id="vietnamese-translation">{{ vietnamese_translation }}</td>
-                                <td id="chinese-translation">{{ chinese if chinese else 'Không có bản dịch' }}</td>
-                                <td id="japanese-translation">{{ japanese if japanese else 'Không có bản dịch' }}</td>
+                                <td id="vietnamese-translation" style="color: rgb(248, 5, 5);">{{ vietnamese_translation }}</td>
+                                <td id="chinese-translation" style="color: rgb(3, 22, 133);">{{ chinese if chinese else 'Không có bản dịch' }}</td>
+                                <td id="japanese-translation" style="color: rgb(5, 43, 1);">{{ japanese if japanese else 'Không có bản dịch' }}</td>
                             </tr>
-                        </table> ----------------------------------------
-                        <p id="example">They welcomed us with open arms.</p>
+                        </table> 
+                        <p id="example" style="color: rgb(14, 9, 0);">{{ example }}</p>
                     </div>
                     <div class="card-actions">
                         <button class="btn-icon" id="flipBackBtn" title="Flip">↻</button>

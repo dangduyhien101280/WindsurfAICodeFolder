@@ -6740,3 +6740,7 @@ with app.app_context(). See the documentation for more information.
 2024-12-15 12:28:48 - app - INFO - User profile loaded successfully for testuser
 2024-12-15 12:28:53 - app - INFO - 'updated_at' column already exists
 2024-12-15 12:28:53 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:32:03 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:32:03 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:32:07 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:32:07 - app - INFO - User profile loaded successfully for testuser
