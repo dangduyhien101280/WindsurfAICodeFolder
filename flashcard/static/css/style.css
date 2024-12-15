@@ -184,6 +184,23 @@ header h1 {
     position: relative;
 }
 
+.flashcard {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px;
+    background-color: #f9f9f9;
+}
+
+.flashcard h3 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.flashcard p {
+    margin: 5px 0;
+}
+
 .controls {
     display: flex;
     justify-content: center;

@@ -73,15 +73,28 @@ function updateBoxIndicator(boxNumber) {
 
 // Card management functions
 function loadCards() {
+    const savedIndex = parseInt(localStorage.getItem('savedIndex')) || 0;
+    const totalCards = cards.length;
+
+    // Check if the saved index is within bounds
+    if (savedIndex < 0 || savedIndex >= totalCards) {
+        console.warn('Saved index is out of bounds, resetting to 0.');
+        currentCardIndex = 0; // Reset to the first card if out of bounds
+    } else {
+        currentCardIndex = savedIndex; // Load the saved index
+    }
+
     showLoading(true);
-    fetch('/api/cards')
+    return fetch('/api/cards') // Return the promise from fetch
         .then(response => response.json())
         .then(data => {
             cards = data;
+            console.log('Cards loaded:', cards);
+            console.log('Total number of cards:', cards.length);
             updateCardCount();
             if (cards.length > 0) {
                 isInitialLoad = true; // Set flag before showing first card
-                showCard(0);
+                showCard(currentCardIndex);
                 isInitialLoad = false; // Reset flag after first card is shown
             }
             updateBoxStats();
@@ -96,16 +109,17 @@ function loadCards() {
 }
 
 function showCard(index) {
-    // Validate index and cards array
     if (index < 0 || index >= cards.length) {
         console.error('Invalid card index:', index);
-        showToast('No more cards to show');
-        return;
+        return; // Exit the function if the index is invalid
     }
+
+    console.log('Showing card at index:', index);
+    currentCard = cards[index]; // Use the existing global variable
+    saveProgress(index); // Save the current index after displaying the card
 
     // Update current card and index
     currentCardIndex = index;
-    currentCard = cards[currentCardIndex];
 
     // Get DOM elements with error checking
     const cardElement = document.getElementById('flashcard');
@@ -175,11 +189,11 @@ function showCard(index) {
     vietnameseTranslationElement.classList.add('vietnamese-translation');
 
     // Update Chinese translation
-    chineseTranslationElement.textContent = currentCard.chinese_translation || 'xxxxxxxx';
+    chineseTranslationElement.textContent = currentCard.chinese || '---xxxxxx';
     chineseTranslationElement.classList.add('chinese-translation');
 
     // Update Japanese translation
-    japaneseTranslationElement.textContent = currentCard.japanese_translation || 'xxxxxxxx';
+    japaneseTranslationElement.textContent = currentCard.japanese || '---xxxxxx';
     japaneseTranslationElement.classList.add('japanese-translation');
 
     // Update card number on both sides
@@ -382,6 +396,13 @@ function speakWord() {
                 showToast('Error playing pronunciation');
             }
         });
+}
+
+function playAudio(word) {
+    const audio = new Audio(`/api/speak/${word}?rate=1`);
+    audio.play().catch(error => {
+        console.error('Error playing audio:', error);
+    });
 }
 
 // YouTube import functionality
@@ -1125,16 +1146,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                             bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
                         } else {
-                            alert('Lỗi: ' + data.message);
+                            alert('Error: ' + data.message);
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Có lỗi xảy ra khi tải ảnh lên');
+                        alert('An error occurred while uploading the image.');
                     });
                 }
-            } else {
-                console.error('Avatar file input not found.');
             }
         });
     } else {
@@ -1187,12 +1206,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         bootstrap.Modal.getInstance(editProfileModal).hide();
                     } else {
-                        alert('Lỗi: ' + data.message);
+                        alert('Error: ' + data.message);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Có lỗi xảy ra khi cập nhật hồ sơ');
+                    alert('An error occurred while updating the profile.');
                 });
             });
         } else {
@@ -1610,3 +1629,170 @@ function getTranslations(word) {
         document.getElementById('japanese-translation').textContent = 'Lỗi khi lấy bản dịch';
     });
 }
+
+// Save, load, and reset flashcard progress using localStorage
+function saveProgress(currentIndex) {
+    localStorage.setItem('flashcardProgress', currentIndex);
+    console.log('Saved progress at index:', currentIndex);
+}
+
+function loadProgress() {
+    console.log('Attempting to load saved index:', localStorage.getItem('flashcardProgress'));
+    return localStorage.getItem('flashcardProgress') ? Number(localStorage.getItem('flashcardProgress')) : null; // Convert to number or return null if not found
+}
+
+function resetProgress() {
+    localStorage.removeItem('flashcardProgress');
+    console.log('Progress has been reset.');
+}
+
+// Example usage in your flashcard navigation logic:
+// const currentIndex = ...; // Get the current flashcard index
+// saveProgress(currentIndex);
+// const savedIndex = loadProgress();
+// if (savedIndex) {
+//     // Load flashcard at savedIndex
+// }
+
+// Save, load, and reset flashcard progress using localStorage
+function saveProgress(currentIndex) {
+    console.log('Attempting to save progress at index:', currentIndex);
+    localStorage.setItem('flashcardProgress', currentIndex);
+    console.log('Saved progress at index:', currentIndex);
+}
+
+function loadProgress() {
+    const progress = localStorage.getItem('flashcardProgress');
+    console.log('Loaded progress from localStorage:', progress);
+    return progress ? Number(progress) : null; // Convert to number or return null if not found
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadCards().then(() => {
+        console.log('Total number of cards:', cards.length); // Log the number of cards
+        const savedIndex = loadProgress();
+        console.log('Attempting to load saved index:', savedIndex);
+        
+        // Check if cards are loaded before accessing saved index
+        if (cards.length > 0) {
+            if (savedIndex !== null) {
+                const indexToShow = Number(savedIndex);
+                if (indexToShow >= 0 && indexToShow < cards.length) {
+                    showCard(indexToShow);
+                } else {
+                    console.log('Saved index is out of bounds, showing the first card.');
+                    showCard(0); // Show the first card if the saved index is invalid
+                }
+            } else {
+                console.log('No saved index found, showing the first card.');
+                showCard(0); // Show the first card if no saved index
+            }
+        } else {
+            console.warn('No cards loaded, cannot load saved index.');
+            showCard(0); // Default to showing the first card if no cards are loaded
+        }
+    }).catch(error => {
+        console.error('Error during initialization:', error);
+        showToast('Error during initialization');
+    });
+});
+
+function resetProgress() {
+    localStorage.removeItem('flashcardProgress');
+    console.log('Progress has been reset.');
+}
+
+// Testing functions for flashcard progress
+function testFlashcardProgress() {
+    console.log('Testing flashcard progress...');
+    // Simulate saving progress
+    saveProgress(10);
+    console.log('Saved progress at flashcard index 10.');
+
+    // Simulate loading progress
+    const loadedIndex = loadProgress();
+    console.log('Loaded progress:', loadedIndex);
+
+    // Simulate resetting progress
+    resetProgress();
+    console.log('Progress reset. Current saved index:', loadProgress());
+}
+
+// Call the test function
+// Uncomment the following line to run the test:
+// testFlashcardProgress();
+
+// Testing functions for flashcard progress
+function testFlashcardProgress() {
+    console.log('Testing flashcard progress...');
+    // Simulate saving progress
+    saveProgress(10);
+    console.log('Saved progress at flashcard index 10.');
+
+    // Simulate loading progress
+    const loadedIndex = loadProgress();
+    console.log('Loaded progress:', loadedIndex);
+
+    // Simulate resetting progress
+    resetProgress();
+    console.log('Progress reset. Current saved index:', loadProgress());
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const savedIndex = loadProgress();
+    console.log('Attempting to load saved index:', savedIndex);
+    if (savedIndex) {
+        showCard(Number(savedIndex));
+    } else {
+        showCard(0); // Show the first card if no saved index
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadCards(); // Ensure cards are loaded before checking progress
+    console.log('Total number of cards:', cards.length); // Log the number of cards
+    const savedIndex = loadProgress();
+    console.log('Attempting to load saved index:', savedIndex);
+    
+    if (savedIndex) {
+        const indexToShow = Number(savedIndex);
+        if (indexToShow >= 0 && indexToShow < cards.length) {
+            showCard(indexToShow);
+        } else {
+            console.log('Saved index is out of bounds, showing the first card.');
+            showCard(0); // Show the first card if the saved index is invalid
+        }
+    } else {
+        console.log('No saved index found, showing the first card.');
+        showCard(0); // Show the first card if no saved index
+    }
+});
+
+fetch('/api/cards')
+    .then(response => response.json())
+    .then(data => {
+        const flashcardContainer = document.getElementById('flashcard-container');
+        flashcardContainer.innerHTML = ''; // Clear existing content
+
+        data.forEach(card => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('flashcard');
+
+            cardElement.innerHTML = `
+                <h3>${card.word}</h3>
+                <p><strong>Meaning:</strong> ${card.meaning}</p>
+                <p><strong>Example:</strong> ${card.example}</p>
+                <p><strong>Vietnamese:</strong> ${card.vietnamese_translation}</p>
+                <p><strong>Chinese:</strong> ${card.chinese || 'N/A'}</p>
+                <p><strong>Japanese:</strong> ${card.japanese || 'N/A'}</p>
+            `;
+
+            flashcardContainer.appendChild(cardElement);
+        });
+    })
+    .catch(error => console.error('Error fetching flashcards:', error));
+
+document.getElementById('play-button').addEventListener('click', function() {
+    const currentWord = cards[currentCardIndex].word;
+    playAudio(currentWord);
+});

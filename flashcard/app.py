@@ -127,6 +127,8 @@ class Card(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     vietnamese_translation = Column(Text)  # New column
+    chinese = Column(Text)
+    japanese = Column(Text)
     
     def to_dict(self):
         """Convert card to dictionary for JSON serialization"""
@@ -142,7 +144,9 @@ class Card(Base):
             'next_review': self.next_review.isoformat() if self.next_review else None,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
-            'vietnamese_translation': self.vietnamese_translation
+            'vietnamese_translation': self.vietnamese_translation,
+            'chinese': self.chinese,
+            'japanese': self.japanese
         }
 
 Session = sessionmaker(bind=engine)
@@ -298,6 +302,61 @@ def get_word_details(word):
         pos = explicit_pos.get(word.lower(), '')
         return '', "Definition not found", "No example available", pos
 
+# Test POS inference function
+def test_pos_inference():
+    test_cases = [
+        # Verb tests
+        ('welcome', 'verb'),
+        ('run', 'verb'),
+        ('study', 'verb'),
+        ('inspire', 'verb'),
+        
+        # Noun tests
+        ('journey', 'noun'),
+        ('challenge', 'noun'),
+        ('adventure', 'noun'),
+        ('book', 'noun'),
+        
+        # Adjective tests
+        ('beautiful', 'adjective'),
+        ('quick', 'adjective'),
+        
+        # Adverb tests
+        ('quickly', 'adverb'),
+        
+        # Preposition tests
+        ('in', 'preposition'),
+        
+        # Edge cases
+        ('the', ''),
+        ('a', '')
+    ]
+    
+    for word, expected_pos in test_cases:
+        result = infer_pos(word)
+        print(f"Word: {word}, Expected: {expected_pos}, Result: {result}")
+        assert result == expected_pos, f"Failed for word '{word}': expected {expected_pos}, got {result}"
+    
+    print("All POS inference tests passed!")
+
+def test_word_details():
+    """
+    Test word details fetching, specifically for 'welcome'
+    """
+    # Test 'welcome'
+    ipa, meaning, example, pos = get_word_details('welcome')
+    
+    print(f"Word: welcome")
+    print(f"IPA: {ipa.encode('ascii', 'ignore').decode()}")  # Handle Unicode characters
+    print(f"Meaning: {meaning}")
+    print(f"Example: {example}")
+    print(f"POS: {pos}")
+    
+    # Assert that 'welcome' is always a verb
+    assert pos == 'verb', f"Expected 'verb' for 'welcome', but got {pos}"
+    
+    print("Word details test passed successfully!")
+
 def infer_pos(word):
     """
     Advanced Part of Speech (POS) inference with multiple precise strategies
@@ -389,61 +448,6 @@ def infer_pos(word):
     
     # If no clear identification, return empty string
     return ''
-
-# Test POS inference function
-def test_pos_inference():
-    test_cases = [
-        # Verb tests
-        ('welcome', 'verb'),
-        ('run', 'verb'),
-        ('study', 'verb'),
-        ('inspire', 'verb'),
-        
-        # Noun tests
-        ('journey', 'noun'),
-        ('challenge', 'noun'),
-        ('adventure', 'noun'),
-        ('book', 'noun'),
-        
-        # Adjective tests
-        ('beautiful', 'adjective'),
-        ('quick', 'adjective'),
-        
-        # Adverb tests
-        ('quickly', 'adverb'),
-        
-        # Preposition tests
-        ('in', 'preposition'),
-        
-        # Edge cases
-        ('the', ''),
-        ('a', '')
-    ]
-    
-    for word, expected_pos in test_cases:
-        result = infer_pos(word)
-        print(f"Word: {word}, Expected: {expected_pos}, Result: {result}")
-        assert result == expected_pos, f"Failed for word '{word}': expected {expected_pos}, got {result}"
-    
-    print("All POS inference tests passed!")
-
-def test_word_details():
-    """
-    Test word details fetching, specifically for 'welcome'
-    """
-    # Test 'welcome'
-    ipa, meaning, example, pos = get_word_details('welcome')
-    
-    print(f"Word: welcome")
-    print(f"IPA: {ipa.encode('ascii', 'ignore').decode()}")  # Handle Unicode characters
-    print(f"Meaning: {meaning}")
-    print(f"Example: {example}")
-    print(f"POS: {pos}")
-    
-    # Assert that 'welcome' is always a verb
-    assert pos == 'verb', f"Expected 'verb' for 'welcome', but got {pos}"
-    
-    print("Word details test passed successfully!")
 
 # Routes
 @app.route('/')
@@ -987,212 +991,136 @@ def add_updated_at_column_if_not_exists(engine):
 
 add_updated_at_column_if_not_exists(engine)
 
+def migrate_database():
+    with sqlite3.connect('flashcards.db') as conn:
+        cursor = conn.cursor()
+        
+        # Check if columns exist
+        cursor.execute("PRAGMA table_info(cards);")
+        columns = [column[1] for column in cursor.fetchall()]
+        
+        if 'chinese' in columns and 'japanese' in columns:
+            print('Columns "chinese" and "japanese" already exist. Migration not needed.')
+        else:
+            # Create a new table with the additional columns
+            cursor.execute('''
+                CREATE TABLE new_cards (
+                    id INTEGER PRIMARY KEY,
+                    word TEXT NOT NULL,
+                    meaning TEXT NOT NULL,
+                    example TEXT,
+                    ipa TEXT,
+                    pos TEXT,
+                    box_number INTEGER DEFAULT 0,
+                    last_reviewed DATETIME,
+                    next_review DATETIME,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    vietnamese_translation TEXT,
+                    chinese TEXT,
+                    japanese TEXT
+                )
+            ''')
+            
+            # Copy data from the old table to the new table
+            cursor.execute('''
+                INSERT INTO new_cards (id, word, meaning, example, ipa, pos, box_number, last_reviewed, next_review, created_at, updated_at, vietnamese_translation)
+                SELECT id, word, meaning, example, ipa, pos, box_number, last_reviewed, next_review, created_at, updated_at, vietnamese_translation
+                FROM cards
+            ''')
+            
+            # Drop the old table
+            cursor.execute('DROP TABLE cards')
+            
+            # Rename the new table to the original table name
+            cursor.execute('ALTER TABLE new_cards RENAME TO cards')
+            
+            print('Migration completed successfully.')
+        
+        conn.commit()
+
+migrate_database()
+
 def init_db():
-    # Khởi tạo UserModel
-    user_model = UserModel()
-    
-    # Tạo session
-    session = user_model._get_connection()
-    
-    try:
-        # Kiểm tra xem người dùng đã tồn tại chưa
-        existing_user = session.query(User).filter(User.username == 'testuser').first()
+    with app.app_context():  # Ensure we have the application context
+        # Khởi tạo UserModel
+        user_model = UserModel()
         
-        if not existing_user:
-            # Tạo người dùng mẫu
-            salt, hashed_password = user_model._hash_password('testpassword')
-            
-            new_user = User(
-                username='testuser', 
-                email='testuser@example.com', 
-                password_salt=salt, 
-                password_hash=hashed_password,
-                full_name='Test User', 
-                language_level='Intermediate', 
-                learning_goal='Improve English Vocabulary',
-                total_words_learned=250,
-                total_study_time=1500,  # 25 giờ
-                current_streak=15,
-                max_streak=30,
-                total_achievements=5,
-                achievement_points=150
-            )
-            
-            session.add(new_user)
-            session.flush()  # Đảm bảo user được tạo để lấy ID
-            
-            # Thêm một số thành tích mẫu
-            achievements = [
-                Achievement(
-                    user_id=new_user.id,
-                    achievement_name='Vocabulary Starter', 
-                    achievement_description='Learned first 50 words',
-                    points=25,
-                    date_earned=datetime.now()
-                ),
-                Achievement(
-                    user_id=new_user.id,
-                    achievement_name='Consistent Learner', 
-                    achievement_description='15-day learning streak',
-                    points=50,
-                    date_earned=datetime.now()
-                ),
-                Achievement(
-                    user_id=new_user.id,
-                    achievement_name='Word Master', 
-                    achievement_description='Learned 250 words',
-                    points=75,
-                    date_earned=datetime.now()
-                )
-            ]
-            
-            session.add_all(achievements)
-            session.commit()
-            
-            print("Initialized test user and achievements")
-    
-    except Exception as e:
-        session.rollback()
-        print(f"Error initializing database: {e}")
-    
-    finally:
-        session.close()
-
-def create_test_user_if_not_exists(session):
-    try:
-        # Kiểm tra xem đã tồn tại người dùng testuser chưa
-        existing_user = session.query(User).filter_by(username='testuser').first()
-        
-        if not existing_user:
-            # Tạo người dùng mẫu
-            salt = str(uuid.uuid4())
-            password_hash = hashlib.sha256((salt + 'testpassword').encode()).hexdigest()
-            
-            test_user = User(
-                username='testuser',
-                email='testuser@example.com',
-                password_salt=salt,
-                password_hash=password_hash,
-                full_name='Test User',
-                language_level='Intermediate',
-                learning_goal='Cải thiện từ vựng tiếng Anh',
-                total_words_learned=50,
-                total_study_time=120.5,
-                current_streak=5,
-                max_streak=10,
-                total_achievements=3,
-                achievement_points=150
-            )
-            
-            # Tạo một số thành tích mẫu
-            achievements = [
-                Achievement(
-                    user=test_user,
-                    achievement_name='Người Học Chăm Chỉ',
-                    achievement_description='Học liên tục 5 ngày',
-                    points=50,
-                    date_earned=datetime.utcnow()
-                ),
-                Achievement(
-                    user=test_user,
-                    achievement_name='Từ Vựng Mới',
-                    achievement_description='Học 50 từ mới',
-                    points=100,
-                    date_earned=datetime.utcnow()
-                )
-            ]
-            
-            session.add(test_user)
-            session.add_all(achievements)
-            session.commit()
-            logger.info("Created test user 'testuser'")
-        
-        return existing_user or test_user
-    except Exception as e:
-        logger.error(f"Error creating test user: {e}")
-        session.rollback()
-        return None
-
-@app.route('/user_profile')
-def user_profile():
-    # Khởi tạo UserModel
-    user_model = UserModel()
-    
-    try:
-        # Kết nối và truy vấn thông tin người dùng
-        session = user_model._get_connection()
-        
-        # Kiểm tra và thêm cột nếu chưa tồn tại
         try:
-            session.execute(text("SELECT updated_at FROM users LIMIT 1"))
-        except Exception:
-            # Nếu cột chưa tồn tại, thêm cột
-            session.execute(text('''
-                ALTER TABLE users 
-                ADD COLUMN updated_at DATETIME
-            '''))
-            session.execute(text('''
-                UPDATE users 
-                SET updated_at = created_at
-            '''))
-            session.commit()
+            # Kết nối và truy vấn thông tin người dùng
+            session = user_model._get_connection()
+            
+            # Kiểm tra và thêm cột nếu chưa tồn tại
+            try:
+                session.execute(text("SELECT updated_at FROM users LIMIT 1"))
+            except Exception:
+                # Nếu cột chưa tồn tại, thêm cột
+                session.execute(text('''
+                    ALTER TABLE users 
+                    ADD COLUMN updated_at DATETIME
+                '''))
+                session.execute(text('''
+                    UPDATE users 
+                    SET updated_at = created_at
+                '''))
+                session.commit()
+            
+            # Tạo người dùng mẫu nếu không tồn tại
+            user = create_test_user_if_not_exists(session)
+            
+            # Kiểm tra nếu không tạo được người dùng
+            if user is None:
+                logger.error("Failed to create or retrieve test user")
+                return jsonify({
+                    'error': True,
+                    'message': 'Lỗi hệ thống: Không thể tạo người dùng'
+                }), 500
+            
+            # Truy vấn danh sách thành tích
+            try:
+                achievements = session.query(Achievement).filter(
+                    Achievement.user_id == user.id
+                ).order_by(Achievement.date_earned.desc()).limit(5).all()
+            except Exception as ach_error:
+                logger.error(f"Error querying achievements: {ach_error}")
+                achievements = []
+            
+            # Chuẩn bị dữ liệu để render
+            user_profile_data = {
+                'error': False,
+                'username': user.username,
+                'email': user.email,
+                'full_name': user.full_name or 'Chưa cập nhật',
+                'total_words': user.total_words_learned or 0,
+                'study_time': round((user.total_study_time or 0) / 60, 1),  # Chuyển sang giờ
+                'current_streak': user.current_streak or 0,
+                'max_streak': user.max_streak or 0,
+                'language_level': user.language_level or 'Chưa xác định',
+                'learning_goal': user.learning_goal or 'Chưa đặt mục tiêu',
+                'total_achievements': user.total_achievements or 0,
+                'achievement_points': user.achievement_points or 0,
+                'recent_achievements': [
+                    {
+                        'name': achievement.achievement_name,
+                        'description': achievement.achievement_description,
+                        'points': achievement.points,
+                        'date': str(achievement.date_earned)
+                    } for achievement in achievements
+                ]
+            }
+            
+            logger.info(f"User profile loaded successfully for {user.username}")
+            return jsonify(user_profile_data)
         
-        # Tạo người dùng mẫu nếu không tồn tại
-        user = create_test_user_if_not_exists(session)
-        
-        # Kiểm tra nếu không tạo được người dùng
-        if user is None:
-            logger.error("Failed to create or retrieve test user")
+        except Exception as e:
+            logger.error(f"Unexpected error in user_profile: {e}", exc_info=True)
             return jsonify({
                 'error': True,
-                'message': 'Lỗi hệ thống: Không thể tạo người dùng'
+                'message': f"Lỗi hệ thống: {str(e)}"
             }), 500
-        
-        # Truy vấn danh sách thành tích
-        try:
-            achievements = session.query(Achievement).filter(
-                Achievement.user_id == user.id
-            ).order_by(Achievement.date_earned.desc()).limit(5).all()
-        except Exception as ach_error:
-            logger.error(f"Error querying achievements: {ach_error}")
-            achievements = []
-        
-        # Chuẩn bị dữ liệu để render
-        user_profile_data = {
-            'error': False,
-            'username': user.username,
-            'email': user.email,
-            'full_name': user.full_name or 'Chưa cập nhật',
-            'total_words': user.total_words_learned or 0,
-            'study_time': round((user.total_study_time or 0) / 60, 1),  # Chuyển sang giờ
-            'current_streak': user.current_streak or 0,
-            'max_streak': user.max_streak or 0,
-            'language_level': user.language_level or 'Chưa xác định',
-            'learning_goal': user.learning_goal or 'Chưa đặt mục tiêu',
-            'total_achievements': user.total_achievements or 0,
-            'achievement_points': user.achievement_points or 0,
-            'recent_achievements': [
-                {
-                    'name': achievement.achievement_name,
-                    'description': achievement.achievement_description,
-                    'points': achievement.points,
-                    'date': str(achievement.date_earned)
-                } for achievement in achievements
-            ]
-        }
-        
-        logger.info(f"User profile loaded successfully for {user.username}")
-        return jsonify(user_profile_data)
-    
-    except Exception as e:
-        logger.error(f"Unexpected error in user_profile: {e}", exc_info=True)
-        return jsonify({
-            'error': True,
-            'message': f"Lỗi hệ thống: {str(e)}"
-        }), 500
-    finally:
-        if 'session' in locals():
-            session.close()
+        finally:
+            if 'session' in locals():
+                session.close()
 
 import os
 from werkzeug.utils import secure_filename
@@ -1390,9 +1318,7 @@ def get_translations(word):
         translation = session.query(Card).filter(Card.word == word).first()
         if translation:
             return jsonify({
-                'vietnamese_translation': translation.vietnamese_translation,
-                'chinese': translation.chinese,
-                'japanese': translation.japanese
+                'vietnamese_translation': translation.vietnamese_translation
             })
         else:
             return jsonify({'error': 'Word not found'}), 404
@@ -1422,6 +1348,42 @@ def check_translations():
             return jsonify({"missing_translations": len(missing_translations), "total_cards": len(cards)}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+def create_test_user_if_not_exists(session):
+    try:
+        # Check if the test user already exists
+        existing_user = session.query(User).filter_by(username='testuser').first()
+        
+        if not existing_user:
+            # Create a new test user
+            salt = str(uuid.uuid4())
+            password_hash = hashlib.sha256((salt + 'testpassword').encode()).hexdigest()
+            
+            test_user = User(
+                username='testuser',
+                email='testuser@example.com',
+                password_salt=salt,
+                password_hash=password_hash,
+                full_name='Test User',
+                language_level='Intermediate',
+                learning_goal='Improve English Vocabulary',
+                total_words_learned=50,
+                total_study_time=120.5,
+                current_streak=5,
+                max_streak=10,
+                total_achievements=3,
+                achievement_points=150
+            )
+            
+            session.add(test_user)
+            session.commit()
+            logger.info("Created test user 'testuser'")
+        
+        return existing_user or test_user
+    except Exception as e:
+        logger.error(f"Error creating test user: {e}")
+        session.rollback()
+        return None
 
 if __name__ == '__main__':
     import sys

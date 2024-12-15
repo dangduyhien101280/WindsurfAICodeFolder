@@ -6674,3 +6674,69 @@ FROM cards) AS anon_1]
 2024-12-14 15:59:35 - app - INFO - User profile loaded successfully for testuser
 2024-12-14 17:14:44 - app - INFO - 'updated_at' column already exists
 2024-12-14 17:14:48 - app - INFO - 'updated_at' column already exists
+2024-12-14 17:59:28 - app - INFO - User profile loaded successfully for testuser
+2024-12-14 18:15:21 - app - INFO - User profile loaded successfully for testuser
+2024-12-14 18:20:07 - app - INFO - 'updated_at' column already exists
+2024-12-14 18:21:09 - app - INFO - 'updated_at' column already exists
+2024-12-14 18:21:13 - app - INFO - 'updated_at' column already exists
+2024-12-14 18:59:17 - app - INFO - 'updated_at' column already exists
+2024-12-14 18:59:21 - app - INFO - 'updated_at' column already exists
+2024-12-14 19:30:41 - app - INFO - 'updated_at' column already exists
+2024-12-14 19:30:45 - app - INFO - 'updated_at' column already exists
+2024-12-15 00:51:15 - app - INFO - 'updated_at' column already exists
+2024-12-15 00:51:19 - app - INFO - 'updated_at' column already exists
+2024-12-15 09:54:33 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 10:35:00 - app - INFO - 'updated_at' column already exists
+2024-12-15 10:35:04 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:30:07 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:30:11 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:31:48 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:31:52 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:43:03 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:45:20 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:46:40 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:47:34 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:49:38 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:59:20 - app - INFO - 'updated_at' column already exists
+2024-12-15 11:59:20 - app - ERROR - Unexpected error in user_profile: name 'create_test_user_if_not_exists' is not defined
+Traceback (most recent call last):
+  File "e:\WindsurfAICodeFolder\flashcard\app.py", line 976, in init_db
+    user = create_test_user_if_not_exists(session)
+NameError: name 'create_test_user_if_not_exists' is not defined
+2024-12-15 12:19:23 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:19:23 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:19:23 - app - ERROR - Unexpected error in user_profile: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+Traceback (most recent call last):
+  File "e:\WindsurfAICodeFolder\flashcard\app.py", line 1020, in init_db
+    return jsonify(user_profile_data)
+  File "D:\Python\lib\site-packages\flask\json\__init__.py", line 342, in jsonify
+    return current_app.json.response(*args, **kwargs)
+  File "D:\Python\lib\site-packages\werkzeug\local.py", line 316, in __get__
+    obj = instance._get_current_object()
+  File "D:\Python\lib\site-packages\werkzeug\local.py", line 513, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2024-12-15 12:20:53 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:20:53 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:21:23 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:21:23 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:22:09 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:22:09 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:24:38 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:24:38 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:25:19 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:25:19 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:25:34 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:25:34 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:28:48 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:28:48 - app - INFO - User profile loaded successfully for testuser
+2024-12-15 12:28:53 - app - INFO - 'updated_at' column already exists
+2024-12-15 12:28:53 - app - INFO - User profile loaded successfully for testuser
