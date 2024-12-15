@@ -180,7 +180,7 @@ header h1 {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    min-height: 300px;
+    min-height: 400px;
     position: relative;
 }
 
@@ -224,11 +224,11 @@ header h1 {
     right: 2rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 200px;
+    width: 180px;
     margin: 0;
     padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.404);
+    border-radius: 4px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -324,8 +324,8 @@ header h1 {
 
 /* Flashcard Styles */
 .flashcard {
-    width: 400px;
-    height: 250px;
+    width: 500px;
+    height: 350px;
     perspective: 1000px;
     margin-bottom: 2rem;
 }
@@ -623,7 +623,7 @@ header h1 {
 
     .flashcard {
         width: 100%;
-        max-width: 350px;
+        max-width: 500px;
         height: 220px;
     }
 
